@@ -1,0 +1,2 @@
+C:\Workspace\TrainingPortal\TrainingPortal.WebUI\obj\Debug\TrainingPortal.WebUI.esproj.CoreCompileInputs.cache
+E:\Bilberry\Projects\TP-NEW\TP\TrainingPortal.WebUI\obj\Debug\TrainingPortal.WebUI.esproj.CoreCompileInputs.cache
