@@ -1,7 +1,12 @@
-import rootReducer from "./rootReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import emptySplitApi from "../utils/emptySplitApi";
 
-const { configureStore } = require("@reduxjs/toolkit");
 
-const store = configureStore(rootReducer)
+export const store = configureStore({
+    reducer: {
+        [emptySplitApi.reducerPath]: emptySplitApi.reducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([emptySplitApi.middleware])
+})
 
 export default store

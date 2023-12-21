@@ -94,37 +94,10 @@ export default function App() {
     });
 
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={themeRTL}>
+  return (
+      <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Soft UI Dashboard"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />} */}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/" />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
+        {layout === "dashboard" && (
           <Sidenav
             color={sidenavColor}
             brand={brand}
@@ -133,16 +106,12 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          {/* <Configurator />
-          {configsButton} */}
-        </>
-      )}
-      {/* {layout === "vr" && <Configurator />} */}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route path="*" element={<Navigate to="/home" />} />
-      </Routes>
-    </ThemeProvider>
+        )}
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </ThemeProvider>
   );
 }
