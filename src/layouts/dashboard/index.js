@@ -70,7 +70,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Courses" }}
-                count={isCoursesListLoading ? "Loading..." : coursesList.data.length || "0"}
+                count={isCoursesListLoading ? "Loading..." : coursesList?.data?.length || "0"}
                 percentage={{ color: "success", text: "+55%" }}
                 icon={{ color: "info", component: <MenuBookIcon /> }}
               />
@@ -78,7 +78,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Applicants" }}
-                count={isApplicantListLoading ? "Loading..." : applicantList.data.length || "0"}
+                count={isApplicantListLoading ? "Loading..." : applicantList?.data?.length || "0"}
                 percentage={{ color: "success", text: "+3%" }}
                 icon={{ color: "info", component: <PersonIcon /> }}
               />

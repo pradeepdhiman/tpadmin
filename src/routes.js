@@ -1,10 +1,8 @@
-
 import Dashboard from "layouts/dashboard";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Applicants from "layouts/Applicants";
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import Courses from "layouts/Courses";
 import Schedule from "layouts/Schedule";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Orders from "layouts/Orders";
@@ -13,6 +11,7 @@ import Settings from "layouts/Settings";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Assessments from "layouts/Assessments";
 import BiotechIcon from '@mui/icons-material/Biotech';
+import Courses from "layouts/courses";
 
 const routes = [
   {
