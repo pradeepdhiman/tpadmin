@@ -10,19 +10,33 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
-import SoftButton from "components/SoftButton";
 import { useState } from "react";
-import EditCourse from "./component/EditCourse";
-import CoursesList from "./component/CoursesList";
+import AssessmentList from "./component/AssessmentList";
+import AssessmentDetails from "./component/AssessmentDetails";
 
-function Courses() {
+const top100Films = [
+  { label: 'The Shawshank Redemption', year: 1994 },
+  { label: 'The Godfather', year: 1972 },
+  { label: 'The Godfather: Part II', year: 1974 },
+  { label: 'The Dark Knight', year: 2008 },
+  { label: '12 Angry Men', year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+  { label: 'Pulp Fiction', year: 1994 }
+];
+
+function Assessments() {
   const { size } = typography;
-  const [isEdit, setEdit] = useState(false)
+  const [isEdit, setEdit] = useState(true)
+  const [selectedCourse, setSelectedCourse] = useState(top100Films[0]);
 
-  function editMode(){
+  const handleCourseSelect = (event, newValue) => {
+    setSelectedCourse(newValue);
+  };
+
+  function editMode() {
     setEdit(false)
   }
-  function addApplicant(){
+  function addApplicant() {
     setEdit(true)
   }
 
@@ -31,16 +45,11 @@ function Courses() {
       <DashboardNavbar />
       <SoftBox py={3}>
         <Grid container spacing={3}>
-          <Grid xs={12}>
-            <SoftBox px={3}>
-              <SoftButton size="small" color="dark" onClick={addApplicant}>Add New Course</SoftButton>
-            </SoftBox>
-          </Grid>
           <Grid item xs={12} md={6} lg>
-            <CoursesList />
+            <AssessmentList />
           </Grid>
           {isEdit && <Grid item xs={12} md={6} lg={4}>
-            <EditCourse toggleEdit={editMode} />
+            <AssessmentDetails toggleEdit={editMode} />
           </Grid>}
         </Grid>
       </SoftBox>
@@ -49,4 +58,4 @@ function Courses() {
   );
 }
 
-export default Courses;
+export default Assessments;
