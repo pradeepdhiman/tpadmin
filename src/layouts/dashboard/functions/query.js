@@ -10,9 +10,9 @@ export const dashboardApi = emptySplitApi.injectEndpoints({
         }),
         postCourses: build.mutation({
             query: (filters) => ({
-                url: "/GetCourses",
+                url: "/Applicant/GetCourses",
                 method: "POST",
-                body: filters,
+                body: JSON.stringify(filters),
             }),
         }),
     }),

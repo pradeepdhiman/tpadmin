@@ -53,6 +53,7 @@ import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import AuthApi from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -238,6 +239,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   <SettingsIcon />
                 </Icon>
               </IconButton>
+              */}
               <IconButton
                 size="small"
                 color="inherit"
@@ -247,9 +249,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
+                <Icon className={light ? "text-white" : "text-dark"}><NotificationsIcon/></Icon>
               </IconButton>
-              {renderMenu()} */}
+              {renderMenu()} 
             </SoftBox>
           </SoftBox>
         )}

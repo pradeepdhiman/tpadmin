@@ -45,7 +45,18 @@ function Dashboard() {
 
   useEffect(() => {
     const today = moment().format('DD/MM/YYYY');
-    const filterObject = { filter: { receiptDate: today } }
+    const filterObject = {
+      "draw":0,
+      "start": 0,
+      "length": 10,
+      "columns": null,
+      "search": null,
+      "order": {
+        "orderBy": "applicantID",
+        "orderDirection": "desc"
+      },
+      "filter": null
+    }
     createCourse(filterObject)
   }, [])
 

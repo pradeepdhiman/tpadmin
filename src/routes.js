@@ -9,6 +9,10 @@ import Schedule from "layouts/Schedule";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import Orders from "layouts/Orders";
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import Settings from "layouts/Settings";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import Assessments from "layouts/Assessments";
+import BiotechIcon from '@mui/icons-material/Biotech';
 
 const routes = [
   {
@@ -63,6 +67,28 @@ const routes = [
     route: "/orders",
     icon: <LocalMallIcon size="12px" />,
     component: <Orders />,
+    noCollapse: true,
+    protected: false,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Settings",
+    key: "setting",
+    route: "/setting",
+    icon: <ManageAccountsIcon size="12px" />,
+    component: <Settings />,
+    noCollapse: true,
+    protected: false,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Assessments",
+    key: "assessments",
+    route: "/assessments",
+    icon: <BiotechIcon size="12px" />,
+    component: <Assessments />,
     noCollapse: true,
     protected: false,
     sidebar:true
