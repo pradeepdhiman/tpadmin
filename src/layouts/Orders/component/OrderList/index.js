@@ -44,9 +44,9 @@ function OrderList() {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+      <MenuItem onClick={closeMenu}>All</MenuItem>
+      <MenuItem onClick={closeMenu}>New Orders</MenuItem>
+      <MenuItem onClick={closeMenu}>Compleated</MenuItem>
     </Menu>
   );
 
