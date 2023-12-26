@@ -40,7 +40,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   // const collapseName = pathname.split("/").slice(1)[0];
   const collapseName = pathname.split("/").pop()
 
-  console.log(pathname, collapseName)
+  // console.log(pathname, collapseName)
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 

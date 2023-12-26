@@ -13,34 +13,31 @@ import SoftInput from "components/SoftInput";
 import { useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
-import { usePostCourseMutation } from "layouts/courses/functions/query";
-import SoftSnakBar from "components/SoftSnakbar";
+import { useAddQuestionMutation } from "layouts/CourseQuestions/functions/query";
 
-function EditCourse({ toggleEdit }) {
-  const [addCourse, {
-    data: addedCourse,
-    isLoading: loadingAddCourse,
-    error: addcorseError,
-  }] = usePostCourseMutation();
+const initialFormdata = {
+  questionID: 0,
+  courseID: 0,
+  questionTitle: "",
+  questionType: "",
+  correctAnswer: "",
+  optionA: "",
+  optionB: "",
+  optionC: "",
+  optionD: "",
+  optionE: "",
+  marksOptionA: "",
+  maaksOptionB: "",
+  marksOptionC: "",
+  marksOptionD: "",
+  marksOptionE: "",
+  createdById: 0,
+  remarks: ""
+}
 
-  const [formData, setFormData] = useState(
-    {
-      courseID: 0,
-      courseName: "",
-      description: "",
-      duration: 0,
-      categoryID: 0,
-      syllabus: "",
-      trainingfee: 0,
-      vat: 0,
-      totalAmount: 0,
-      receiptID: 0,
-      receiptDate: "",
-      amountReceived: 0,
-      createdById: 0,
-      remarks: ""
-    }
-  );
+function EditQuestion({ toggleEdit }) {
+  const [formData, setFormData] = useState(initialFormdata);
+  const [addQuestion] = useAddQuestionMutation()
   const handleFormData = (e) => {
     setFormData({
       ...formData,
@@ -49,29 +46,23 @@ function EditCourse({ toggleEdit }) {
   };
   const submitFormData = async (e) => {
     e.preventDefault();
-    console.log(formData, "formdata")
     try {
-      const response = await addCourse(formData);
+      const response = addQuestion(formData);
       console.log("response", response)
     } catch (err) {
       console.log(err, "err")
     }
   }
   function closeEdit() {
-    setFormData({
-      coursename: '',
-      coursecategory: '',
-      studymaterial: [],
-      price: "",
-    })
+    setFormData(initialFormdata)
     toggleEdit()
   }
+
   return (
     <Card className="h-100">
-      {addcorseError && <SoftSnakBar message="Somethig went wrong" severity="error" />}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Course
+          Assessment Question.
         </SoftTypography>
         <Icon
           sx={{
@@ -89,92 +80,106 @@ function EditCourse({ toggleEdit }) {
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Course Name
+              Question Title
             </SoftTypography>
           </SoftBox>
           <SoftInput
             type="text"
-            name="courseName"
+            name="questionTitle"
             onChange={handleFormData}
-            placeholder="Course name"
-            value={formData?.courseName}
+            placeholder="Question Title"
+            value={formData?.questionTitle}
           />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Course category
+              Question Type
             </SoftTypography>
           </SoftBox>
           <SoftInput
             type="text"
-            name="categoryID"
+            name="questionType"
             onChange={handleFormData}
-            placeholder="Category"
-            value={formData?.categoryID}
+            placeholder="questionType"
+            value={formData?.questionType}
           />
         </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Study Material
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="file"
-            name="syllabus"
-            onChange={handleFormData}
-            placeholder="Choose files"
-            value={formData?.syllabus}
-          />
-        </SoftBox>
-        <SoftBox mb={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "top", gap: "16px" }}>
-          <SoftBox mb={2} >
+        <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItem: "top" }}>
+          <SoftBox mb={2}>
             <SoftBox mb={1} ml={0.5}>
               <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Price
+                Option A
               </SoftTypography>
             </SoftBox>
             <SoftInput
               type="text"
-              name="price"
+              name="optionA"
               onChange={handleFormData}
-              placeholder="Course price"
-              value={formData?.price}
+              placeholder="Option A"
+              value={formData?.optionA}
             />
           </SoftBox>
-          <SoftBox mb={2} >
+          <SoftBox mb={2}>
             <SoftBox mb={1} ml={0.5}>
               <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Tax
+                Option B
               </SoftTypography>
             </SoftBox>
             <SoftInput
               type="text"
-              name="vat"
+              name="optionB"
               onChange={handleFormData}
-              placeholder="Tax"
-              value={formData?.vat}
+              placeholder="Option B"
+              value={formData?.optionB}
+            />
+          </SoftBox>
+          <SoftBox mb={2}>
+            <SoftBox mb={1} ml={0.5}>
+              <SoftTypography component="label" variant="caption" fontWeight="bold">
+                Option C
+              </SoftTypography>
+            </SoftBox>
+            <SoftInput
+              type="text"
+              name="optionC"
+              onChange={handleFormData}
+              placeholder="Option C"
+              value={formData?.optionC}
+            />
+          </SoftBox>
+          <SoftBox mb={2}>
+            <SoftBox mb={1} ml={0.5}>
+              <SoftTypography component="label" variant="caption" fontWeight="bold">
+                Option D
+              </SoftTypography>
+            </SoftBox>
+            <SoftInput
+              type="text"
+              name="optionD"
+              onChange={handleFormData}
+              placeholder="optionD"
+              value={formData?.optionD}
             />
           </SoftBox>
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Description
+              Correct Answer
             </SoftTypography>
           </SoftBox>
           <SoftInput
             type="text"
-            name="description"
+            name="correctAnswer"
             onChange={handleFormData}
-            placeholder="Course description"
-            value={formData?.description}
+            placeholder="Correct Answer"
+            value={formData?.correctAnswer}
           />
         </SoftBox>
         <SoftBox mt={4} mb={1}>
           <SoftButton variant="gradient" color="info" onClick={submitFormData} fullWidth>
-            {loadingAddCourse ? "Loading..." : "Submit"}
+            Submit
           </SoftButton>
         </SoftBox>
       </SoftBox>
@@ -182,4 +187,4 @@ function EditCourse({ toggleEdit }) {
   );
 }
 
-export default EditCourse;
+export default EditQuestion;

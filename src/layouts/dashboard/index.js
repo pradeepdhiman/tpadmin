@@ -20,10 +20,58 @@ import NewOrders from "./component/NewOrders";
 import LatestCourse from "./component/LatestCourses";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { useFilteredCoursesQuery, useGetApplicantListQuery, useGetCoursesListQuery, usePostCoursesMutation } from "./functions/query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 
+const initialFilter = {
+  draw: 5,
+  start: 0,
+  length: 10,
+  columns: [
+    {
+      data: "",
+      name: "",
+      searchable: true,
+      orderable: true,
+      search: {
+        value: "",
+        regex: ""
+      }
+    }
+  ],
+  search: {
+    value: "",
+    regex: ""
+  },
+  order: {
+    orderBy: "",
+    orderDirection: ""
+  },
+  filter: {
+    courseID: 0,
+    courseName: "",
+    description: "",
+    duration: 0,
+    categoryID: 0,
+    categoryName: "",
+    syllabus: "",
+    trainingfee: 0,
+    vat: 0,
+    totalAmount: 0,
+    receiptID: 0,
+    receiptDate: "",
+    amountReceived: 0,
+    status: 0,
+    createdById: 0,
+    updatedById: 0,
+    updatedDate: "",
+    isDeleted: true,
+    remarks: ""
+  }
+}
+
 function Dashboard() {
+  const [filters, setFilters] = useState(initialFilter)
   const { size } = typography;
   const {
     data: applicantList,
@@ -45,19 +93,7 @@ function Dashboard() {
 
   useEffect(() => {
     const today = moment().format('DD/MM/YYYY');
-    const filterObject = {
-      "draw":0,
-      "start": 0,
-      "length": 10,
-      "columns": null,
-      "search": null,
-      "order": {
-        "orderBy": "applicantID",
-        "orderDirection": "desc"
-      },
-      "filter": null
-    }
-    createCourse(filterObject)
+    createCourse(filters)
   }, [])
 
 

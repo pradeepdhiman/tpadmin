@@ -12,6 +12,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Assessments from "layouts/Assessments";
 import BiotechIcon from '@mui/icons-material/Biotech';
 import Courses from "layouts/courses";
+import CourseQuestions from "layouts/CourseQuestions";
 
 const routes = [
   {
@@ -72,6 +73,28 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Assessments",
+    key: "assessments",
+    route: "/assessments",
+    icon: <BiotechIcon size="12px" />,
+    component: <Assessments />,
+    noCollapse: true,
+    protected: false,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Course Questions",
+    key: "questions",
+    route: "/questions",
+    icon: <BiotechIcon size="12px" />,
+    component: <CourseQuestions />,
+    noCollapse: true,
+    protected: false,
+    sidebar:true
+  },
+  {
+    type: "collapse",
     name: "Settings",
     key: "setting",
     route: "/setting",
@@ -81,17 +104,6 @@ const routes = [
     protected: false,
     sidebar:true
   },
-  {
-    type: "collapse",
-    name: "Assessments",
-    key: "assessments",
-    route: "/assessments",
-    icon: <BiotechIcon size="12px" />,
-    component: <Assessments />,
-    noCollapse: true,
-    protected: false,
-    sidebar:true
-  }
 ];
 
 export default routes;
