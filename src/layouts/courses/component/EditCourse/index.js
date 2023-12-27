@@ -13,8 +13,8 @@ import SoftInput from "components/SoftInput";
 import { useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
-import { usePostCourseMutation } from "layouts/courses/functions/query";
 import SoftSnakBar from "components/SoftSnakbar";
+import { usePostCourseMutation } from "layouts/Courses/functions/query";
 
 function EditCourse({ toggleEdit }) {
   const [addCourse, {
@@ -49,10 +49,8 @@ function EditCourse({ toggleEdit }) {
   };
   const submitFormData = async (e) => {
     e.preventDefault();
-    console.log(formData, "formdata")
     try {
       const response = await addCourse(formData);
-      console.log("response", response)
     } catch (err) {
       console.log(err, "err")
     }

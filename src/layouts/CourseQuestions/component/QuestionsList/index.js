@@ -19,10 +19,11 @@ import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 // Data
 
-function QuestionList() {
+function QuestionList({ listData, loading }) {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
@@ -65,23 +66,26 @@ function QuestionList() {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      {loading && <SoftBarLoader />}
+      {listData?.success ? <>
+        <SoftBox
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={columns} rows={rows} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={columns} rows={rows} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2}>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={5} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
     </Card>
   );
 }

@@ -11,8 +11,8 @@ import Settings from "layouts/Settings";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Assessments from "layouts/Assessments";
 import BiotechIcon from '@mui/icons-material/Biotech';
-import Courses from "layouts/courses";
 import CourseQuestions from "layouts/CourseQuestions";
+import Courses from "layouts/Courses";
 
 const routes = [
   {

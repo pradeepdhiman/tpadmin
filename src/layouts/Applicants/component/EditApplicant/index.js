@@ -13,33 +13,74 @@ import SoftInput from "components/SoftInput";
 import { useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
+import MasterForm from "examples/MasterForm";
+import * as yup from 'yup';
 
-function EditApplicant({toggleEdit}) {
-  const [formData, setFormData] = useState({
-    'name': '',
-    'password': '',
-    'email': ''
-  });
+const initialValue = {
+  applicantID: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
+  qualification: "",
+  designation: "",
+  dob: "",
+  nationality: "",
+  companyName: "",
+  companyContactNumber: "",
+  companyAddress: "",
+  password: "",
+  createdById: "",
+  remarks: ""
+}
+
+
+
+const schema = yup.object().shape({
+  applicantID: yup.mixed(),
+  firstName: yup.string().required('First Name is required'),
+  lastName: yup.string(),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  phone: yup
+    .number()
+    .typeError('Phone must be a number')
+    .min(1000000000, 'Phone must be at least 10 digits')
+    .max(9999999999, 'Phone must be at most 10 digits')
+    .required('Phone is required'),
+  address: yup.string().required('Address is required'),
+  qualification: yup.string().required('Qualification is required'),
+  designation: yup.string(),
+  dob: yup.date().required('Date of Birth is required'),
+  nationality: yup.string().required('Nationality is required'),
+  companyName: yup.string(),
+  companyContactNumber: yup.string(),
+  companyAddress: yup.string(),
+  password: yup.string().required('Password is required'),
+  createdById: yup.mixed(),
+  remarks: yup.string(),
+});
+
+
+function EditApplicant(props) {
+  const { toggleEdit = false, addApplicant = null, loading = false } = props
+  const [formData, setFormData] = useState(initialValue);
+
   const handleFormData = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  const submitFormData = async (e) => {
-    e.preventDefault();
-    // try {
-    //   await login(formData);
-    // } catch (err) {
-    //   console.log(err, "err")
-    // }
+  const submitFormData = async (data) => {
+    try {
+      await addApplicant(data)
+    } catch (err) {
+      console.log(err)
+    }
   }
   function closeEdit() {
-    setFormData({
-      'name': '',
-      'password': '',
-      'email': ''
-    })
+    setFormData(initialValue)
     toggleEdit()
   }
   return (
@@ -61,6 +102,9 @@ function EditApplicant({toggleEdit}) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
+        <MasterForm onSubmit={submitFormData} formState={formData} validation={schema} loading={loading} />
+      </SoftBox>
+      {/* <SoftBox p={2}>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -108,7 +152,7 @@ function EditApplicant({toggleEdit}) {
             Submit
           </SoftButton>
         </SoftBox>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

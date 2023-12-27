@@ -28,11 +28,6 @@ function EditSchedule({ toggleEdit }) {
   };
   const submitFormData = async (e) => {
     e.preventDefault();
-    // try {
-    //   await login(formData);
-    // } catch (err) {
-    //   console.log(err, "err")
-    // }
   }
   function closeEdit() {
     setFormData({

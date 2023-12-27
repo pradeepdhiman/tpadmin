@@ -14,55 +14,41 @@ import ApplicantList from "./component/ApplicantList";
 import SoftButton from "components/SoftButton";
 import EditApplicant from "./component/EditApplicant";
 import { useEffect, useState } from "react";
-import { useGetApplicantsMutation, useGetApplicantsQuery } from "./functions/query";
 import SoftSnakBar from "components/SoftSnakbar";
+import { crudApi } from "utils/utils";
+import { useCreateMutation, useFilterMutation } from "./functions/query";
+
+
 
 const initialFilters = {
-  draw: 5,
+  draw: 10,
   start: 0,
   length: 10,
   columns: [
     {
-      data: "",
-      name: "",
+      data: "firstName",
+      name: "firstName",
       searchable: true,
       orderable: true,
       search: {
-        value: "",
-        regex: ""
-      }
-    }
+        value: "firstName",
+        regex: "test",
+      },
+    },
   ],
   search: {
-    value: "",
-    regex: ""
+    value: "firstName",
+    regex: "test",
   },
   order: {
-    orderBy: "",
-    orderDirection: ""
+    orderBy: "firstName",
+    orderDirection: "desc",
   },
-  filter: {
-    applicantID: 0,
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    qualification: "",
-    designation: "",
-    dob: "",
-    nationality: "",
-    companyName: "",
-    companyContactNumber: "",
-    companyAddress: "",
-    status: 0,
-    createdById: 0,
-    updatedById: 0,
-    updatedDate: "",
-    isDeleted: true,
-    remarks: ""
-  }
-}
+  filter: null,
+};
+
+
+
 
 function Applicants() {
 
@@ -70,16 +56,14 @@ function Applicants() {
   const [isEdit, setEdit] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
-  const [getFilterApplicants, {
-    data: filteredList,
-    isLoading: applicantsLoading,
-    error: applicantError,
-  }] = useGetApplicantsMutation();
+  const [filteredList, { data: filterList, error: filtererror, isLoading: filterloading }] = useFilterMutation()
+  const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateMutation()
 
-
-  useEffect(() => {
-    getFilterApplicants(filters)
+  useEffect(async () => {
+    const res = await filteredList(filters)
   }, [])
+
+  console.log(createError)
 
   function editMode() {
     setEdit(false)
@@ -91,7 +75,8 @@ function Applicants() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {applicantError && <SoftSnakBar message="thie is a error" severity="error"/>}
+      {filtererror && <SoftSnakBar message="An error accure" severity="error" />}
+      {createError && <SoftSnakBar message={createError.data.title || "An error accure"} severity="error" />}
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
@@ -103,7 +88,7 @@ function Applicants() {
             <ApplicantList />
           </Grid>
           {isEdit && <Grid item xs={12} md={6} lg={4}>
-            <EditApplicant toggleEdit={editMode} />
+            <EditApplicant toggleEdit={editMode} addApplicant={createApplicant} loading={createLoading} />
           </Grid>}
         </Grid>
       </SoftBox>

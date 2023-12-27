@@ -1,18 +1,28 @@
 import emptySplitApi from "utils/emptySplitApi";
 
-export const applicantApis = emptySplitApi.injectEndpoints({
-    endpoints: (build) => ({
-        getApplicantList: build.query({
-            query: () => "/Course/List"
-        }),
-        getApplicants: build.mutation({
-            query: (filters) => ({
-                url: "/Applicant/GetAplicants", 
-                method: "POST",
-                body: JSON.stringify(filters),
-            }),
-        }),
+const applicantApis = emptySplitApi.injectEndpoints({
+  endpoints: (build) => ({
+    filter: build.mutation({
+      query: (filters) => ({
+        url: "/Applicant/GetApplicants",
+        method: "POST",
+        body: JSON.stringify(filters),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     }),
+    create: build.mutation({
+      query: (data) => ({
+        url: "/Applicant",
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+  }),
 });
 
-export const { useGetApplicantListQuery, useGetApplicantsMutation  } = applicantApis;
+export const { useFilterMutation, useCreateMutation } = applicantApis;

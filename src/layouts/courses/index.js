@@ -12,8 +12,8 @@ import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
 import SoftButton from "components/SoftButton";
 import { useState } from "react";
-import EditCourse from "./component/EditCourse";
 import CoursesList from "./component/CoursesList";
+import EditCourse from "./component/EditCourse";
 
 function Courses() {
   const { size } = typography;
