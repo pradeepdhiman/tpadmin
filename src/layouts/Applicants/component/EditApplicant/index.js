@@ -17,7 +17,7 @@ import MasterForm from "examples/MasterForm";
 import * as yup from 'yup';
 
 const initialValue = {
-  applicantID: "",
+  applicantID: 0,
   firstName: "",
   lastName: "",
   email: "",
@@ -31,14 +31,14 @@ const initialValue = {
   companyContactNumber: "",
   companyAddress: "",
   password: "",
-  createdById: "",
+  createdById: 0,
   remarks: ""
 }
 
 
 
 const schema = yup.object().shape({
-  applicantID: yup.mixed(),
+  applicantID: yup.number(),
   firstName: yup.string().required('First Name is required'),
   lastName: yup.string(),
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -57,7 +57,7 @@ const schema = yup.object().shape({
   companyContactNumber: yup.string(),
   companyAddress: yup.string(),
   password: yup.string().required('Password is required'),
-  createdById: yup.mixed(),
+  createdById: yup.number(),
   remarks: yup.string(),
 });
 
