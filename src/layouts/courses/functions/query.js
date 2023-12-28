@@ -1,25 +1,34 @@
 import emptySplitApi from "utils/emptySplitApi";
+import { deleteRequest } from "utils/utils";
+import { updateRequest } from "utils/utils";
+import { createRequest } from "utils/utils";
+import { readRequest } from "utils/utils";
 
-export const coursesApis = emptySplitApi.injectEndpoints({
+
+const coursesApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
-        getCoursesList: build.query({
-            query: () => "/Course/List"
+        listCourse: build.query({
+            query: () => readRequest("/Course"),
         }),
-        postCourses: build.mutation({
-            query: (filters) => ({
-                url: "/Applicant/GetCourses",
-                method: "POST",
-                body: JSON.stringify(filters),
-            }),
+        filterCourse: build.mutation({
+            query: (filters) => createRequest("/Course/GetCourses", filters),
         }),
-        postCourse: build.mutation({
-            query: (course) => ({
-                url: "/Course",
-                method: "POST",
-                body: JSON.stringify(course),
-            }),
+        createCourse: build.mutation({
+            query: (course) => createRequest("/Course", course),
+        }),
+        updateCourse: build.mutation({
+            query: ({ id, data }) => updateRequest("/Course", id, data),
+        }),
+        deleteCourse: build.mutation({
+            query: (id) => deleteRequest("/Course", id),
         }),
     }),
 });
 
-export const { useGetCoursesListQuery, usePostCoursesMutation, usePostCourseMutation } = coursesApis;
+export const {
+    useListCourseQuery,
+    useFilterCourseMutation,
+    useCreateCourseMutation,
+    useUpdateCourseMutation,
+    useDeleteCourseMutation,
+} = coursesApis;

@@ -1,4 +1,40 @@
+
 import emptySplitApi from "./emptySplitApi";
+import { authUser } from "layouts/authentication/functions/query";
+
+const createHeaders = () => {
+  const user = authUser();
+  return {
+    Authorization: `Bearer ${user.token}`,
+    "Content-Type": "application/json",
+  };
+};
+
+export const createRequest = (endpoint, data) => ({
+  url: `${endpoint}`,
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: createHeaders(),
+});
+
+export const readRequest = (endpoint, id) => ({
+  url: `${endpoint}/${id}`,
+  method: "GET",
+  headers: createHeaders(),
+});
+
+export const updateRequest = (endpoint, id, data) => ({
+  url: `${endpoint}/${id}`,
+  method: "PUT",
+  body: JSON.stringify(data),
+  headers: createHeaders(),
+});
+
+export const deleteRequest = (endpoint, id) => ({
+  url: `${endpoint}/${id}`,
+  method: "DELETE",
+  headers: createHeaders(),
+});
 
 
 export function saveObject(key = "", value = "") {

@@ -14,52 +14,10 @@ import { useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
 import MasterForm from "examples/MasterForm";
-import * as yup from 'yup';
+import { initialValue } from "layouts/Applicants/constant";
+import { schema } from "layouts/Applicants/constant";
+import { fields } from "layouts/Applicants/constant";
 
-const initialValue = {
-  applicantID: 0,
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  address: "",
-  qualification: "",
-  designation: "",
-  dob: "",
-  nationality: "",
-  companyName: "",
-  companyContactNumber: "",
-  companyAddress: "",
-  password: "",
-  createdById: 0,
-  remarks: ""
-}
-
-
-
-const schema = yup.object().shape({
-  applicantID: yup.number(),
-  firstName: yup.string().required('First Name is required'),
-  lastName: yup.string(),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup
-    .number()
-    .typeError('Phone must be a number')
-    .min(1000000000, 'Phone must be at least 10 digits')
-    .max(9999999999, 'Phone must be at most 10 digits')
-    .required('Phone is required'),
-  address: yup.string().required('Address is required'),
-  qualification: yup.string().required('Qualification is required'),
-  designation: yup.string(),
-  dob: yup.date().required('Date of Birth is required'),
-  nationality: yup.string().required('Nationality is required'),
-  companyName: yup.string(),
-  companyContactNumber: yup.string(),
-  companyAddress: yup.string(),
-  password: yup.string().required('Password is required'),
-  createdById: yup.number(),
-  remarks: yup.string(),
-});
 
 
 function EditApplicant(props) {
@@ -74,11 +32,17 @@ function EditApplicant(props) {
   };
   const submitFormData = async (data) => {
     try {
-      await addApplicant(data)
+      const newData = { ...data, phone: JSON.stringify(data.phone) };
+      const res = await addApplicant(newData);
+      if (res?.success) {
+        setFormData(initialValue)
+        return res
+      }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
+
   function closeEdit() {
     setFormData(initialValue)
     toggleEdit()
@@ -102,7 +66,7 @@ function EditApplicant(props) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={formData} validation={schema} loading={loading} />
+        <MasterForm onSubmit={submitFormData} formState={formData} formFields={fields} validation={schema} loading={loading} />
       </SoftBox>
       {/* <SoftBox p={2}>
         <SoftBox mb={2}>

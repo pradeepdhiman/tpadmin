@@ -54,6 +54,7 @@ import AuthApi from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { logout } from "layouts/authentication/functions/query";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -152,7 +153,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon={<HomeIcon/>} title={route[route.length - 1]} route={route} light={light} />
+          <Breadcrumbs icon={<HomeIcon />} title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
@@ -164,23 +165,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
               {(user && user.token) && <IconButton
-                  size="small"
-                  color="inherit"
-                  sx={navbarIconButton}
-                  aria-controls="logout"
-                  aria-haspopup="true"
-                  variant="contained"
-                  onClick={handleLogout}
+                size="small"
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="logout"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={logout}
+              >
+                <SoftTypography
+                  variant="button"
+                  fontWeight="medium"
+                  color={light ? "white" : "dark"}
                 >
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Logout
-                  </SoftTypography>
-                </IconButton>}
-              {/* {user && user.token ? (
+                  Logout
+                </SoftTypography>
+              </IconButton>}
+              {user && user.token ? (
                 <IconButton
                   size="small"
                   color="inherit"
@@ -201,14 +202,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
               ) : (
                 <Link to="/authentication/sign-in">
                   <IconButton sx={navbarIconButton} size="small">
-                    <Icon
-                      sx={({ palette: { dark, white } }) => ({
-                        color: light ? white.main : dark.main,
-                      })}
-                    >
-                      account_circle
-                      <LoginIcon />
-                    </Icon>
                     <SoftTypography
                       variant="button"
                       fontWeight="medium"
@@ -217,7 +210,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       Sign in
                     </SoftTypography>
                   </IconButton>
-                </Link>)} */}
+                </Link>)}
               {/* <IconButton
                 size="small"
                 color="inherit"
@@ -239,7 +232,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   <SettingsIcon />
                 </Icon>
               </IconButton>
-              */}
+
               <IconButton
                 size="small"
                 color="inherit"
@@ -249,9 +242,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon className={light ? "text-white" : "text-dark"}><NotificationsIcon/></Icon>
+                <Icon className={light ? "text-white" : "text-dark"}><NotificationsIcon /></Icon>
               </IconButton>
-              {renderMenu()} 
+              {renderMenu()} */}
             </SoftBox>
           </SoftBox>
         )}

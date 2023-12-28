@@ -10,6 +10,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Settings from "layouts/Settings";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Assessments from "layouts/Assessments";
+import SignIn from "layouts/authentication/sign-in";
 import BiotechIcon from '@mui/icons-material/Biotech';
 import CourseQuestions from "layouts/CourseQuestions";
 import Courses from "layouts/Courses";
@@ -103,6 +104,15 @@ const routes = [
     noCollapse: true,
     protected: false,
     sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "sign-in",
+    route: "/authentication/sign-in",
+    icon: null,
+    component: <SignIn />,
+    noCollapse: true,
   },
 ];
 

@@ -9,52 +9,44 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard React examples
-import SoftInput from "components/SoftInput";
 import { useState } from "react";
-import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
-import SoftSnakBar from "components/SoftSnakbar";
-import { usePostCourseMutation } from "layouts/Courses/functions/query";
+import { initialValue } from "layouts/Courses/constant";
+import { schema } from "layouts/Courses/constant";
+import SoftButton from "components/SoftButton";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import SoftInput from "components/SoftInput";
 
-function EditCourse({ toggleEdit }) {
-  const [addCourse, {
-    data: addedCourse,
-    isLoading: loadingAddCourse,
-    error: addcorseError,
-  }] = usePostCourseMutation();
+function EditCourse(props) {
+  const { toggleEdit = false, submitAdd = null, loading = false } = props
+  const [formData, setFormData] = useState(initialValue);
 
-  const [formData, setFormData] = useState(
-    {
-      courseID: 0,
-      courseName: "",
-      description: "",
-      duration: 0,
-      categoryID: 0,
-      syllabus: "",
-      trainingfee: 0,
-      vat: 0,
-      totalAmount: 0,
-      receiptID: 0,
-      receiptDate: "",
-      amountReceived: 0,
-      createdById: 0,
-      remarks: ""
-    }
-  );
+  const { handleSubmit, control, reset, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: formData,
+  });
+
   const handleFormData = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  const submitFormData = async (e) => {
-    e.preventDefault();
+
+
+
+  const submitFormData = async (data) => {
     try {
-      const response = await addCourse(formData);
+      const res = await submitAdd(data);
+      if (res?.data?.success) {
+        setFormData(initialValue)
+      }
     } catch (err) {
-      console.log(err, "err")
+      console.log(err);
     }
-  }
+  };
+
   function closeEdit() {
     setFormData({
       coursename: '',
@@ -64,9 +56,10 @@ function EditCourse({ toggleEdit }) {
     })
     toggleEdit()
   }
+
+
   return (
     <Card className="h-100">
-      {addcorseError && <SoftSnakBar message="Somethig went wrong" severity="error" />}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
           Course
@@ -84,97 +77,227 @@ function EditCourse({ toggleEdit }) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Course Name
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="text"
+        <form onSubmit={handleSubmit(submitFormData)}>
+          <Controller
             name="courseName"
-            onChange={handleFormData}
-            placeholder="Course name"
-            value={formData?.courseName}
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Course Name
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder="Course Name"
+                />
+                {errors.courseName && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.courseName.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
           />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Course category
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="text"
+          <Controller
+            name="duration"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Duration
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder="Duration"
+                />
+                {errors.duration && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.duration.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
+          />
+          <Controller
             name="categoryID"
-            onChange={handleFormData}
-            placeholder="Category"
-            value={formData?.categoryID}
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Course Category
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput as="select"   {...field}>
+                  <option>asldkfj</option>
+                  <option>asldkfj</option>
+                  <option>asldkfj</option>
+                  <option>asldkfj</option>
+                  {/* {formFields[fieldName].options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))} */}
+                </SoftInput>
+                {errors.categoryID && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.categoryID.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
           />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Study Material
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="file"
+          {/* <Controller
+            name="categoryID"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Course Category
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder="Course Category"
+                />
+                {errors.categoryID && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.categoryID.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
+          /> */}
+          <Controller
             name="syllabus"
-            onChange={handleFormData}
-            placeholder="Choose files"
-            value={formData?.syllabus}
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Syllabus
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder="Syllabus"
+                />
+                {errors.syllabus && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.syllabus.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
           />
-        </SoftBox>
-        <SoftBox mb={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "top", gap: "16px" }}>
-          <SoftBox mb={2} >
-            <SoftBox mb={1} ml={0.5}>
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Price
-              </SoftTypography>
-            </SoftBox>
-            <SoftInput
-              type="text"
-              name="price"
-              onChange={handleFormData}
-              placeholder="Course price"
-              value={formData?.price}
-            />
-          </SoftBox>
-          <SoftBox mb={2} >
-            <SoftBox mb={1} ml={0.5}>
-              <SoftTypography component="label" variant="caption" fontWeight="bold">
-                Tax
-              </SoftTypography>
-            </SoftBox>
-            <SoftInput
-              type="text"
-              name="vat"
-              onChange={handleFormData}
-              placeholder="Tax"
-              value={formData?.vat}
-            />
-          </SoftBox>
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Description
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="text"
-            name="description"
-            onChange={handleFormData}
-            placeholder="Course description"
-            value={formData?.description}
+          <Controller
+            name="trainingfee"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Training Fee
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder=" Training Fee"
+                />
+                {errors.trainingfee && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.trainingfee.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
           />
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" onClick={submitFormData} fullWidth>
-            {loadingAddCourse ? "Loading..." : "Submit"}
-          </SoftButton>
-        </SoftBox>
+          <Controller
+            name="vat"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Tax
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder=" Tax"
+                />
+                {errors.vat && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.vat.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
+          />
+          <Controller
+            name="totalAmount"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Total Amount
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder=" Total Amount"
+                />
+                {errors.totalAmount && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.totalAmount.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
+          />
+          <Controller
+            name="remarks"
+            control={control}
+            render={({ field }) => (
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Remarks
+                  </SoftTypography>
+                </SoftBox>
+                <SoftInput
+                  type="text"
+                  {...field}
+                  placeholder=" Remarks"
+                />
+                {errors.remarks && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.remarks.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            )}
+          />
+
+          <SoftBox mt={4} mb={1}>
+            <SoftButton variant="gradient" color="info" type="submit" fullWidth>
+              {loading ? 'Loading..' : 'Submit'}
+            </SoftButton>
+          </SoftBox>
+        </form>
       </SoftBox>
     </Card>
   );

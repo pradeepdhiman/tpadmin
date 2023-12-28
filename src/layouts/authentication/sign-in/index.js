@@ -22,23 +22,23 @@ import Separator from "layouts/authentication/components/Separator";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
-import AuthApi from "../../../api/auth";
-import { useAuth } from "../../../auth-context/auth.context";
-import { API_SERVER } from "config/constant";
+
+import { useLoginMutation } from "../functions/query";
+import { getObject } from "utils/utils";
+import { saveObject } from "utils/utils";
 
 function SignIn() {
   const navigate = useNavigate();
+  const [login, { data, isLoading, error, isFetching, isSuccess }] = useLoginMutation();
 
   const [rememberMe, setRememberMe] = useState(true);
   const [formData, setFormData] = useState({
     'email': '',
     'password': ''
   });
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { setUser } = useAuth();
-  const { user } = useAuth();
+  let user = getObject("user")
+
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
@@ -49,67 +49,28 @@ function SignIn() {
     });
   };
 
-  const submitFormData = (e) => {
+  const submitFormData = async (e) => {
     e.preventDefault();
-    AuthApi.Login(formData)
-      .then((response) => {
-        if (response.data.success) {
-          return setProfile(response);
-        } else {
-          setError(response.data.msg);
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          return setError(error.response.data.msg);
-        }
-        return setError("There has been an error.");
-      });
-  };
+    try {
+      await login(formData);
+    } catch (err) {
+      console.log(err, "err")
+    }
+  }
+
 
   const handleRedirect = () => {
     return navigate("/dashboard");
   };
 
-  const setProfile = (response) => {
-    let user = { ...response.data.user };
-    user.token = response.data.token;
-    user = JSON.stringify(user);
-    setUser(user);
-    localStorage.setItem("user", user);
-    return navigate("/dashboard");
-  };
-
   useEffect(() => {
-    const url = window.location.href;
-    const hasCode = url.includes("?code=");
-
-    // If Github API returns the code parameter
-    if (hasCode) {
-      const newUrl = url.split("?code=");
-      window.history.pushState({}, null, newUrl[0]);
-      setIsLoading(true);
-
-      const requestData = {
-        code: newUrl[1],
-      };
-
-      AuthApi.Authorize(requestData.code)
-        .then(({ data }) => {
-          if (data.user) {
-            setUser(JSON.stringify(data.user));
-            localStorage.setItem("user", JSON.stringify(data.user));
-            handleRedirect();
-          } else {
-            setError("no user returned");
-          }
-        })
-        .catch((error) => {
-          setError(error.message);
-        })
-        .finally(() => setIsLoading(false));
+    if (data?.success) {
+      const userString = JSON.stringify(data.data || {});
+      saveObject("user", userString);
+      navigate("/dashboard");
     }
-  }, []);
+  }, [data]);
+
 
   return (
     <CoverLayout
@@ -136,7 +97,7 @@ function SignIn() {
             </SoftButton>
           </SoftBox>
         </div>
-      ) : ( 
+      ) : (
         <>
           <SoftBox component="form" role="form">
             <SoftBox mb={2}>
@@ -182,7 +143,7 @@ function SignIn() {
                   transition: ".2s all",
                 }}
               >
-                {error}
+                {data ? (!data.success ? (data.errors && data.errors.length > 0 ? data.errors[0] : null) : null) : null}
               </h6>
             </SoftBox>
             <SoftBox mt={4} mb={1}>
@@ -213,4 +174,3 @@ function SignIn() {
 }
 
 export default SignIn;
-

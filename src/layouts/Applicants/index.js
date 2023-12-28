@@ -16,39 +16,8 @@ import EditApplicant from "./component/EditApplicant";
 import { useEffect, useState } from "react";
 import SoftSnakBar from "components/SoftSnakbar";
 import { crudApi } from "utils/utils";
-import { useCreateMutation, useFilterMutation } from "./functions/query";
-
-
-
-const initialFilters = {
-  draw: 10,
-  start: 0,
-  length: 10,
-  columns: [
-    {
-      data: "firstName",
-      name: "firstName",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "firstName",
-        regex: "test",
-      },
-    },
-  ],
-  search: {
-    value: "firstName",
-    regex: "test",
-  },
-  order: {
-    orderBy: "firstName",
-    orderDirection: "desc",
-  },
-  filter: null,
-};
-
-
-
+import { useListApplicant, useFilterMutation, useCreateMutation } from "./functions/query";
+import { initialFilters } from "./constant";
 
 function Applicants() {
 
@@ -56,14 +25,15 @@ function Applicants() {
   const [isEdit, setEdit] = useState(false)
   const [filters, setFilters] = useState(initialFilters)
 
+  const {data} = useListApplicant()
   const [filteredList, { data: filterList, error: filtererror, isLoading: filterloading }] = useFilterMutation()
   const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateMutation()
+
+
 
   useEffect(async () => {
     const res = await filteredList(filters)
   }, [])
-
-  console.log(createError)
 
   function editMode() {
     setEdit(false)
@@ -75,8 +45,9 @@ function Applicants() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      {newApplicant?.success === true ? <SoftSnakBar message="Success!" severity="success" /> : <SoftSnakBar message={newApplicant?.errors[0]} severity="error" />}
       {filtererror && <SoftSnakBar message="An error accure" severity="error" />}
-      {createError && <SoftSnakBar message={createError.data.title || "An error accure"} severity="error" />}
+      {createError && <SoftSnakBar message="An error accure" severity="error" />}
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
