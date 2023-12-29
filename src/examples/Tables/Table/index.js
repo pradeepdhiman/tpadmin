@@ -28,7 +28,7 @@ function Table({ columns, rows }) {
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
 
-  const renderColumns = columns.map(({ name, align, width }, key) => {
+  const renderColumns = columns.map(({ name, label, align, width }, key) => {
     let pl;
     let pr;
 

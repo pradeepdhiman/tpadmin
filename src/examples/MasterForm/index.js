@@ -6,23 +6,18 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-const MasterForm = ({ onSubmit, formState, validation, formFields, loading }) => {
-  const [formData, setFormData] = useState(formState);
+const MasterForm = (props) => {
+  const { onSubmit = null, formState = {}, formFields = {}, loading = false, handleSubmit = null, control = null, reset = null, errors = null } = props
 
-  const { handleSubmit, control, reset, formState: { errors } } = useForm({
-    resolver: yupResolver(validation),
-    defaultValues: formData,
-  });
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
 
-  const submitFormData = async (data) => {
-    try {
-      const res = await onSubmit(data);
-      if (res?.success) {
-        reset();
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const submitFormData = (data) => {
+    onSubmit(data)
+    reset();
   };
 
   return (

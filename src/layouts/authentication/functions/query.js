@@ -15,8 +15,9 @@ export const authApi = emptySplitApi.injectEndpoints({
 });
 
 export const logout = () => {
-    removeObject("user")
-}
+    removeObject("user");
+    window.location.href = "/authentication/sign-in";
+};
 
 export const authUser = () => {
     return JSON.parse(getObject("user"))

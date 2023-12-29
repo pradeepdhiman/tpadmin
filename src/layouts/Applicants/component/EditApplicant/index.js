@@ -10,42 +10,80 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard React examples
 import SoftInput from "components/SoftInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
 import MasterForm from "examples/MasterForm";
 import { initialValue } from "layouts/Applicants/constant";
 import { schema } from "layouts/Applicants/constant";
 import { fields } from "layouts/Applicants/constant";
+import { useGetApplicantMutation } from "layouts/Applicants/functions/query";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useUpdateApplicantMutation } from "layouts/Applicants/functions/query";
+import { authUser } from "layouts/authentication/functions/query";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { setApplicantedit } from "layouts/Applicants/functions/applicantSlice";
 
 
 
 function EditApplicant(props) {
+  const dispatch = useDispatch()
   const { toggleEdit = false, addApplicant = null, loading = false } = props
   const [formData, setFormData] = useState(initialValue);
 
-  const handleFormData = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const [updateApplicant, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateApplicantMutation()
+
+  const { editid, applicantList } = useSelector(state => state.applicant)
+  const editfields = applicantList.find(x => x.applicantID === editid)
+
+  const user = authUser()
+
+  const { handleSubmit, control, reset, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: editfields,
+  });
+
+  useEffect(() => {
+    if (editid) {
+      setFormData(editfields)
+    } else {
+      setFormData(initialValue)
+    }
+  }, [editid])
+
+
   const submitFormData = async (data) => {
+
     try {
-      const newData = { ...data, phone: JSON.stringify(data.phone) };
-      const res = await addApplicant(newData);
-      if (res?.success) {
-        setFormData(initialValue)
-        return res
+      const newData = {
+        ...data,
+        phone: JSON.stringify(data.phone),
+        updatedById: editid ? user.id : "",
+        createdById: !editid ? user.id : editfields.createdById || 0,
+        updatedById: editid ? user.id : ""
+      };
+
+      const apiFunction = editid ? updateApplicant : addApplicant;
+
+      const res = await apiFunction(newData);
+
+      if (res?.data?.success) {
+        closeEdit()
       }
+
+      return res;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
+
   function closeEdit() {
-    setFormData(initialValue)
+    setFormData({})
     toggleEdit()
+    dispatch(setApplicantedit(""))
   }
   return (
     <Card className="h-100">
@@ -66,7 +104,7 @@ function EditApplicant(props) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={formData} formFields={fields} validation={schema} loading={loading} />
+        <MasterForm onSubmit={submitFormData} formState={editfields} formFields={fields} loading={updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
       </SoftBox>
       {/* <SoftBox p={2}>
         <SoftBox mb={2}>

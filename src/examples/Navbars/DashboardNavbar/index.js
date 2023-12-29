@@ -164,7 +164,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              {(user && user.token) && <IconButton
+              {/* {(user && user.token) && <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
@@ -180,7 +180,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 >
                   Logout
                 </SoftTypography>
-              </IconButton>}
+              </IconButton>} */}
               {user && user.token ? (
                 <IconButton
                   size="small"
@@ -189,7 +189,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   aria-controls="logout"
                   aria-haspopup="true"
                   variant="contained"
-                  onClick={handleLogout}
+                  onClick={logout}
                 >
                   <SoftTypography
                     variant="button"

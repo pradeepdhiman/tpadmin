@@ -19,15 +19,25 @@ import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { tableheads } from "layouts/Applicants/constant";
+import { generateRows } from "utils/utils";
+import { generateColum } from "utils/utils";
 
 // Data
 
-function ApplicantList() {
-  const { columns, rows } = data();
+
+
+function ApplicantList(props) {
+  const { list = [], loading = false, onEdit = null, onDelete = null } = props
+  // const { columns, rows } = data(list);
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const rows = generateRows(list, tableheads, onEdit, onDelete);
+
+
 
   const renderMenu = (
     <Menu
@@ -44,9 +54,8 @@ function ApplicantList() {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+      <MenuItem onClick={closeMenu}>All</MenuItem>
+      <MenuItem onClick={closeMenu}>latest</MenuItem>
     </Menu>
   );
 
@@ -89,7 +98,7 @@ function ApplicantList() {
           },
         }}
       >
-        <Table columns={columns} rows={rows} />
+        <Table columns={tableheads} rows={rows} />
       </SoftBox>
       <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
