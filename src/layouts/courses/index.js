@@ -11,18 +11,28 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
 import SoftButton from "components/SoftButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CoursesList from "./component/CoursesList";
 import EditCourse from "./component/EditCourse";
-import { useCreateCourseMutation } from "./functions/query";
+import { useCreateCourseMutation, useListCourseQuery } from "./functions/query";
 import SoftSnakBar from "components/SoftSnakbar";
+import { useDispatch, useSelector } from "react-redux";
+import { setCourseList, setCourseloading } from "./functions/coursesSlice";
 
 function Courses() {
 
-  const { size } = typography;
+  const dispatch = useDispatch()
+  const { courseList = {}, loading = false } = useSelector(state => state.courses)
   const [isEdit, setEdit] = useState(false)
 
+  const { data: courses, error: listErr, isLoading: listLoading } = useListCourseQuery()
+
   const [addCourse, { data: course, error: courseErr, isLoading: addLoading }] = useCreateCourseMutation()
+
+  useEffect(() => {
+    dispatch(setCourseList(courses))
+    dispatch(setCourseloading(listLoading))
+  }, [listLoading])
 
   function editMode() {
     setEdit(false)

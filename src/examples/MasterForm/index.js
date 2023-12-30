@@ -2,12 +2,11 @@ import SoftBox from 'components/SoftBox';
 import SoftButton from 'components/SoftButton';
 import SoftInput from 'components/SoftInput';
 import SoftTypography from 'components/SoftTypography';
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
 
 const MasterForm = (props) => {
-  const { onSubmit = null, formState = {}, formFields = {}, loading = false, handleSubmit = null, control = null, reset = null, errors = null } = props
+  const { onSubmit = null, formFields = {}, loading = false, handleSubmit = null, control = null, reset = null, errors = null } = props
 
   useEffect(() => {
     return () => {

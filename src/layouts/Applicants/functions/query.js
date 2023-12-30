@@ -7,31 +7,6 @@ import { updateRequest } from "utils/utils";
 import { readRequest } from "utils/utils";
 import { createRequest } from "utils/utils";
 
-// export const applicantApis = createApi({
-//     reducerPath:"applicant",
-//     baseQuery: fetchBaseQuery({ baseUrl: API_SERVER }),
-//     endpoints: (build) => ({
-//         listApplicant: build.query({
-//             query: () => readRequest("/Applicant/List"),
-//         }),
-//         filterApplicant: build.mutation({
-//             query: (filters) => createRequest("/Applicant/GetApplicants", filters),
-//         }),
-//         createApplicant: build.mutation({
-//             query: (course) => createRequest("/Applicant", course),
-//         }),
-//         getApplicant: build.mutation({
-//             query: (id) => getRequest("/Applicant", id),
-//         }),
-//         updateApplicant: build.mutation({
-//             query: (data) => updateRequest("/Applicant", data),
-//         }),
-//         deleteApplicant: build.mutation({
-//             query: (id) => deleteRequest("/Applicant", id),
-//         }),
-//     }),
-// })
-
 export const applicantApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
         listApplicant: build.query({
@@ -41,7 +16,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
             query: (filters) => createRequest("/Applicant/GetApplicants", filters),
         }),
         createApplicant: build.mutation({
-            query: (course) => createRequest("/Applicant", course),
+            query: (data) => createRequest("/Applicant", data),
         }),
         getApplicant: build.mutation({
             query: (id) => getRequest("/Applicant", id),
