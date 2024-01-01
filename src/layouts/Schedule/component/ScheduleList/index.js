@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -19,15 +19,51 @@ import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useListScheduleQuery } from "layouts/Schedule/functions/query";
+import { scheduletableheads } from "layouts/Schedule/constant";
+import { generateRows } from "utils/utils";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { setScheduleList } from "layouts/Schedule/functions/scheduleSlice";
+import { setScheduleloading } from "layouts/Schedule/functions/scheduleSlice";
+import { useDispatch } from "react-redux";
+import { setScheduleEdit } from "layouts/Schedule/functions/scheduleSlice";
+import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 
 // Data
 
-function ScheduleList() {
-  const { columns, rows } = data();
+function ScheduleList({ isEdit, showForm }) {
+  // const { columns, rows } = data();
+  const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const scheduleData = useListScheduleQuery()
+  const deleteAction = useDeleteScheduleMutation()
+  const { data: scheduleList, isError: scheduleErr, isLoading: scheduleLoading, refetch: refreshSchedule } = scheduleData
+  const [deleteSchedule, { isError: delErr, isLoading: delLoading }] = deleteAction
+  const rows = generateRows(scheduleList?.data, scheduletableheads, onEdit, onDelete)
+
+  function onEdit(id) {
+    // dispatch(setScheduleEdit(id))
+    showForm()
+  }
+  async function onDelete(id) {
+    try {
+      const res = await deleteSchedule(id)
+      if (res?.data?.data?.success) {
+        refreshSchedule()
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    setScheduleloading(scheduleLoading)
+    setScheduleList(scheduleList)
+  }, [scheduleLoading])
 
   const renderMenu = (
     <Menu
@@ -65,23 +101,26 @@ function ScheduleList() {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      {scheduleLoading && <SoftBarLoader />}
+      {!scheduleLoading && <>
+        <SoftBox
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={columns} rows={rows} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={scheduletableheads} rows={rows} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2}>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={5} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </>}
     </Card>
   );
 }

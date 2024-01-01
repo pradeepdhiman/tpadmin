@@ -11,25 +11,29 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
 import SoftButton from "components/SoftButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditSchedule from "./component/EditSchedule";
 import ScheduleList from "./component/ScheduleList";
 import { Autocomplete, TextField } from "@mui/material";
+import { useListCourseQuery } from "layouts/Courses/functions/query";
+import { useDispatch } from "react-redux";
+import { setScheduleCourse } from "./functions/scheduleSlice";
+const loadingState = { courseName: "Loading..." }
 
-const top100Films = [
-  { label: 'Java', year: 1994 },
-  { label: 'Javascript', year: 1972 },
-  { label: 'Node js', year: 1974 },
-  { label: 'Core php', year: 2008 },
-  { label: 'Web Designing', year: 1957 },
-  { label: "AI", year: 1993 },
-  { label: 'Ember js', year: 1994 }
-];
 
 function Schedule() {
+  const dispatch = useDispatch()
   const { size } = typography;
+  const { data: courses, error: courseErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
   const [isEdit, setEdit] = useState(false)
-  const [selectedCourse, setSelectedCourse] = useState(top100Films[0]);
+  const [selectedCourse, setSelectedCourse] = useState("");
+
+  useEffect(() => {
+    if (!selectedCourse) {
+      dispatch(setScheduleCourse(courses?.data[0]))
+      setSelectedCourse(courses?.data[0])
+    }
+  }, [courses])
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);
@@ -48,27 +52,27 @@ function Schedule() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap:"16px" }}>
+            <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
               <Autocomplete
                 disablePortal
                 disableClearable
                 id="combo-box-demo"
                 value={selectedCourse}
                 onChange={handleCourseSelect}
-                options={top100Films}
-                getOptionLabel={(option) => option.label}
+                options={courseLoading ? loadingState : courses?.data || []}
+                getOptionLabel={(option) => option.courseName}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} />}
               />
               <SoftButton size="small" color="dark" onClick={addApplicant}>Add New Schedule</SoftButton>
             </SoftBox>
           </Grid>
-          <Grid item xs={12} md={6} lg>
-            <ScheduleList />
-          </Grid>
-          {isEdit && <Grid item xs={12} md={6} lg={4}>
+          {isEdit && <Grid item xs={12} >
             <EditSchedule toggleEdit={editMode} />
           </Grid>}
+          <Grid item xs={12} >
+            <ScheduleList isEdit={isEdit} showForm={addApplicant} />
+          </Grid>
         </Grid>
       </SoftBox>
       <Footer />

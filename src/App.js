@@ -27,6 +27,10 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
  function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
@@ -98,6 +102,7 @@ import { SnackbarProvider } from "notistack";
   return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <ToastContainer />
         {layout === "dashboard" && (
           <Sidenav
             color={sidenavColor}

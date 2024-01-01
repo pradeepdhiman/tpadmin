@@ -1,10 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_SERVER } from "config/constant";
+import { responseInterceptor } from './utils';
 
+
+const baseQuery = fetchBaseQuery({ baseUrl: API_SERVER });
 
 const emptySplitApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: API_SERVER }),
+  baseQuery: responseInterceptor(baseQuery),
   endpoints: () => ({}),
-})
+});
+
+// emptySplitApi.baseQuery = responseInterceptor({ baseQuery });
+
 
 export default emptySplitApi

@@ -35,7 +35,7 @@ const MasterForm = (props) => {
               render={({ field }) => (
                 <>
                   <SoftInput
-                    type="text"
+                    type={ formFields[fieldName].type ? formFields[fieldName].type :"text"}
                     {...field}
                     placeholder={formFields[fieldName].placeholder}
                   />

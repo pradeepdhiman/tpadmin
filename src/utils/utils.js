@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SoftBox from "components/SoftBox";
 import { IconButton } from "@mui/material";
+import { toast } from "react-toastify";
 
 const createHeaders = () => {
   const user = authUser();
@@ -164,81 +165,16 @@ export const validateForm = (formData, rules) => {
   return errors;
 };
 
-// const rowdata = [
-//   {
-//     applicantID: 0,
-//     firstName: "padepe",
-//     lastName: "stridfng",
-//     email: "striasdfng",
-//     phone: "striaang",
-//     address: "strdfing",
-//     qualification: "stxcvring",
-//     designation: "strixcng",
-//     dob: "2023-12-29T04:57:24.687Z",
-//     nationality: "strwering",
-//     companyName: "strdsfing",
-//     companyContactNumber: "stfgring",
-//     companyAddress: "strighng",
-//     status: 0,
-//     createdById: 0,
-//     updatedById: 0,
-//     updatedDate: "2023-12-29T04:57:24.687Z",
-//     isDeleted: true,
-//     remarks: "strdfging"
-//   },
-//   {
-//     applicantID: 1,
-//     firstName: "strdfing",
-//     lastName: "strdfing",
-//     email: "strging",
-//     phone: "strding",
-//     address: "strting",
-//     qualification: "strying",
-//     designation: "strjing",
-//     dob: "2023-12-29T04:57:24.687Z",
-//     nationality: "strijkng",
-//     companyName: "hgg",
-//     companyContactNumber: "gggg",
-//     companyAddress: "gg",
-//     status: 0,
-//     createdById: 0,
-//     updatedById: 0,
-//     updatedDate: "2023-12-29T04:57:24.687Z",
-//     isDeleted: true,
-//     remarks: "gg"
-//   }
-// ]
-
-// export const tableheads = [
-//   { name: "applicantID", label: "Applicant Id", align: 'left' },
-//   { name: "firstName", label: "First Name", align: 'left' },
-//   { name: "lastName", label: "Last Name", align: 'left' },
-//   { name: "email", label: "Email", align: 'left' },
-//   { name: "phone", label: "Phone", align: 'left' },
-//   { name: "address", label: "Address", align: 'left' },
-//   { name: "qualification", label: "Qualification", align: 'left' },
-//   { name: "designation", label: "Designation", align: 'left' },
-//   { name: "dob", label: "Date of Birth", align: 'left' },
-//   { name: "nationality", label: "Nationality", align: 'left' },
-//   { name: "companyName", label: "Company Name", align: 'left' },
-//   { name: "companyContactNumber", label: "Company Contact Number", align: 'left' },
-//   { name: "companyAddress", label: "Company Address", align: 'left' },
-//   { name: "status", label: "Status", align: 'left' },
-//   { name: "createdById", label: "Created By Id", align: 'left' },
-//   { name: "updatedById", label: "Updated By Id", align: 'left' },
-//   { name: "updatedDate", label: "Updated Date", align: 'left' },
-//   { name: "isDeleted", label: "Is Deleted", align: 'left' },
-//   { name: "remarks", label: "Remarks", align: 'left' },
-// ];
-
 export const generateRows = (list, tableheads, onEdit, onDelete) => {
-  return list?.data?.map((rowItem, rowIndex) => {
+  let rowArr = Array.isArray(list) ? list : (list?.data || []);
+  return rowArr.map((rowItem, rowIndex) => {
     let rowCells = {};
+    let rowId = ""
 
     tableheads.forEach((column, colIndex) => {
       const columnName = column.name;
       const columnValue = rowItem[columnName];
-
+      rowId = colIndex === 0 ? columnValue : rowId
       if (columnName === "action") {
         rowCells[columnName] = (
           <SoftBox width="8rem" textAlign="left">
@@ -248,7 +184,7 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
               aria-controls="edit"
               aria-haspopup="true"
               variant="contained"
-              onClick={() => onEdit(rowItem.applicantID)}
+              onClick={() => onEdit(rowId)}
             >
               <EditIcon />
             </IconButton>
@@ -258,7 +194,7 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
               aria-controls="delete"
               aria-haspopup="true"
               variant="contained"
-              onClick={() => onDelete(rowItem.applicantID)}
+              onClick={() => onDelete(rowId)}
             >
               <DeleteIcon />
             </IconButton>
@@ -277,3 +213,63 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
   });
 };
 
+// export const responseInterceptor = async (response) => {
+//   if (response.error) {
+//     toast.error('An error occurred. Please try again.', {
+//       position: toast.POSITION.TOP_RIGHT,
+//       autoClose: 3000,
+//       hideProgressBar: false,
+//       closeOnClick: false,
+//       pauseOnHover: false,
+//       draggable: false,
+//     });
+//   } else {
+//     toast.success('Operation successful!', {
+//       position: toast.POSITION.TOP_RIGHT,
+//       autoClose: 3000,
+//       hideProgressBar: false,
+//       closeOnClick: false,
+//       pauseOnHover: false,
+//       draggable: false,
+//     });
+
+//   }
+//   return response;
+// };
+
+export const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
+  try {
+    const result = await baseQuery(args, api, extraOptions);
+    console.log(result)
+    if (result?.data?.success) {
+      toast.success(result?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    } else {
+      toast.error(result?.data?.errors[0], {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    }
+    return result;
+  } catch (error) {
+    toast.error('An error occurred. Please try again.', {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
+    throw error;
+  }
+};

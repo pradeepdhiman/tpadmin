@@ -13,7 +13,6 @@ import SoftInput from "components/SoftInput";
 import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
-import SoftSnakBar from "components/SoftSnakbar";
 import { validateForm } from "utils/utils";
 
 const initialFormdata = {

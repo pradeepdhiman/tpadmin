@@ -108,8 +108,6 @@ function EditCourse(props) {
 
       const res = await apiFunction(newData);
 
-      console.log((res))
-
       if (res?.data?.success) {
         closeEdit()
       }
@@ -117,21 +115,6 @@ function EditCourse(props) {
       return res;
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  const handleOutsideClick = (event) => {
-    if (optionListRef.current && !optionListRef.current.contains(event.target)) {
-      if (openOption) {
-        setOpenOption(false);
-        setNewCategoryValue({
-          categoryID: 0,
-          categoryName: '',
-          createdById: 0,
-          remarks: ''
-        })
-        setNewCategory(false)
-      }
     }
   };
 
@@ -152,13 +135,11 @@ function EditCourse(props) {
 
 
   function closeEdit() {
-    // setFormData({})
     toggleEdit()
     dispatch(setCourseEdit(""))
   }
 
   function optionListhandler(data) {
-    console.log(data)
     setOpenOption(false)
     setNewCategory(false)
     setSelectedCat(data)
@@ -208,7 +189,7 @@ function EditCourse(props) {
             <SoftInput value={newCategoryValue.categoryName} onChange={categoryChangehandler} placeholder="Category name" sx={{ grow: 1 }} />
             <SoftButton onClick={saveCategory} disabled={!newCategoryValue || addCatLoading} color="dark">Add</SoftButton>
           </SoftBox>}
-          <SoftBox mt={1}>
+          <SoftBox mt={1} sx={{maxHeight:"200px", overflowY:"auto"}}>
             {categories?.data?.map(item => (<SoftBox py={.5} sx={{ cursor: "pointer" }} onClick={() => optionListhandler(item)} key={item.categoryID}>
               <SoftTypography fontWeight="regular" color="text" sx={{ fontSize: "15px" }}>{item.categoryName}</SoftTypography>
             </SoftBox>))}
@@ -490,7 +471,7 @@ function EditCourse(props) {
 
           <SoftBox mt={4} mb={1}>
             <SoftButton variant="gradient" color="info" type="submit" fullWidth>
-              {loading ? 'Loading..' : 'Submit'}
+              {(loading || updateLoading) ? 'Loading..' : 'Submit'}
             </SoftButton>
           </SoftBox>
         </form>

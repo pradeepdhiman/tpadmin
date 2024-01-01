@@ -10,9 +10,18 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard React examples
 import SoftInput from "components/SoftInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
+import { authUser } from "layouts/authentication/functions/query";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "layouts/Schedule/constant";
+import { useSelector } from "react-redux";
+import MasterForm from "examples/MasterForm";
+import { fields } from "layouts/Schedule/constant";
+import { useUpdateScheduleMutation } from "layouts/Schedule/functions/query";
+import { useCreateScheduleMutation } from "layouts/Schedule/functions/query";
 
 function EditSchedule({ toggleEdit }) {
   const [formData, setFormData] = useState({
@@ -20,15 +29,59 @@ function EditSchedule({ toggleEdit }) {
     'password': '',
     'email': ''
   });
-  const handleFormData = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  // const handleFormData = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
+
+  const [addSchedule, { data: addData, isError: addErr, isLoading: addLoading }] = useUpdateScheduleMutation()
+  const [updateSchedule, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useCreateScheduleMutation()
+
+  const { editid, scheduleList, course } = useSelector(state => state.schedule)
+  const editfields = scheduleList?.data?.find(x => x.scheduledID === editid)
+
+
+  const user = authUser()
+
+  const { handleSubmit, control, reset, setValue, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: editfields,
+  });
+
+
+  const submitFormData = async (data) => {
+    
+    
+
+   
+   
+    try {
+      const newData = {
+        ...data,
+        scheduledID: editid ? editfields.scheduledID || 0 : 0,
+        courseID: editid ? editfields.courseID : course.courseID,
+        applicantID: 2,
+        createdById: editid ? editfields.createdById || 0 : user.id,
+      };
+
+      console.log(newData, "newData")
+
+      const apiFunction = editid ? updateSchedule : addSchedule;
+
+      const res = await apiFunction(newData);
+
+      if (res?.data?.success) {
+        closeEdit()
+      }
+
+      return res;
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const submitFormData = async (e) => {
-    e.preventDefault();
-  }
   function closeEdit() {
     setFormData({
       coursename: '',
@@ -58,7 +111,10 @@ function EditSchedule({ toggleEdit }) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
-      <SoftBox mb={2}>
+        <MasterForm onSubmit={submitFormData} formState={editfields} formFields={fields} loading={addLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+      </SoftBox>
+      {/* <SoftBox p={2}>
+        <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
               Course Name
@@ -119,7 +175,7 @@ function EditSchedule({ toggleEdit }) {
             Schedule Session
           </SoftButton>
         </SoftBox>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

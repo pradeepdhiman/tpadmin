@@ -36,7 +36,7 @@ function EditApplicant(props) {
   const [updateApplicant, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateApplicantMutation()
 
   const { editid, applicantList } = useSelector(state => state.applicant)
-  const editfields = applicantList.find(x => x.applicantID === editid)
+  const editfields = applicantList?.find(x => x.applicantID === editid)
 
   const user = authUser()
 

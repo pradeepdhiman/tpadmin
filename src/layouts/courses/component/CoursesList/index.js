@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -19,15 +19,59 @@ import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { arrayOfObjects } from "layouts/Courses/constant";
+import { coursestableheads } from "layouts/Courses/constant";
+import { generateRows } from "utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { useListCourseQuery } from "layouts/Courses/functions/query";
+import { useCreateCourseMutation } from "layouts/Courses/functions/query";
+import { setCourseList } from "layouts/Courses/functions/coursesSlice";
+import { setCourseloading } from "layouts/Courses/functions/coursesSlice";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { setCourseEdit } from "layouts/Courses/functions/coursesSlice";
+import { useDeleteCourseMutation } from "layouts/Courses/functions/query";
 
 // Data
 
-function CoursesList() {
-  const { columns, rows } = data();
+function CoursesList(isEdit) {
+  // const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
+  const dispatch = useDispatch()
+  const { courseList = {}, loading = false, editid = "" } = useSelector(state => state.courses)
+
+  const { data: courses, error: listErr, isLoading: listLoading, refetch: refreshList } = useListCourseQuery()
+
+  const [addCourse, { data: course, error: courseErr, isLoading: addLoading }] = useCreateCourseMutation()
+  const [delCourse, { isLoading: delLoading }] = useDeleteCourseMutation()
+
+  useEffect(() => {
+    dispatch(setCourseList(courses))
+    dispatch(setCourseloading(listLoading))
+  }, [listLoading])
+
+  useEffect(() => {
+    refreshList()
+  }, [editid, isEdit])
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+  // const rowList = arrayOfObjects
+  const rows = generateRows(courses || [], coursestableheads, onEdit, onDelete)
+
+  function onEdit(id) {
+    dispatch(setCourseEdit(id))
+
+  }
+  async function onDelete(id) {
+    try {
+      const res = await delCourse(id)
+      if (res?.data?.success) {
+        refreshList()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const renderMenu = (
     <Menu
@@ -44,9 +88,8 @@ function CoursesList() {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+      <MenuItem onClick={closeMenu}>All</MenuItem>
+      <MenuItem onClick={closeMenu}>Latest Course</MenuItem>
     </Menu>
   );
 
@@ -79,23 +122,26 @@ function CoursesList() {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      {listLoading && <SoftBarLoader />}
+      {!listLoading && <>
+        <SoftBox
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={columns} rows={rows} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={coursestableheads} rows={rows} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2}>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={5} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </>}
     </Card>
   );
 }

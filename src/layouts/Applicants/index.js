@@ -14,7 +14,6 @@ import ApplicantList from "./component/ApplicantList";
 import SoftButton from "components/SoftButton";
 import EditApplicant from "./component/EditApplicant";
 import { useEffect, useState } from "react";
-import SoftSnakBar from "components/SoftSnakbar";
 import { useFilterApplicantMutation, useCreateApplicantMutation, useListApplicantQuery, useDeleteApplicantMutation } from "./functions/query";
 import { initialFilters } from "./constant";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
@@ -78,9 +77,6 @@ useEffect(()=>{
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {newApplicant?.success === true ? <SoftSnakBar message="Success!" severity="success" /> : <SoftSnakBar message={newApplicant?.errors[0]} severity="error" />}
-      {filtererror && <SoftSnakBar message="An error accure" severity="error" />}
-      {createError && <SoftSnakBar message="An error accure" severity="error" />}
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
