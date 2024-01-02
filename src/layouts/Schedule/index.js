@@ -27,7 +27,7 @@ function Schedule() {
   const { data: courses, error: courseErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
   const [isEdit, setEdit] = useState(false)
   const [selectedCourse, setSelectedCourse] = useState("");
-
+ 
   useEffect(() => {
     if (!selectedCourse) {
       dispatch(setScheduleCourse(courses?.data[0]))
@@ -35,16 +35,17 @@ function Schedule() {
     }
   }, [courses])
 
-  const handleCourseSelect = (event, newValue) => {
-    setSelectedCourse(newValue);
-  };
-
+  function addNew() {
+    setEdit(true)
+  }
   function editMode() {
     setEdit(false)
   }
-  function addApplicant() {
-    setEdit(true)
-  }
+
+  const handleCourseSelect = (event, newValue) => {
+    setSelectedCourse(newValue);
+    dispatch(setScheduleCourse(newValue))
+  };
 
   return (
     <DashboardLayout>
@@ -64,14 +65,14 @@ function Schedule() {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} />}
               />
-              <SoftButton size="small" color="dark" onClick={addApplicant}>Add New Schedule</SoftButton>
+              <SoftButton size="small" color="dark" onClick={addNew}>Add New Schedule</SoftButton>
             </SoftBox>
           </Grid>
           {isEdit && <Grid item xs={12} >
             <EditSchedule toggleEdit={editMode} />
           </Grid>}
           <Grid item xs={12} >
-            <ScheduleList isEdit={isEdit} showForm={addApplicant} />
+            <ScheduleList  isEdit={isEdit} editFun={addNew} loading={courseLoading} />
           </Grid>
         </Grid>
       </SoftBox>

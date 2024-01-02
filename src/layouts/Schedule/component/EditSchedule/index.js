@@ -22,20 +22,9 @@ import MasterForm from "examples/MasterForm";
 import { fields } from "layouts/Schedule/constant";
 import { useUpdateScheduleMutation } from "layouts/Schedule/functions/query";
 import { useCreateScheduleMutation } from "layouts/Schedule/functions/query";
+import moment from "moment";
 
 function EditSchedule({ toggleEdit }) {
-  const [formData, setFormData] = useState({
-    'name': '',
-    'password': '',
-    'email': ''
-  });
-  // const handleFormData = (e) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
 
   const [addSchedule, { data: addData, isError: addErr, isLoading: addLoading }] = useUpdateScheduleMutation()
   const [updateSchedule, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useCreateScheduleMutation()
@@ -51,23 +40,29 @@ function EditSchedule({ toggleEdit }) {
     defaultValues: editfields,
   });
 
+  console.log(editid, "sdfsdfsf")
+
 
   const submitFormData = async (data) => {
-    
-    
 
-   
-   
+    console.log(editid, "eddd")
+
     try {
       const newData = {
         ...data,
-        scheduledID: editid ? editfields.scheduledID || 0 : 0,
+        scheduledID: editid ? (editfields.scheduledID || 0) : 0,
         courseID: editid ? editfields.courseID : course.courseID,
         applicantID: 2,
-        createdById: editid ? editfields.createdById || 0 : user.id,
+        createdById: editid ? (parseInt(editfields.createdById) || 0) : parseInt(user.id),
+        startDate: moment(data.startDate, "YYYY-MM-DD").format("YYYY-MM-DD"),
+        endDate: moment(data.endDate, "YYYY-MM-DD").format("YYYY-MM-DD"),
+        validityDateTime: moment(data.validityDateTime, "YYYY-MM-DD").format("YYYY-MM-DD"),
+        scheduleCreatedDateTime: moment(data.scheduleCreatedDateTime, "YYYY-MM-DD").format("YYYY-MM-DD"),
       };
 
+
       console.log(newData, "newData")
+
 
       const apiFunction = editid ? updateSchedule : addSchedule;
 
@@ -83,13 +78,6 @@ function EditSchedule({ toggleEdit }) {
     }
   };
   function closeEdit() {
-    setFormData({
-      coursename: '',
-      courseid: '',
-      scheduledate: "",
-      scheduletime: '',
-      duration: ''
-    })
     toggleEdit()
   }
   return (

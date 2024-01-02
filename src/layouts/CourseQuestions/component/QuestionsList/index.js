@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -20,15 +20,65 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useListQuestionMutation } from "layouts/CourseQuestions/functions/query";
+import { useDispatch, useSelector } from "react-redux";
+import { questiontableheads } from "layouts/CourseQuestions/constant";
+import { generateRows } from "utils/utils";
+import { setQuestionEdit } from "layouts/CourseQuestions/functions/questionSlice";
+import { useDeleteQuestionMutation } from "layouts/CourseQuestions/functions/query";
+import { setQuestionList } from "layouts/CourseQuestions/functions/questionSlice";
 
 // Data
 
-function QuestionList({ listData, loading }) {
-  const { columns, rows } = data();
+function QuestionList({ isEdit, loading, editFun }) {
+  // const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
+  const { course, editid } = useSelector(state => state.question)
+  const dispatch = useDispatch()
+
+  const [fetchList, { data: listData, isError: fetchErr, isLoading: fetchloading }] = useListQuestionMutation();
+  const [deleteQuestion, { data: delData, isError, isLoading: delLoading }] = useDeleteQuestionMutation();
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const rows = generateRows(listData, questiontableheads, onEdit, onDelete)
+
+  function onEdit(item) {
+    dispatch(setQuestionEdit(item))
+    editFun()
+  }
+
+  async function onDelete(id) {
+    try {
+      const deleteRes = await deleteQuestion(id);
+      if (deleteRes?.data?.success) {
+        const fetchRes = await fetchList();
+        dispatch(setQuestionList(fetchRes?.data));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchList();
+        if (res?.data?.success) {
+          dispatch(setQuestionList(res?.data))
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (course?.courseID && !isEdit) {
+      fetchData();
+    }
+  }, [course, isEdit]);
+  
+
 
   const renderMenu = (
     <Menu
@@ -45,9 +95,8 @@ function QuestionList({ listData, loading }) {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+      <MenuItem onClick={closeMenu}>All</MenuItem>
+      <MenuItem onClick={closeMenu}>Latest</MenuItem>
     </Menu>
   );
 
@@ -66,7 +115,7 @@ function QuestionList({ listData, loading }) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      {loading && <SoftBarLoader />}
+      {(loading || fetchloading) && <SoftBarLoader />}
       {listData?.success ? <>
         <SoftBox
           sx={{
@@ -78,7 +127,7 @@ function QuestionList({ listData, loading }) {
             },
           }}
         >
-          <Table columns={columns} rows={rows} />
+          <Table columns={questiontableheads} rows={rows} />
         </SoftBox>
         <SoftBox mt={2} mb={2}>
           <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

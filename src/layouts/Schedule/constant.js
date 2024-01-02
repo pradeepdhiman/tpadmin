@@ -41,8 +41,8 @@ export const schema = yup.object().shape({
     courseType: yup.string(),
     startDate: yup.date(),
     endDate: yup.date(),
-    scheduleCreatedDateTime: yup.date(),
-    validityDateTime: yup.date(),
+    scheduleCreatedDateTime: yup.string(),
+    validityDateTime: yup.string(),
     location: yup.string(),
     instructor: yup.string(),
     courseActivity: yup.number(),
@@ -72,4 +72,6 @@ export const scheduletableheads = [
     { name: "updatedDate", label: "Updated Date", align: "left" },
     { name: "isDeleted", label: "Is Deleted", align: "left" },
     { name: "remarks", label: "Remarks", align: "left" },
+    { name: "action", label: "action", align: "left" },
 ];
+

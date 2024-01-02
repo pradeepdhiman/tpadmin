@@ -288,47 +288,6 @@ function EditCourse(props) {
 
             {openOption && optionList()}
           </SoftBox>
-          {/* <Controller
-            name="categoryID"
-            control={control}
-            render={({ field }) => (
-              <SoftBox mb={2} ref={optionListRef}>
-                <SoftBox mb={1} ml={0.5}>
-                  <SoftTypography component="label" variant="caption" fontWeight="bold">
-                    Course Category
-                  </SoftTypography>
-                </SoftBox>
-                <SoftInput
-                  type="text"
-                  {...field}
-                  readOnly
-                  placeholder="Course Category"
-                  onClick={toogleoptionlist}
-                />
-                {openOption && <SoftBox mt={.5} >
-                  <Card>
-                    <SoftBox p={2}>
-                      {!newCategory && <SoftButton onClick={addCat} fullWidth size="small" variant="outlined" color="info">New Category</SoftButton>}
-                      {newCategory && <SoftBox className={styles.flexBox}>
-                        <SoftInput value={newCategoryValue.categoryName} onChange={categoryChangehandler} placeholder="Category name" sx={{ grow: 1 }} />
-                        <SoftButton onClick={saveCategory} disabled={!newCategoryValue || addCatLoading} color="dark">Add</SoftButton>
-                      </SoftBox>}
-                      <SoftBox mt={1}>
-                        {categories?.data?.map(item => (<SoftBox py={.5} sx={{ cursor: "pointer" }} onClick={() => optionListhandler(item.categoryID)} key={item.categoryID}>
-                          <SoftTypography fontWeight="regular" color="text" sx={{ fontSize: "15px" }}>{item.categoryName}</SoftTypography>
-                        </SoftBox>))}
-                      </SoftBox>
-                    </SoftBox>
-                  </Card>
-                </SoftBox>}
-                {errors.categoryID && (
-                  <SoftTypography component="label" variant="caption" color="error">
-                    {errors.categoryID.message}
-                  </SoftTypography>
-                )}
-              </SoftBox>
-            )}
-          /> */}
           <Controller
             name="syllabus"
             control={control}

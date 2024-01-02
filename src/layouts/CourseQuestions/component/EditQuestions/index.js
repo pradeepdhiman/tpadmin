@@ -14,76 +14,69 @@ import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import CloseIcon from '@mui/icons-material/Close';
 import { validateForm } from "utils/utils";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "layouts/CourseQuestions/constant";
+import MasterForm from "examples/MasterForm";
+import { fields } from "layouts/CourseQuestions/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "layouts/authentication/functions/query";
+import { useCreateQuestionMutation } from "layouts/CourseQuestions/functions/query";
+import { useUpdateQuestionMutation } from "layouts/CourseQuestions/functions/query";
+import { setQuestionEdit } from "layouts/CourseQuestions/functions/questionSlice";
 
-const initialFormdata = {
-  questionID: 0,
-  courseID: 0,
-  questionTitle: "",
-  questionType: "mcq",
-  correctAnswer: "",
-  optionA: "",
-  optionB: "",
-  optionC: "",
-  optionD: "",
-  optionE: "",
-  marksOptionA: "",
-  maaksOptionB: "",
-  marksOptionC: "",
-  marksOptionD: "",
-  marksOptionE: "",
-  createdById: 0,
-  remarks: ""
-}
 
-const validationRules = {
-  questionID: { required: false, },
-  courseID: { required: false, },
-  questionTitle: { required: true, },
-  questionType: { required: true, },
-  correctAnswer: { required: true, },
-  optionA: { required: true, },
-  optionB: { required: true, },
-  optionC: { required: true, },
-  optionD: { required: true, },
-  optionE: { required: true, },
-  marksOptionA: { required: false, },
-  maaksOptionB: { required: false, },
-  marksOptionC: { required: false, },
-  marksOptionD: { required: false, },
-  marksOptionE: { required: false, },
-  createdById: { required: false, },
-  remarks: { required: false, },
-};
 
-function EditQuestion({ toggleEdit, submitdata, actionresponse, loading }) {
-  const [formData, setFormData] = useState(initialFormdata);
-  const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    if (!actionresponse?.success) {
-      setFormData(initialFormdata);
+function EditQuestion({ toggleEdit }) {
+  const dispatch = useDispatch()
+
+  const { editid, questionList, course } = useSelector(state => state.question)
+  const editfields = questionList?.data?.find(x => x.questionID === editid)
+
+  const user = authUser()
+
+  const [addQuestion, { data: questData, isError: questErr, isLoading: questLoading }] = useCreateQuestionMutation()
+  const [updateQuestion, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useUpdateQuestionMutation()
+
+  const { handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: editfields || [],
+  });
+
+  const submitFormData = async (data) => {
+
+    try {
+      const newData = {
+        ...data,
+        questionID: editid ? (editfields.questionID || 0) : 0,
+        courseID: editid ? editfields.courseID : course.courseID,
+        createdById: editid ? (parseInt(editfields.createdById) || 0) : parseInt(user.id),
+        marksOptionA: editfields?.marksOptionA || "SS",
+        marksOptionB: editfields?.marksOptionB || "SS",
+        marksOptionC: editfields?.marksOptionC || "SS",
+        marksOptionD: editfields?.marksOptionD || "SS",
+        marksOptionE: editfields?.marksOptionE || "SS",
+      };
+
+      const apiFunction = editid ? updateQuestion : addQuestion;
+
+      const res = await apiFunction(newData);
+
+      if (res?.data?.success) {
+        closeEdit()
+      }
+
+      return res;
+    } catch (err) {
+      console.error(err);
     }
-  }, [actionresponse?.success]);
-
-
-  const handleFormData = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
-  const submitFormData = async (e) => {
-    e.preventDefault();
-    const errors = validateForm(formData, validationRules);
-    setFormErrors(errors);
 
-    if (Object.keys(errors).length === 0) {
-      submitdata(formData)
-    }
-  }
 
   function closeEdit() {
-    setFormData(initialFormdata)
+    dispatch(setQuestionEdit(""))
+    reset()
     toggleEdit()
   }
 
@@ -106,7 +99,13 @@ function EditQuestion({ toggleEdit, submitdata, actionresponse, loading }) {
         </Icon>
       </SoftBox>
       <SoftBox p={2}>
-        <form>
+        <MasterForm onSubmit={submitFormData} formState={editfields} formFields={fields} loading={questLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+
+
+
+
+
+        {/* <form>
           <SoftBox mb={2}>
             <SoftBox mb={1} ml={0.5}>
               <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -234,7 +233,7 @@ function EditQuestion({ toggleEdit, submitdata, actionresponse, loading }) {
               {loading ? "Loading..." : "Submit"}
             </SoftButton>
           </SoftBox>
-        </form>
+        </form> */}
       </SoftBox>
     </Card>
   );

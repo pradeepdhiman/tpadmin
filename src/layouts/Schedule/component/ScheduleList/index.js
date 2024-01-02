@@ -25,16 +25,17 @@ import { generateRows } from "utils/utils";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { setScheduleList } from "layouts/Schedule/functions/scheduleSlice";
 import { setScheduleloading } from "layouts/Schedule/functions/scheduleSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setScheduleEdit } from "layouts/Schedule/functions/scheduleSlice";
 import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 
 // Data
 
-function ScheduleList({ isEdit, showForm }) {
+function ScheduleList({ isEdit, loading, editFun }) {
   // const { columns, rows } = data();
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
+  const { course, editid } = useSelector(state => state.schedule)
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -45,25 +46,39 @@ function ScheduleList({ isEdit, showForm }) {
   const [deleteSchedule, { isError: delErr, isLoading: delLoading }] = deleteAction
   const rows = generateRows(scheduleList?.data, scheduletableheads, onEdit, onDelete)
 
-  function onEdit(id) {
-    // dispatch(setScheduleEdit(id))
-    showForm()
+ 
+  function onEdit(item) {
+    dispatch(setScheduleEdit(item))
+    editFun()
   }
+
   async function onDelete(id) {
     try {
-      const res = await deleteSchedule(id)
-      if (res?.data?.data?.success) {
-        refreshSchedule()
+      const deleteRes = await deleteSchedule(id);
+      if (deleteRes?.data?.success) {
+        const fetchRes = await refreshSchedule();
+        dispatch(setScheduleList(fetchRes?.data));
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.error(err);
     }
   }
 
   useEffect(() => {
-    setScheduleloading(scheduleLoading)
-    setScheduleList(scheduleList)
-  }, [scheduleLoading])
+    const fetchData = async () => {
+      try {
+        const res = await refreshSchedule();
+        if (res?.data?.success) {
+          dispatch(setScheduleList(res?.data))
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (course?.courseID && !isEdit) {
+      fetchData();
+    }
+  }, [course, isEdit]);
 
   const renderMenu = (
     <Menu
