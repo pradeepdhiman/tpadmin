@@ -66,6 +66,7 @@ function AssessmentList() {
         {renderMenu}
       </SoftBox>
       <SoftBox
+      px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {

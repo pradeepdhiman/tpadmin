@@ -14,10 +14,12 @@ import { useEffect, useState } from "react";
 import CoursesList from "./component/CoursesList";
 import EditCourse from "./component/EditCourse";
 import { useSelector } from "react-redux";
+import CategoryTable from "./component/CategoryTable";
 
 function Courses() {
 
   const [isEdit, setEdit] = useState(false)
+  const [manageCat, setManageCat] = useState(false)
   const { editid = "" } = useSelector(state => state.courses)
 
   function editMode() {
@@ -25,6 +27,9 @@ function Courses() {
   }
   function addCoursehandler() {
     setEdit(true)
+    if (manageCat) {
+      setManageCat(false)
+    }
   }
 
   useEffect(() => {
@@ -33,6 +38,13 @@ function Courses() {
     }
   }, [editid])
 
+  function showCategory() {
+    setManageCat(!manageCat)
+    if (isEdit) {
+      setEdit(false)
+    }
+  }
+
 
   return (
     <DashboardLayout>
@@ -40,15 +52,19 @@ function Courses() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
-            <SoftBox px={3}>
+            <SoftBox px={3} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
               <SoftButton size="small" color="dark" onClick={addCoursehandler}>Add New Course</SoftButton>
+              <SoftButton variant="outlined" size="small" color="info" onClick={showCategory}>Manage Category</SoftButton>
             </SoftBox>
           </Grid>
+          {manageCat && <Grid item xs={12} >
+            <CategoryTable toggleCat={showCategory} />
+          </Grid>}
           {isEdit && <Grid item xs={12} >
             <EditCourse toggleEdit={editMode} />
           </Grid>}
           <Grid item xs={12} >
-            <CoursesList isEdit={isEdit} />
+            {/* <CoursesList isEdit={isEdit} /> */}
           </Grid>
         </Grid>
       </SoftBox>

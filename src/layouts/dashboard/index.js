@@ -19,7 +19,7 @@ import CoursesContainer from "./component/CoursesContainer";
 import NewOrders from "./component/NewOrders";
 import LatestCourse from "./component/LatestCourses";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { useFilteredCoursesQuery, useGetApplicantListQuery, useGetCoursesListQuery, usePostCoursesMutation } from "./functions/query";
+import { useDbApplicantQuery, useDbCoursesQuery } from "./functions/query";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
@@ -77,24 +77,27 @@ function Dashboard() {
     data: applicantList,
     isLoading: isApplicantListLoading,
     error: applicantListError,
-  } = useGetApplicantListQuery();
+  } = useDbApplicantQuery();
 
   const {
     data: coursesList,
     isLoading: isCoursesListLoading,
     error: coursesListError,
-  } = useGetCoursesListQuery();
+  } = useDbCoursesQuery();
 
-  const [createCourse, {
-    data: latestCoursesList,
-    isLoading: isLatestCoursesLoading,
-    error: lstestCoursesError,
-  }] = usePostCoursesMutation();
+  console.log(coursesList)
+  console.log(applicantList)
 
-  useEffect(() => {
-    const today = moment().format('DD/MM/YYYY');
-    createCourse(filters)
-  }, [])
+  // const [createCourse, {
+  //   data: latestCoursesList,
+  //   isLoading: isLatestCoursesLoading,
+  //   error: lstestCoursesError,
+  // }] = usePostCoursesMutation();
+
+  // useEffect(() => {
+  //   const today = moment().format('DD/MM/YYYY');
+  //   createCourse(filters)
+  // }, [])
 
 
   return (

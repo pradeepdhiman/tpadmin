@@ -23,7 +23,7 @@ import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 import borders from "assets/theme/base/borders";
 
-function Table({ columns, rows }) {
+function Table({ columns, rows, columnFunc, rowFunc }) {
   const { light } = colors;
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
@@ -58,6 +58,7 @@ function Table({ columns, rows }) {
         color="secondary"
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
+        onClick={()=>columnFunc(name)}
       >
         {name.toUpperCase()}
       </SoftBox>
@@ -112,7 +113,7 @@ function Table({ columns, rows }) {
       return template;
     });
 
-    return <TableRow key={rowKey}>{tableRow}</TableRow>;
+    return <TableRow key={rowKey} onClick={()=>rowFunc(key)}>{tableRow}</TableRow>;
   });
 
   return useMemo(
@@ -134,12 +135,16 @@ function Table({ columns, rows }) {
 Table.defaultProps = {
   columns: [],
   rows: [{}],
+  columnFunc: () => {},
+  rowFunc: () => {}
 };
 
 // Typechecking props for the Table
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object),
   rows: PropTypes.arrayOf(PropTypes.object),
+  columnFunc: PropTypes.func,
+  rowFunc: PropTypes.func
 };
 
 export default Table;

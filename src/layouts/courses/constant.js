@@ -64,3 +64,15 @@ export const coursestableheads = [
   { name: "remarks", label: "remarks", align: 'left' },
   { name: "action", label: "Action", align: 'left' }
 ];
+export const categorytableheads = [
+  { name: "categoryID", label: "Category Id", align: 'left' },
+  { name: "categoryName", label: "Category Name", align: 'left' },
+  { name: "status", label: "Status", align: 'left' },
+  { name: "createdById", label: "Created ById", align: 'left' },
+  { name: "createdDate", label: "Created Date", align: 'left' },
+  { name: "updatedById", label: "Updated ById", align: 'left' },
+  { name: "updatedDate", label: "Updated Date", align: 'left' },
+  { name: "isDeleted", label: "isDeleted", align: 'left' },
+  { name: "remarks", label: "remarks", align: 'left' },
+  { name: "action", label: "Action", align: 'left' }
+];

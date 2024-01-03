@@ -1,27 +1,6 @@
 
 import * as yup from 'yup';
-export const initialValue = {
-  applicantID: 0,
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  address: "",
-  qualification: "",
-  designation: "",
-  dob: "",
-  nationality: "",
-  companyName: "",
-  companyContactNumber: "",
-  companyAddress: "",
-  password: "",
-  createdById: 0,
-  updatedById:0,
-  remarks: "",
-  isDeleted:false,
-  status:"",
-  updatedDate:""
-}
+
 export const fields = {
   firstName: { label: "First Name", placeholder: "First name" },
   lastName: { label: "Last Name", placeholder: "Last name" },
@@ -35,10 +14,10 @@ export const fields = {
   companyName: { label: "Company Name", placeholder: "Company name" },
   companyContactNumber: { label: "Company Contact", placeholder: "Company contact number" },
   companyAddress: { label: "Company Address", placeholder: "Company address" },
-  password: { label: "Password", placeholder: "Password" }
+  password: { label: "Password", placeholder: "Password" },
+  remarks: { label: "Remarks", placeholder: "Remarks" }
 }
 export const schema = yup.object().shape({
-  applicantID: yup.number(),
   firstName: yup.string().required('First Name is required'),
   lastName: yup.string(),
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -56,7 +35,6 @@ export const schema = yup.object().shape({
   companyContactNumber: yup.string(),
   companyAddress: yup.string(),
   password: yup.string().required('Password is required'),
-  createdById: yup.number(),
   remarks: yup.string(),
 });
 
@@ -107,6 +85,5 @@ export const tableheads = [
   { name: "updatedDate", label: "Updated Date", align: 'left' },
   { name: "isDeleted", label: "Is Deleted", align: 'left' },
   { name: "remarks", label: "Remarks", align: 'left' },
-  { name: "action", label: "Action", align: 'left' },
 ];
 

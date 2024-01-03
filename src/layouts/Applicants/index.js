@@ -18,7 +18,7 @@ import { useFilterApplicantMutation, useCreateApplicantMutation, useListApplican
 import { initialFilters } from "./constant";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { setApplicantedit, setApplicantlist, setApplicantloading } from "./functions/applicantSlice";
+import { setActiveRow } from "./functions/applicantSlice";
 
 function Applicants() {
 
@@ -27,17 +27,14 @@ function Applicants() {
   const [editId, setEditId] = useState("")
   const [filters, setFilters] = useState(initialFilters)
   const dispatch = useDispatch()
+  const { activeRow = {} } = useSelector(state => state.applicant)
 
   const { data: applicantList, isLoading: listLoading, isError: listError, refetch: refreshList } = useListApplicantQuery();
   const [filteredList, { data: filterList, error: filtererror, isLoading: filterloading }] = useFilterApplicantMutation()
   const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateApplicantMutation()
   const [deleteApplicant, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteApplicantMutation()
 
-useEffect(()=>{
-  dispatch(setApplicantlist(applicantList?.data))
-  dispatch(setApplicantloading(listLoading))
-},[listLoading, applicantList, refreshList])
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,14 +50,13 @@ useEffect(()=>{
 
   function editMode() {
     setEdit(false)
+    dispatch(setActiveRow({}))
     refreshList()
   }
   function addApplicant() {
     setEdit(true)
   }
   function onEdit(id) {
-    dispatch(setApplicantedit(id))
-    // setEditId(id)
     setEdit(true)
   }
   async function onDelete(id) {
@@ -81,16 +77,20 @@ useEffect(()=>{
         <Grid container spacing={3}>
           <Grid xs={12}>
             <SoftBox px={3}>
-              <SoftButton size="small" color="dark" onClick={addApplicant}>Add Applicant</SoftButton>
+              <SoftButton disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addApplicant}>Add Applicant</SoftButton>
             </SoftBox>
           </Grid>
-          {isEdit && <Grid item xs={12} >
-            <EditApplicant toggleEdit={editMode} editid={editId} addApplicant={createApplicant} loading={createLoading} />
-          </Grid>}
+          {(Object.keys(activeRow).length !== 0 || isEdit) && (
+            <Grid item xs={12}>
+              <EditApplicant toggleEdit={editMode} editid={editId} addApplicant={createApplicant} loading={createLoading} />
+            </Grid>
+          )}
           {listLoading && <SoftBarLoader />}
-          {!listLoading && (<Grid item xs={12} >
-            {applicantList?.success && <ApplicantList list={applicantList} loading={listLoading} onEdit={onEdit} onDelete={onDelete} />}
-          </Grid>)}
+          {Object.keys(activeRow).length === 0 && applicantList?.success && (
+            <Grid item xs={12}>
+              <ApplicantList list={applicantList} loading={listLoading}  />
+            </Grid>
+          )}
         </Grid>
       </SoftBox>
       <Footer />

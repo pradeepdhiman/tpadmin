@@ -125,6 +125,7 @@ function CoursesList(isEdit) {
       {listLoading && <SoftBarLoader />}
       {!listLoading && <>
         <SoftBox
+        px={2}
           sx={{
             "& .MuiTableRow-root:not(:last-child)": {
               "& td": {

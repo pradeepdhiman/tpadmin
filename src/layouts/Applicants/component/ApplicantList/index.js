@@ -22,20 +22,32 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { tableheads } from "layouts/Applicants/constant";
 import { generateRows } from "utils/utils";
 import { generateColum } from "utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveRow } from "layouts/Applicants/functions/applicantSlice";
 
 // Data
 
 
 
 function ApplicantList(props) {
-  const { list = [], loading = false, onEdit = null, onDelete = null } = props
+  const dispatch = useDispatch()
+  const { list = [], loading = false,  } = props
   // const { columns, rows } = data(list);
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
-  const rows = generateRows(list, tableheads, onEdit, onDelete);
+  const rows = generateRows(list, tableheads);
+
+  function columnClickhandler(item) {
+    console.log(item)
+  }
+
+  function rowClickhandler(item) {
+    const activeRow = list.data[item]
+    dispatch(setActiveRow(activeRow))
+  }
 
 
 
@@ -88,7 +100,7 @@ function ApplicantList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
+      <SoftBox px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {
@@ -98,7 +110,7 @@ function ApplicantList(props) {
           },
         }}
       >
-        <Table columns={tableheads} rows={rows} />
+        <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
       <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

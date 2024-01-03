@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SoftBox from "components/SoftBox";
 import { IconButton } from "@mui/material";
 import { toast } from "react-toastify";
+import SoftBadge from "components/SoftBadge";
 
 const createHeaders = () => {
   const user = authUser();
@@ -23,10 +24,14 @@ export const createRequest = (endpoint, data) => ({
   headers: createHeaders(),
 });
 
-export const getRequest = (endpoint, id) => ({
-  url: id ? `${endpoint}?id=${id}` : endpoint,
-  headers: createHeaders(),
-});
+export const getRequest = (endpoint, queryParam) => {
+  const [a, b] = Object.entries(queryParam)[0];
+  return {
+    url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+    headers: createHeaders(),
+  };
+};
+
 
 export const readRequest = (endpoint, id) => ({
   url: id ? `${endpoint}/${id}` : `${endpoint}`,
@@ -165,40 +170,23 @@ export const validateForm = (formData, rules) => {
   return errors;
 };
 
-export const generateRows = (list, tableheads, onEdit, onDelete) => {
+export const generateRows = (list, tableheads) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
+
   return rowArr.map((rowItem, rowIndex) => {
     let rowCells = {};
-    let rowId = ""
+    let rowId = "";
 
     tableheads.forEach((column, colIndex) => {
       const columnName = column.name;
       const columnValue = rowItem[columnName];
-      rowId = colIndex === 0 ? columnValue : rowId
-      if (columnName === "action") {
+      rowId = colIndex === 0 ? columnValue : rowId;
+      if (columnName === "status" || columnName === "isDeleted") {
+        const badgeContent = columnValue === 1 ? "Active" : "Deactive";
+        const badgeColor = columnValue === 1 ? "success" : "secondary";
+
         rowCells[columnName] = (
-          <SoftBox width="8rem" textAlign="left">
-            <IconButton
-              size="small"
-              color="inherit"
-              aria-controls="edit"
-              aria-haspopup="true"
-              variant="contained"
-              onClick={() => onEdit(rowId)}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              size="small"
-              color="error"
-              aria-controls="delete"
-              aria-haspopup="true"
-              variant="contained"
-              onClick={() => onDelete(rowId)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </SoftBox>
+          <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
         );
       } else {
         rowCells[columnName] = (
@@ -211,6 +199,8 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
 
     return rowCells;
   });
+
+
 };
 
 // export const responseInterceptor = async (response) => {

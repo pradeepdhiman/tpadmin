@@ -28,6 +28,8 @@ const coursesApis = emptySplitApi.injectEndpoints({
     }),
 });
 
+
+
 export const {
     useListCourseQuery,
     useFilterCourseMutation,
@@ -35,3 +37,4 @@ export const {
     useUpdateCourseMutation,
     useDeleteCourseMutation,
 } = coursesApis;
+

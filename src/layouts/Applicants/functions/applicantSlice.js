@@ -3,8 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     applicantList: [],
-    loading: false,
-    editid:""
+    activeRow: {}
 };
 
 const applicantSlice = createSlice({
@@ -14,14 +13,11 @@ const applicantSlice = createSlice({
         setApplicantlist: (state, action) => {
             state.applicantList = action.payload;
         },
-        setApplicantloading: (state, { payload }) => {
-            state.loading = payload
-        },
-        setApplicantedit: (state, { payload }) => {
-            state.editid = payload
+        setActiveRow: (state, { payload }) => {
+            state.activeRow = payload
         }
     },
 });
 
-export const { setApplicantlist, setApplicantloading, setApplicantedit } = applicantSlice.actions;
+export const { setApplicantlist, setActiveRow } = applicantSlice.actions;
 export default applicantSlice;

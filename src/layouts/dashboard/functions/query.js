@@ -1,21 +1,23 @@
-import emptySplitApi from "utils/emptySplitApi";
 
-export const dashboardApi = emptySplitApi.injectEndpoints({
+import emptySplitApi from "utils/emptySplitApi";
+import { deleteRequest } from "utils/utils";
+import { updateRequest } from "utils/utils";
+import { createRequest } from "utils/utils";
+import { readRequest } from "utils/utils";
+
+
+const dashboardApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
-        getApplicantList: build.query({
-            query: () => "/Applicant/List"
+        dbApplicant: build.query({
+            query: () => readRequest("/Applicant/List"),
         }),
-        getCoursesList: build.query({
-            query: () => "/Course/List"
-        }),
-        postCourses: build.mutation({
-            query: (filters) => ({
-                url: "/Applicant/GetCourses",
-                method: "POST",
-                body: JSON.stringify(filters),
-            }),
+        dbCourses: build.query({
+            query: () => readRequest("/Course/List"),
         }),
     }),
 });
 
-export const { useGetApplicantListQuery, useGetCoursesListQuery, usePostCoursesMutation  } = dashboardApi;
+export const {
+    useDbApplicantQuery,
+    useDbCoursesQuery,
+} = dashboardApis;

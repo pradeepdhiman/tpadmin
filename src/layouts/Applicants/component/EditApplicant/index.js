@@ -17,55 +17,65 @@ import MasterForm from "examples/MasterForm";
 import { initialValue } from "layouts/Applicants/constant";
 import { schema } from "layouts/Applicants/constant";
 import { fields } from "layouts/Applicants/constant";
-import { useGetApplicantMutation } from "layouts/Applicants/functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useUpdateApplicantMutation } from "layouts/Applicants/functions/query";
 import { authUser } from "layouts/authentication/functions/query";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { setApplicantedit } from "layouts/Applicants/functions/applicantSlice";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { useDeleteApplicantMutation } from "layouts/Applicants/functions/query";
+import { CircularProgress } from "@mui/material";
+import { useCreateApplicantMutation } from "layouts/Applicants/functions/query";
+import { setActiveRow } from "layouts/Applicants/functions/applicantSlice";
+import ApplicantCompleteCourse from "../ApplicantCompleteCourse";
 
-
+const tabs = [
+  { label: 'Info', value: 'info' },
+  { label: 'Verification Documents', value: 'verification' },
+  { label: 'Courses', value: 'activeCourse' },
+  { label: 'Assessments', value: 'assessment' },
+];
 
 function EditApplicant(props) {
   const dispatch = useDispatch()
-  const { toggleEdit = false, addApplicant = null, loading = false } = props
-  const [formData, setFormData] = useState(initialValue);
+  const { toggleEdit = false, loading = false } = props
+  const [activeTab, setActiveTab] = useState("info");
 
   const [updateApplicant, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateApplicantMutation()
+  const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateApplicantMutation()
+  const [deleteApplicant, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteApplicantMutation()
 
-  const { editid, applicantList } = useSelector(state => state.applicant)
-  const editfields = applicantList?.find(x => x.applicantID === editid)
+  const { activeRow } = useSelector(state => state.applicant)
 
   const user = authUser()
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: editfields,
+    defaultValues: activeRow,
   });
-
-  useEffect(() => {
-    if (editid) {
-      setFormData(editfields)
-    } else {
-      setFormData(initialValue)
-    }
-  }, [editid])
 
 
   const submitFormData = async (data) => {
 
+    const isEditing = Object.keys(activeRow).length !== 0
+
+    console.log(isEditing)
+    console.log(data)
+
     try {
       const newData = {
         ...data,
+        applicantID: activeRow?.applicantID || 0,
         phone: JSON.stringify(data.phone),
-        updatedById: editid ? user.id : "",
-        createdById: !editid ? user.id : editfields.createdById || 0,
-        updatedById: editid ? user.id : ""
+        updatedById: isEditing ? user.id : "",
+        createdById: !isEditing ? user.id : activeRow.createdById || 0,
+        updatedById: isEditing ? user.id : "",
+        updatedDate: isEditing ? new Date().getDate() : null,
       };
 
-      const apiFunction = editid ? updateApplicant : addApplicant;
+      const apiFunction = isEditing ? updateApplicant : createApplicant;
 
       const res = await apiFunction(newData);
 
@@ -79,82 +89,104 @@ function EditApplicant(props) {
     }
   };
 
-
   function closeEdit() {
-    setFormData({})
+    dispatch(setActiveRow({}))
+    reset()
     toggleEdit()
-    dispatch(setApplicantedit(""))
   }
+
+  function tabhandler(tab) {
+    setActiveTab(tab)
+  }
+
+  async function onDelete() {
+    try {
+      const res = await deleteApplicant(activeRow.applicantID)
+      if (res.data.success) {
+        closeEdit()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Card className="h-100">
+      {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
+        {tabs.map(({ label, value }) => (
+          <SoftButton
+            key={value}
+            onClick={() => tabhandler(value)}
+            variant="outlined"
+            size="small"
+            color={activeTab === value ? 'dark' : 'info'}
+          >
+            {label}
+          </SoftButton>
+        ))}
+      </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
           Applicant
         </SoftTypography>
-        <Icon
-          sx={{
-            fontWeight: "bold",
-            color: ({ palette: { error } }) => error.main,
-            cursor: "pointer",
-            mt: -0.5,
-          }}
-          onClick={closeEdit}
-        >
-          <CloseIcon />
-        </Icon>
+        <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
+          {Object.keys(activeRow).length !== 0 && (
+            <>
+              {/* <Icon
+                sx={{
+                  fontWeight: "bold",
+                  color: "inherit",
+                  cursor: "pointer",
+                  mt: -0.5,
+                }}
+                onClick={closeEdit}
+              >
+                <EditIcon />
+              </Icon> */}
+              {delLoading ? (
+                <CircularProgress color="inherit" />
+              ) : (
+                <Icon
+                  sx={{
+                    fontWeight: "bold",
+                    color: ({ palette: { error } }) => error.main,
+                    cursor: "pointer",
+                    mt: -0.5,
+                  }}
+                  onClick={onDelete}
+                >
+                  <DeleteIcon />
+                </Icon>
+              )}
+            </>
+          )}
+          <Icon
+            sx={{
+              fontWeight: "bold",
+              color: ({ palette: { error } }) => error.main,
+              cursor: "pointer",
+              mt: -0.5,
+            }}
+            onClick={closeEdit}
+          >
+            <CloseIcon />
+          </Icon>
+        </SoftBox>
+
       </SoftBox>
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={editfields} formFields={fields} loading={updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+        {activeTab === "info" && <MasterForm
+          onSubmit={submitFormData}
+          formState={activeRow}
+          formFields={fields}
+          loading={createLoading || updateLoading}
+          handleSubmit={handleSubmit}
+          control={control}
+          reset={reset}
+          errors={errors}
+        />}
+        {activeTab === "activeCourse" && <ApplicantCompleteCourse />}
       </SoftBox>
-      {/* <SoftBox p={2}>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Applicant Name
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="text"
-            name="name"
-            onChange={handleFormData}
-            placeholder="Name"
-            value={formData?.name}
-          />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Applicant Email
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="email"
-            name="email"
-            onChange={handleFormData}
-            placeholder="Email Id"
-            value={formData?.email}
-          />
-        </SoftBox>
-        <SoftBox mb={2}>
-          <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">
-              Applicant Password
-            </SoftTypography>
-          </SoftBox>
-          <SoftInput
-            type="password"
-            name="password"
-            onChange={handleFormData}
-            placeholder="Password"
-            value={formData?.password}
-          />
-        </SoftBox>
-        <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" onClick={submitFormData} fullWidth>
-            Submit
-          </SoftButton>
-        </SoftBox>
-      </SoftBox> */}
     </Card>
   );
 }
