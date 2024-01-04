@@ -10,40 +10,28 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 const dataObject = [
     {
-      applicantCourseID: 0,
-      applicantID: 0,
-      courseID: 0,
-      enrollmentDate: "2024-01-04T05:18:07.355Z",
-      completionDate: "2024-01-04T05:18:07.355Z",
-      receiptID: "string",
-      receiptDate: "2024-01-04T05:18:07.355Z",
-      amountPaid: "string",
-      status: 0,
-      createdById: 0,
-      updatedById: 0,
-      updatedDate: "2024-01-04T05:18:07.355Z",
-      isDeleted: true,
-      remarks: "string"
+        href: "https://source.unsplash.com/random/300x200",
+        title: "Document 1"
     },
     {
-      applicantCourseID: 2,
-      applicantID: 0,
-      courseID: 0,
-      enrollmentDate: "2024-01-04T05:18:07.355Z",
-      completionDate: "2024-01-04T05:18:07.355Z",
-      receiptID: "string",
-      receiptDate: "2024-01-04T05:18:07.355Z",
-      amountPaid: "string",
-      status: 0,
-      createdById: 0,
-      updatedById: 0,
-      updatedDate: "2024-01-04T05:18:07.355Z",
-      isDeleted: true,
-      remarks: "string"
+        href: "https://source.unsplash.com/random/300x200",
+        title: "Document 2"
+    },
+    {
+        href: "https://source.unsplash.com/random/300x200",
+        title: "Document 22"
+    },
+    {
+        href: "https://source.unsplash.com/random/300x200",
+        title: "Document 855"
+    },
+    {
+        href: "https://via.placeholder.com/150",
+        title: "Document 177"
     }
-  ]
+]
 
-const ApplicantCompleteCourse = () => {
+const DocumentVerification = () => {
     const { activeRow } = useSelector(state => state.applicant);
     const [getCompletedcourse, { data: getResp, isError: getErr, isLoading: getLoading }] = useApplicantCompleteCourseMutation();
 
@@ -61,7 +49,7 @@ const ApplicantCompleteCourse = () => {
     }, [activeRow, getCompletedcourse]);
 
     return (
-         // <Card id="Complete-course" sx={{ height: "100%" }}>
+        // <Card id="Complete-course" sx={{ height: "100%" }}>
         //     <SoftBox p={2}>
         //         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
         //             {getLoading && <SoftBarLoader />}
@@ -81,7 +69,9 @@ const ApplicantCompleteCourse = () => {
                     {getLoading && <SoftBarLoader />}
                     {dataObject.length !== 0 ? (
                         dataObject.map((item, index) => (
-                            <ListItem key={index} item={item} />
+                            <SoftTypography p={1} color="dark"  component="a" href={item.href} target="_blank" variant="caption" fontWeight="bold" >
+                                {item.title}
+                            </SoftTypography>
                         ))
                     ) : (
                         <SoftTypography>Data not Available</SoftTypography>
@@ -92,4 +82,4 @@ const ApplicantCompleteCourse = () => {
     );
 }
 
-export default ApplicantCompleteCourse;
+export default DocumentVerification;

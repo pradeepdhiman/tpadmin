@@ -64,7 +64,7 @@ function Courses() {
             <EditCourse toggleEdit={editMode} />
           </Grid>}
           <Grid item xs={12} >
-            {/* <CoursesList isEdit={isEdit} /> */}
+            <CoursesList isEdit={isEdit} />
           </Grid>
         </Grid>
       </SoftBox>

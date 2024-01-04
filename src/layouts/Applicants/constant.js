@@ -32,7 +32,10 @@ export const schema = yup.object().shape({
   dob: yup.date().required('Date of Birth is required'),
   nationality: yup.string().required('Nationality is required'),
   companyName: yup.string(),
-  companyContactNumber: yup.string(),
+  companyContactNumber: yup
+    .number()
+    .min(1000000000, 'Phone must be at least 10 digits')
+    .max(9999999999, 'Phone should not be more then 10 digits'),
   companyAddress: yup.string(),
   password: yup.string().required('Password is required'),
   remarks: yup.string(),

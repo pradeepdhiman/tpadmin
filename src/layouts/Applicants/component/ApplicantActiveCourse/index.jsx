@@ -1,12 +1,14 @@
+
+
 import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
-import { useApplicantCompleteCourseMutation } from "layouts/Applicants/functions/query";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ListItem from "../ListIem";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useApplicantActiveCourseMutation } from "layouts/Applicants/functions/query";
 
 const dataObject = [
     {
@@ -43,9 +45,9 @@ const dataObject = [
     }
   ]
 
-const ApplicantCompleteCourse = () => {
+const ApplicantActiveCourse = () => {
     const { activeRow } = useSelector(state => state.applicant);
-    const [getCompletedcourse, { data: getResp, isError: getErr, isLoading: getLoading }] = useApplicantCompleteCourseMutation();
+    const [getCompletedcourse, { data: getResp, isError: getErr, isLoading: getLoading }] = useApplicantActiveCourseMutation();
 
     useEffect(() => {
         async function fetchFunction() {
@@ -61,7 +63,7 @@ const ApplicantCompleteCourse = () => {
     }, [activeRow, getCompletedcourse]);
 
     return (
-         // <Card id="Complete-course" sx={{ height: "100%" }}>
+        // <Card id="Complete-course" sx={{ height: "100%" }}>
         //     <SoftBox p={2}>
         //         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
         //             {getLoading && <SoftBarLoader />}
@@ -92,4 +94,4 @@ const ApplicantCompleteCourse = () => {
     );
 }
 
-export default ApplicantCompleteCourse;
+export default ApplicantActiveCourse;

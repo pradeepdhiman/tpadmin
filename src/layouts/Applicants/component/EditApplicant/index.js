@@ -30,12 +30,14 @@ import { CircularProgress } from "@mui/material";
 import { useCreateApplicantMutation } from "layouts/Applicants/functions/query";
 import { setActiveRow } from "layouts/Applicants/functions/applicantSlice";
 import ApplicantCompleteCourse from "../ApplicantCompleteCourse";
+import ApplicantActiveCourse from "../ApplicantActiveCourse";
+import DocumentVerification from "../DocumentVerification";
 
 const tabs = [
   { label: 'Info', value: 'info' },
   { label: 'Verification Documents', value: 'verification' },
-  { label: 'Courses', value: 'activeCourse' },
-  { label: 'Assessments', value: 'assessment' },
+  { label: 'Complete Courses', value: 'completeCourse' },
+  { label: 'Active Course', value: 'activeCourse' },
 ];
 
 function EditApplicant(props) {
@@ -69,6 +71,7 @@ function EditApplicant(props) {
         ...data,
         applicantID: activeRow?.applicantID || 0,
         phone: JSON.stringify(data.phone),
+        companyContactNumber: JSON.stringify(data.companyContactNumber),
         updatedById: isEditing ? user.id : "",
         createdById: !isEditing ? user.id : activeRow.createdById || 0,
         updatedById: isEditing ? user.id : "",
@@ -185,7 +188,9 @@ function EditApplicant(props) {
           reset={reset}
           errors={errors}
         />}
-        {activeTab === "activeCourse" && <ApplicantCompleteCourse />}
+        {activeTab === "completeCourse" && <ApplicantCompleteCourse />}
+        {activeTab === "activeCourse" && <ApplicantActiveCourse />}
+        {activeTab === "verification" && <DocumentVerification />}
       </SoftBox>
     </Card>
   );
