@@ -2,9 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    courseList: {},
-    loading: false,
-    editid: ""
+    courseList: [],
+    activeRow: {}
 };
 
 const coursesSlice = createSlice({
@@ -14,14 +13,11 @@ const coursesSlice = createSlice({
         setCourseList: (state, action) => {
             state.courseList = action.payload;
         },
-        setCourseloading: (state, { payload }) => {
-            state.loading = payload
-        },
-        setCourseEdit: (state, { payload }) => {
-            state.editid = payload
+        setActiveRow: (state, { payload }) => {
+            state.activeRow = payload
         }
     },
 });
 
-export const { setCourseList, setCourseloading, setCourseEdit } = coursesSlice.actions;
+export const { setCourseList, setActiveRow } = coursesSlice.actions;
 export default coursesSlice;

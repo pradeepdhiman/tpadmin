@@ -19,66 +19,59 @@ import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useListScheduleQuery } from "layouts/Schedule/functions/query";
-import { scheduletableheads } from "layouts/Schedule/constant";
+import { arrayOfObjects } from "layouts/Courses/constant";
+import { coursestableheads } from "layouts/Courses/constant";
 import { generateRows } from "utils/utils";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { setScheduleList } from "layouts/Schedule/functions/scheduleSlice";
-import { setScheduleloading } from "layouts/Schedule/functions/scheduleSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setScheduleEdit } from "layouts/Schedule/functions/scheduleSlice";
-import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
+import { useListCourseQuery } from "layouts/Courses/functions/query";
+import { useCreateCourseMutation } from "layouts/Courses/functions/query";
+import { setCourseList } from "layouts/Courses/functions/coursesSlice";
+import { setCourseloading } from "layouts/Courses/functions/coursesSlice";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { setCourseEdit } from "layouts/Courses/functions/coursesSlice";
+import { useDeleteCourseMutation } from "layouts/Courses/functions/query";
 
 // Data
 
-function ScheduleList({ isEdit,  editFun }) {
+function CoursesList({isEdit}) {
   // const { columns, rows } = data();
-  const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
-  const { course, editid } = useSelector(state => state.schedule)
+  const dispatch = useDispatch()
+  const { courseList = {}, loading = false, editid = "" } = useSelector(state => state.courses)
+
+  const { data: courses, error: listErr, isLoading: listLoading, refetch: refreshList } = useListCourseQuery()
+
+  const [addCourse, { data: course, error: courseErr, isLoading: addLoading }] = useCreateCourseMutation()
+  const [delCourse, { isLoading: delLoading }] = useDeleteCourseMutation()
+
+  useEffect(() => {
+    dispatch(setCourseList(courses))
+    dispatch(setCourseloading(listLoading))
+  }, [listLoading])
+
+  // useEffect(() => {
+  //   refreshList()
+  // }, [editid, isEdit])
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+  // const rowList = arrayOfObjects
+  const rows = generateRows(courses || [], coursestableheads, onEdit, onDelete)
 
-  const scheduleData = useListScheduleQuery()
-  const deleteAction = useDeleteScheduleMutation()
-  const { data: scheduleList, isError: scheduleErr, isLoading: scheduleLoading, refetch: refreshSchedule } = scheduleData
-  const [deleteSchedule, { isError: delErr, isLoading: delLoading }] = deleteAction
-  const rows = generateRows(scheduleList?.data, scheduletableheads, onEdit, onDelete)
+  function onEdit(id) {
+    dispatch(setCourseEdit(id))
 
- 
-  function onEdit(item) {
-    dispatch(setScheduleEdit(item))
-    editFun()
   }
-
   async function onDelete(id) {
     try {
-      const deleteRes = await deleteSchedule(id);
-      if (deleteRes?.data?.success) {
-        const fetchRes = await refreshSchedule();
-        dispatch(setScheduleList(fetchRes?.data));
+      const res = await delCourse(id)
+      if (res?.data?.success) {
+        refreshList()
       }
     } catch (err) {
-      console.error(err);
+      console.log(err)
     }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await refreshSchedule();
-        if (res?.data?.success) {
-          dispatch(setScheduleList(res?.data))
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    if (course?.courseID && !isEdit) {
-      fetchData();
-    }
-  }, [course, isEdit]);
 
   const renderMenu = (
     <Menu
@@ -95,9 +88,8 @@ function ScheduleList({ isEdit,  editFun }) {
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+      <MenuItem onClick={closeMenu}>All</MenuItem>
+      <MenuItem onClick={closeMenu}>Latest Course</MenuItem>
     </Menu>
   );
 
@@ -106,8 +98,22 @@ function ScheduleList({ isEdit,  editFun }) {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            Schedule List
+            Courses List
           </SoftTypography>
+          <SoftBox display="flex" alignItems="center" lineHeight={0}>
+            <Icon
+              sx={{
+                fontWeight: "bold",
+                color: ({ palette: { info } }) => info.main,
+                mt: -0.5,
+              }}
+            >
+              <DoneIcon />
+            </Icon>
+            <SoftTypography variant="button" fontWeight="regular" color="text">
+              &nbsp;<strong>30 new</strong> this month
+            </SoftTypography>
+          </SoftBox>
         </SoftBox>
         <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
@@ -116,8 +122,8 @@ function ScheduleList({ isEdit,  editFun }) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      {scheduleLoading && <SoftBarLoader />}
-      {!scheduleLoading && <>
+      {listLoading && <SoftBarLoader />}
+      {!listLoading && <>
         <SoftBox
         px={2}
           sx={{
@@ -129,7 +135,7 @@ function ScheduleList({ isEdit,  editFun }) {
             },
           }}
         >
-          <Table columns={scheduletableheads} rows={rows} />
+          <Table columns={coursestableheads} rows={rows} />
         </SoftBox>
         <SoftBox mt={2} mb={2}>
           <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -141,4 +147,4 @@ function ScheduleList({ isEdit,  editFun }) {
   );
 }
 
-export default ScheduleList;
+export default CoursesList;

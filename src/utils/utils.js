@@ -170,7 +170,7 @@ export const validateForm = (formData, rules) => {
   return errors;
 };
 
-export const generateRows = (list, tableheads) => {
+export const generateRows = (list, tableheads, onEdit, onDelete) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
   return rowArr.map((rowItem, rowIndex) => {
@@ -188,6 +188,29 @@ export const generateRows = (list, tableheads) => {
         rowCells[columnName] = (
           <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
         );
+      } else if (columnName === "action") {
+        rowCells[columnName] = (<SoftBox width="8rem" textAlign="left">
+          <IconButton
+            size="small"
+            color="inherit"
+            aria-controls="edit"
+            aria-haspopup="true"
+            variant="contained"
+            onClick={() => onEdit(rowId)}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            color="error"
+            aria-controls="delete"
+            aria-haspopup="true"
+            variant="contained"
+            onClick={() => onDelete(rowId)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </SoftBox>)
       } else {
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="text" fontWeight="medium">

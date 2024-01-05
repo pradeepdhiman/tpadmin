@@ -10,7 +10,5 @@ const emptySplitApi = createApi({
   endpoints: () => ({}),
 });
 
-// emptySplitApi.baseQuery = responseInterceptor({ baseQuery });
-
 
 export default emptySplitApi

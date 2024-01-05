@@ -1,6 +1,6 @@
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -14,64 +14,38 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import data from "./data";
 import DoneIcon from '@mui/icons-material/Done';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { arrayOfObjects } from "layouts/Courses/constant";
-import { coursestableheads } from "layouts/Courses/constant";
 import { generateRows } from "utils/utils";
-import { useDispatch, useSelector } from "react-redux";
-import { useListCourseQuery } from "layouts/Courses/functions/query";
-import { useCreateCourseMutation } from "layouts/Courses/functions/query";
-import { setCourseList } from "layouts/Courses/functions/coursesSlice";
-import { setCourseloading } from "layouts/Courses/functions/coursesSlice";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { setCourseEdit } from "layouts/Courses/functions/coursesSlice";
-import { useDeleteCourseMutation } from "layouts/Courses/functions/query";
+import { useDispatch } from "react-redux";
+import { setActiveRow } from "layouts/Courses/functions/coursesSlice";
+import { coursestableheads } from "layouts/Courses/constant";
 
 // Data
 
-function CoursesList(isEdit) {
-  // const { columns, rows } = data();
-  const [menu, setMenu] = useState(null);
+
+
+function CoursesList(props) {
   const dispatch = useDispatch()
-  const { courseList = {}, loading = false, editid = "" } = useSelector(state => state.courses)
-
-  const { data: courses, error: listErr, isLoading: listLoading, refetch: refreshList } = useListCourseQuery()
-
-  const [addCourse, { data: course, error: courseErr, isLoading: addLoading }] = useCreateCourseMutation()
-  const [delCourse, { isLoading: delLoading }] = useDeleteCourseMutation()
-
-  useEffect(() => {
-    dispatch(setCourseList(courses))
-    dispatch(setCourseloading(listLoading))
-  }, [listLoading])
-
-  useEffect(() => {
-    refreshList()
-  }, [editid, isEdit])
+  const { list = [], loading = false, } = props
+  const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-  // const rowList = arrayOfObjects
-  const rows = generateRows(courses || [], coursestableheads, onEdit, onDelete)
 
-  function onEdit(id) {
-    dispatch(setCourseEdit(id))
+  const rows = generateRows(list, coursestableheads);
 
+  function columnClickhandler(item) {
+    console.log(item)
   }
-  async function onDelete(id) {
-    try {
-      const res = await delCourse(id)
-      if (res?.data?.success) {
-        refreshList()
-      }
-    } catch (err) {
-      console.log(err)
-    }
+
+  function rowClickhandler(item) {
+    const activeRow = list.data[item]
+    dispatch(setActiveRow(activeRow))
   }
+
+
 
   const renderMenu = (
     <Menu
@@ -89,7 +63,7 @@ function CoursesList(isEdit) {
       onClose={closeMenu}
     >
       <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>Latest Course</MenuItem>
+      <MenuItem onClick={closeMenu}>latest</MenuItem>
     </Menu>
   );
 
@@ -98,7 +72,7 @@ function CoursesList(isEdit) {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            Courses List
+            Course List
           </SoftTypography>
           <SoftBox display="flex" alignItems="center" lineHeight={0}>
             <Icon
@@ -122,27 +96,23 @@ function CoursesList(isEdit) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      {listLoading && <SoftBarLoader />}
-      {!listLoading && <>
-        <SoftBox
-        px={2}
-          sx={{
-            "& .MuiTableRow-root:not(:last-child)": {
-              "& td": {
-                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                  `${borderWidth[1]} solid ${borderColor}`,
-              },
+      <SoftBox px={2}
+        sx={{
+          "& .MuiTableRow-root:not(:last-child)": {
+            "& td": {
+              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                `${borderWidth[1]} solid ${borderColor}`,
             },
-          }}
-        >
-          <Table columns={coursestableheads} rows={rows} />
-        </SoftBox>
-        <SoftBox mt={2} mb={2}>
-          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Pagination count={5} variant="outlined" shape="rounded" />
-          </Stack>
-        </SoftBox>
-      </>}
+          },
+        }}
+      >
+        <Table columns={coursestableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+      </SoftBox>
+      <SoftBox mt={2} mb={2}>
+        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Pagination count={5} variant="outlined" shape="rounded" />
+        </Stack>
+      </SoftBox>
     </Card>
   );
 }
