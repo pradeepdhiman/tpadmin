@@ -31,8 +31,7 @@ import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 
 // Data
 
-function ScheduleList(props) {
-  const { list = [], loading = false, } = props
+function ScheduleList({ isEdit,  editFun }) {
   // const { columns, rows } = data();
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
@@ -40,18 +39,14 @@ function ScheduleList(props) {
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-  const rows = generateRows(list, scheduletableheads)
 
-  function columnClickhandler(item) {
-    console.log(item)
-  }
+  const scheduleData = useListScheduleQuery()
+  const deleteAction = useDeleteScheduleMutation()
+  const { data: scheduleList, isError: scheduleErr, isLoading: scheduleLoading, refetch: refreshSchedule } = scheduleData
+  const [deleteSchedule, { isError: delErr, isLoading: delLoading }] = deleteAction
+  const rows = generateRows(scheduleList?.data, scheduletableheads, onEdit, onDelete)
 
-  function rowClickhandler(item) {
-    const activeRow = list.data[item]
-    dispatch(setActiveRow(activeRow))
-  }
-
-
+ 
   function onEdit(item) {
     dispatch(setScheduleEdit(item))
     editFun()
@@ -121,24 +116,27 @@ function ScheduleList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
+      {scheduleLoading && <SoftBarLoader />}
+      {!scheduleLoading && <>
+        <SoftBox
         px={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={scheduletableheads} rows={rows} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2}>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={5} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </>}
     </Card>
   );
 }

@@ -27,11 +27,17 @@ import { useListCategoryQuery } from "common/query";
 import { setActiveRow } from "layouts/Courses/functions/coursesSlice";
 import { schema } from "layouts/Courses/constant";
 import { authUser } from "layouts/authentication/functions/query";
+import MatItem from "../MatItem";
+import { useMatListQuery } from "layouts/Courses/functions/query";
+import { useUploadMatMutation } from "layouts/Courses/functions/query";
+import UploadMaterial from "../Uploadmaterial";
 
 const tabs = [
   { label: 'Info', value: 'info' },
   { label: 'Status', value: 'status' },
+  { label: 'Study Material', value: 'material' },
 ];
+
 
 function EditCourse(props) {
   const dispatch = useDispatch()
@@ -47,7 +53,7 @@ function EditCourse(props) {
   });
   const [openOption, setOpenOption] = useState(false);
   const optionListRef = useRef(null);
-
+  
   const [updateCourse, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateCourseMutation()
   const [createCourse, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateCourseMutation()
   const [deleteCourse, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteCourseMutation()
@@ -55,8 +61,9 @@ function EditCourse(props) {
   const { data: categories, error: catErr, isLoading: catLoading, refetch: refreshCat } = useListCategoryQuery()
   const [addCatCourse, { data: addCatRes, error: addCatErr, isLoading: addCatLoading }] = useCreateCategoryMutation()
 
-
+ 
   const { activeRow } = useSelector(state => state.courses)
+
 
   const user = authUser()
 
@@ -66,7 +73,7 @@ function EditCourse(props) {
       setSelectedCat(selectedCategory);
     }
   }, [categories, activeRow]);
-  
+
 
   const { handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -548,6 +555,7 @@ function EditCourse(props) {
             </SoftBox>
           </SoftBox>
         </SoftBox>}
+        {activeTab === "material" && <UploadMaterial/>}
       </SoftBox>
     </Card>
   );

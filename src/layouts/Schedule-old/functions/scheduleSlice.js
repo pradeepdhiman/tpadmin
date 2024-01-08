@@ -5,8 +5,7 @@ const initialState = {
     scheduleList: {},
     loading: false,
     editid: "",
-    course: {},
-    activeRow: {}
+    course: {}
 };
 
 const scheduleSlice = createSlice({
@@ -24,12 +23,9 @@ const scheduleSlice = createSlice({
         },
         setScheduleCourse: (state, { payload }) => {
             state.course = payload
-        },
-        setActiveRow: (state, { payload }) => {
-            state.activeRow = payload
         }
     },
 });
 
-export const { setActiveRow, setScheduleList, setScheduleloading, setScheduleEdit, setScheduleCourse } = scheduleSlice.actions;
+export const { setScheduleList, setScheduleloading, setScheduleEdit, setScheduleCourse } = scheduleSlice.actions;
 export default scheduleSlice;

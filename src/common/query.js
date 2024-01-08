@@ -11,6 +11,9 @@ const categoryApis = emptySplitApi.injectEndpoints({
         listCategory: build.query({
             query: () => readRequest("/CourseCategory/List"),
         }),
+        dblistcourses: build.query({
+            query: () => readRequest("/Course/List"),
+        }),
         createCategory: build.mutation({
             query: (data) => createRequest("/CourseCategory", data),
         }),
@@ -27,6 +30,7 @@ const categoryApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
+    useDblistcoursesQuery,
     useListCategoryQuery,
     useCreateCategoryMutation,
     useUpdateCategoryMutation,

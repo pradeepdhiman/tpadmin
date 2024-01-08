@@ -17,15 +17,23 @@ import Table from "examples/Tables/Table";
 import data from "./data";
 import DoneIcon from '@mui/icons-material/Done';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import { useDblistcoursesQuery } from "common/query";
+import { generateRows } from "utils/utils";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { dbcoursestableheads } from "layouts/dashboard/constant";
 
 // Data
 
 function LatestCourse() {
-  const { columns, rows } = data();
+  // const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const { data: latestCourseList, isError: courseListErr, isLoading: courseListLoading } = useDblistcoursesQuery()
+
+  const rows = generateRows(latestCourseList, dbcoursestableheads)
 
   const renderMenu = (
     <Menu
@@ -63,7 +71,7 @@ function LatestCourse() {
                 mt: -0.5,
               }}
             >
-              <DoneIcon/>
+              <DoneIcon />
             </Icon>
             <SoftTypography variant="button" fontWeight="regular" color="text">
               &nbsp;<strong>30 new</strong> this month
@@ -72,7 +80,7 @@ function LatestCourse() {
         </SoftBox>
         <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <OpenInFullIcon/>
+            <OpenInFullIcon />
           </Icon>
         </SoftBox>
         {renderMenu}
@@ -87,7 +95,10 @@ function LatestCourse() {
           },
         }}
       >
-        <Table columns={columns} rows={rows} />
+        {courseListLoading && <SoftBarLoader />}
+        {latestCourseList?.data.length !== 0 ? <SoftBox px={2} pb={2}><Table columns={dbcoursestableheads} rows={rows} /></SoftBox> : <SoftTypography variant="h6" gutterBottom>
+          No course available
+        </SoftTypography>}
       </SoftBox>
     </Card>
   );
