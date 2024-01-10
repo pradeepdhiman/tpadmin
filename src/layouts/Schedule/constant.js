@@ -28,13 +28,13 @@ export const fields = {
 
 
 export const schema = yup.object().shape({
-    scheduledName: yup.string(),
-    startDate: yup.date(),
-    endDate: yup.date(),
-    scheduleCreatedDateTime: yup.date(),
-    validityDateTime: yup.date(),
-    location: yup.string(),
-    instructor: yup.string(),
+    scheduledName: yup.string().required(),
+    startDate: yup.date().required(),
+    endDate: yup.date().required(),
+    scheduleCreatedDateTime: yup.date().required(),
+    validityDateTime: yup.date().required(),
+    location: yup.string().required(),
+    instructor: yup.string().required(),
     remarks: yup.string()
 });
 
@@ -53,6 +53,6 @@ export const scheduletableheads = [
     { name: "updatedDate", label: "Updated Date", align: "left" },
     { name: "isDeleted", label: "Is Deleted", align: "left" },
     { name: "remarks", label: "Remarks", align: "left" },
-    { name: "action", label: "action", align: "left" },
+    // { name: "action", label: "action", align: "left" },
 ];
 

@@ -18,24 +18,19 @@ import { Autocomplete, TextField } from "@mui/material";
 import EditQuestion from "./component/EditQuestions";
 import QuestionList from "./component/QuestionsList";
 import { useListCourseQuery } from "layouts/Courses/functions/query";
-import { setQuestionCourse, setActiveRow } from "./functions/questionSlice";
+import { setQuestionCourse } from "./functions/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateQuestionMutation, useListQuestionQuery } from "./functions/query";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 const loadingState = { courseName: "Loading..." }
 
 function CourseQuestions() {
   const { size } = typography;
   const [isEdit, setEdit] = useState(false)
-  const [editId, setEditId] = useState("")
   const [selectedCourse, setSelectedCourse] = useState("");
   const dispatch = useDispatch()
-  const { activeRow } = useSelector(state => state.question)
+  const { editid } = useSelector(state => state.question)
 
   const { data: courses, error: courseErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
-  const { data: courseslist, error: courseListErr, isLoading: courseListLoading, refetch: refreshQuestion } = useListQuestionQuery()
-  const [createSchedule, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateQuestionMutation()
 
   useEffect(() => {
     if (!selectedCourse) {
@@ -44,21 +39,17 @@ function CourseQuestions() {
     }
   }, [courses])
 
-  
+  function addNew() {
+    setEdit(true)
+  }
+  function editMode() {
+    setEdit(false)
+  }
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);
     dispatch(setQuestionCourse(newValue))
   };
-
-  function editMode() {
-    setEdit(false)
-    dispatch(setActiveRow({}))
-    refreshQuestion()
-  }
-  function addschedule() {
-    setEdit(true)
-  }
 
   return (
     <DashboardLayout>
@@ -78,20 +69,15 @@ function CourseQuestions() {
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} />}
               />
-              <SoftButton size="small" color="dark" onClick={addschedule}>New Question</SoftButton>
+              <SoftButton size="small" color="dark" onClick={addNew}>New Question</SoftButton>
             </SoftBox>
           </Grid>
-          {(Object.keys(activeRow).length !== 0 || isEdit) && (
-            <Grid item xs={12}>
-              <EditQuestion toggleEdit={editMode} editid={editId} addCourse={createSchedule} loading={createLoading} />
-            </Grid>
-          )}
-          {courseListLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && courseslist?.success && (
-            <Grid item xs={12}>
-              <QuestionList list={courseslist} loading={courseListLoading} />
-            </Grid>
-          )}
+          {isEdit && <Grid item xs={12} >
+            <EditQuestion toggleEdit={editMode} />
+          </Grid>}
+          <Grid item xs={12} >
+            <QuestionList isEdit={isEdit} editFun={addNew} loading={courseLoading} />
+          </Grid>
         </Grid>
       </SoftBox>
       <Footer />

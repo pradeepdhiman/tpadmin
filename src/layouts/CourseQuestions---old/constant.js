@@ -85,7 +85,7 @@ export const questiontableheads = [
     { name: "updatedDate", label: "updatedDate", align: "left" },
     { name: "isDeleted", label: "isDeleted", align: "left" },
     { name: "remarks", label: "remarks", align: "left" },
-    // { name: "action", label: "action", align: "left" }
+    { name: "action", label: "action", align: "left" }
 ];
 
 

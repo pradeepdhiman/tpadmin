@@ -5,8 +5,7 @@ const initialState = {
     questionList: {},
     loading: false,
     editid: "",
-    course: {},
-    activeRow:{}
+    course: {}
 };
 
 const questionSlice = createSlice({
@@ -24,12 +23,9 @@ const questionSlice = createSlice({
         },
         setQuestionCourse: (state, { payload }) => {
             state.course = payload
-        },
-        setActiveRow: (state, { payload }) => {
-            state.activeRow = payload
         }
     },
 });
 
-export const {setActiveRow, setQuestionList, setQuestionloading, setQuestionEdit, setQuestionCourse } = questionSlice.actions;
+export const { setQuestionList, setQuestionloading, setQuestionEdit, setQuestionCourse } = questionSlice.actions;
 export default questionSlice;

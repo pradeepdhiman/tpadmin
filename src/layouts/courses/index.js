@@ -58,19 +58,6 @@ function Courses() {
   function addCourse() {
     setEdit(true)
   }
-  function onEdit(id) {
-    setEdit(true)
-  }
-  async function onDelete(id) {
-    try {
-      const res = await delCourse(id)
-      if (res.data.success) {
-        refreshCourse()
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   return (
     <DashboardLayout>

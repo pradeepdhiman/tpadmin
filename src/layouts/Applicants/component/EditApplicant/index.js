@@ -32,6 +32,7 @@ import { setActiveRow } from "layouts/Applicants/functions/applicantSlice";
 import ApplicantCompleteCourse from "../ApplicantCompleteCourse";
 import ApplicantActiveCourse from "../ApplicantActiveCourse";
 import DocumentVerification from "../DocumentVerification";
+import { formatDateFields } from "utils/utils";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -55,7 +56,7 @@ function EditApplicant(props) {
 
   const { handleSubmit, control, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: activeRow,
+    defaultValues: formatDateFields(activeRow, fields),
   });
 
 

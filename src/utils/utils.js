@@ -8,6 +8,7 @@ import SoftBox from "components/SoftBox";
 import { IconButton } from "@mui/material";
 import { toast } from "react-toastify";
 import SoftBadge from "components/SoftBadge";
+import moment from "moment";
 
 const createHeaders = () => {
   const user = authUser();
@@ -46,11 +47,20 @@ export const updateRequest = (endpoint, data) => ({
   headers: createHeaders(),
 });
 
-export const deleteRequest = (endpoint, id) => ({
-  url: `${endpoint}?id=${id}`,
-  method: "DELETE",
-  headers: createHeaders(),
-});
+// export const deleteRequest = (endpoint, id) => ({
+//   url: `${endpoint}?id=${id}`,
+//   method: "DELETE",
+//   headers: createHeaders(),
+// });
+
+export const deleteRequest = (endpoint, queryParam) => {
+  const [a, b] = Object.entries(queryParam)[0];
+  return {
+    url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+    method: "DELETE",
+    headers: createHeaders(),
+  };
+};
 
 
 export function saveObject(key = "", value = "") {
@@ -170,6 +180,16 @@ export const validateForm = (formData, rules) => {
   return errors;
 };
 
+export function formatDateString(dateString) {
+  const parsedDate = moment(dateString, moment.ISO_8601, true);
+
+  if (parsedDate.isValid()) {
+    return parsedDate.format('DD-MM-YYYY');
+  } else {
+    return dateString;
+  }
+}
+
 export const generateRows = (list, tableheads, onEdit, onDelete) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
@@ -214,7 +234,7 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
       } else {
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="text" fontWeight="medium">
-            {columnValue}
+            {formatDateString(columnValue)}
           </SoftTypography>
         );
       }
@@ -226,29 +246,6 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
 
 };
 
-// export const responseInterceptor = async (response) => {
-//   if (response.error) {
-//     toast.error('An error occurred. Please try again.', {
-//       position: toast.POSITION.TOP_RIGHT,
-//       autoClose: 3000,
-//       hideProgressBar: false,
-//       closeOnClick: false,
-//       pauseOnHover: false,
-//       draggable: false,
-//     });
-//   } else {
-//     toast.success('Operation successful!', {
-//       position: toast.POSITION.TOP_RIGHT,
-//       autoClose: 3000,
-//       hideProgressBar: false,
-//       closeOnClick: false,
-//       pauseOnHover: false,
-//       draggable: false,
-//     });
-
-//   }
-//   return response;
-// };
 
 export const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
   try {
@@ -285,4 +282,18 @@ export const responseInterceptor = (baseQuery) => async (args, api, extraOptions
     });
     throw error;
   }
+};
+
+const convertToDateObject = (value, type) => {
+  return type === "date" ? moment(value).format("YYYY-MM-DD") : value;
+};
+
+export const formatDateFields = (activeRow, fields) => {
+  const result = {};
+  for (const key in fields) {
+    if (fields.hasOwnProperty(key)) {
+      result[key] = convertToDateObject(activeRow[key], fields[key].type);
+    }
+  }
+  return result;
 };

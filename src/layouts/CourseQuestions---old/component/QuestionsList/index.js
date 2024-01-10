@@ -27,78 +27,57 @@ import { generateRows } from "utils/utils";
 import { setQuestionEdit } from "layouts/CourseQuestions/functions/questionSlice";
 import { useDeleteQuestionMutation } from "layouts/CourseQuestions/functions/query";
 import { setQuestionList } from "layouts/CourseQuestions/functions/questionSlice";
-import { setActiveRow } from "layouts/CourseQuestions/functions/questionSlice";
 
 // Data
 
-function QuestionList(props) {
+function QuestionList({ isEdit, loading, editFun }) {
   // const { columns, rows } = data();
-  // const [menu, setMenu] = useState(null);
-  // const { course, editid } = useSelector(state => state.question)
-  // const dispatch = useDispatch()
-
-  // const [fetchList, { data: listData, isError: fetchErr, isLoading: fetchloading }] = useListQuestionMutation();
-  // const [deleteQuestion, { data: delData, isError, isLoading: delLoading }] = useDeleteQuestionMutation();
-
-  // const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  // const closeMenu = () => setMenu(null);
-
-  // const rows = generateRows(listData, questiontableheads, onEdit, onDelete)
-
-  // function onEdit(item) {
-  //   dispatch(setQuestionEdit(item))
-  //   editFun()
-  // }
-
-  // async function onDelete(id) {
-  //   try {
-  //     const deleteRes = await deleteQuestion(id);
-  //     if (deleteRes?.data?.success) {
-  //       const fetchRes = await fetchList();
-  //       dispatch(setQuestionList(fetchRes?.data));
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
-
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await fetchList();
-  //       if (res?.data?.success) {
-  //         dispatch(setQuestionList(res?.data))
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-  //   if (course?.courseID && !isEdit) {
-  //     fetchData();
-  //   }
-  // }, [course, isEdit]);
-
-
-
-  const dispatch = useDispatch()
-  const { list = [], loading = false, } = props
   const [menu, setMenu] = useState(null);
+  const { course, editid } = useSelector(state => state.question)
+  const dispatch = useDispatch()
+
+  const [fetchList, { data: listData, isError: fetchErr, isLoading: fetchloading }] = useListQuestionMutation();
+  const [deleteQuestion, { data: delData, isError, isLoading: delLoading }] = useDeleteQuestionMutation();
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
-  const rows = generateRows(list, questiontableheads);
+  const rows = generateRows(listData, questiontableheads, onEdit, onDelete)
 
-  function columnClickhandler(item) {
-    console.log(item)
+  function onEdit(item) {
+    dispatch(setQuestionEdit(item))
+    editFun()
   }
 
-  function rowClickhandler(item) {
-    const activeRow = list.data[item]
-    dispatch(setActiveRow(activeRow))
+  async function onDelete(id) {
+    try {
+      const deleteRes = await deleteQuestion(id);
+      if (deleteRes?.data?.success) {
+        const fetchRes = await fetchList();
+        dispatch(setQuestionList(fetchRes?.data));
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchList();
+        if (res?.data?.success) {
+          dispatch(setQuestionList(res?.data))
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (course?.courseID && !isEdit) {
+      fetchData();
+    }
+  }, [course, isEdit]);
+  
 
 
   const renderMenu = (
@@ -136,23 +115,27 @@ function QuestionList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox px={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      {(loading || fetchloading) && <SoftBarLoader />}
+      {listData?.success ? <>
+        <SoftBox
+        px={2}
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={questiontableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={questiontableheads} rows={rows} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2}>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={5} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
     </Card>
   );
 }

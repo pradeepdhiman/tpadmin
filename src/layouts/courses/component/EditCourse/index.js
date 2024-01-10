@@ -12,10 +12,10 @@ import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import { useEffect, useRef, useState } from "react";
 import SoftButton from "components/SoftButton";
-import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CircularProgress, Grid, Switch } from "@mui/material";
 import { useDeleteCourseMutation } from "layouts/Courses/functions/query";
@@ -31,11 +31,13 @@ import MatItem from "../MatItem";
 import { useMatListQuery } from "layouts/Courses/functions/query";
 import { useUploadMatMutation } from "layouts/Courses/functions/query";
 import UploadMaterial from "../Uploadmaterial";
+import AssignSchedule from "../AssignSchedule";
 
 const tabs = [
   { label: 'Info', value: 'info' },
   { label: 'Status', value: 'status' },
   { label: 'Study Material', value: 'material' },
+  { label: 'Schedule', value: 'schedule' },
 ];
 
 
@@ -556,6 +558,7 @@ function EditCourse(props) {
           </SoftBox>
         </SoftBox>}
         {activeTab === "material" && <UploadMaterial/>}
+        {activeTab === "schedule" && <AssignSchedule/>}
       </SoftBox>
     </Card>
   );

@@ -7,7 +7,7 @@ import { readRequest } from "utils/utils";
 
 const questionApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
-        listQuestion: build.query({
+        listQuestion: build.mutation({
             query: () => readRequest("/CourseQuestion/List"),
         }),
         filterQuestion: build.mutation({
@@ -29,7 +29,7 @@ const questionApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
-    useListQuestionQuery,
+    useListQuestionMutation,
     useFilterQuestionMutation,
     useCreateQuestionMutation,
     useUpdateQuestionMutation,

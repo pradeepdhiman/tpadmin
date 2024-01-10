@@ -24,11 +24,24 @@ import { setActiveRow } from "layouts/Schedule/functions/scheduleSlice";
 import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from "react";
+import SoftButton from "components/SoftButton";
+import { formatDateFields } from "utils/utils";
 const tabs = [
   { label: 'Info', value: 'info' },
-  { label: 'Status', value: 'status' },
-  { label: 'Study Material', value: 'material' },
+  // { label: 'Status', value: 'status' },
+  // { label: 'Study Material', value: 'material' },
 ];
+
+const a = {
+  "remarks": "Good luck for your career",
+  "instructor": "haider",
+  "location": "delhi",
+  "validityDateTime": "2024-02-01",
+  "scheduleCreatedDateTime": "2024-01-23",
+  "endDate": "2024-01-18",
+  "startDate": "2024-01-11",
+  "scheduledName": "Schedule 1"
+}
 
 function EditSchedule(props) {
   const { toggleEdit = false, loading = false } = props
@@ -42,13 +55,16 @@ function EditSchedule(props) {
 
   const user = authUser()
 
+
   const { handleSubmit, control, reset, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: activeRow,
+    defaultValues: formatDateFields(activeRow, fields),
   });
 
 
   const submitFormData = async (data) => {
+    console.log(data)
+    return
     const isEditing = Object.keys(activeRow).length !== 0
 
     try {
@@ -76,10 +92,7 @@ function EditSchedule(props) {
         }
       }
 
-
-      console.log(newData, "newData sche");
-
-      const apiFunction = isEditing ? updateSchedule : addSchedule;
+      const apiFunction = isEditing ? addSchedule : updateSchedule;
       const res = await apiFunction(newData);
 
       if (res?.data?.success) {

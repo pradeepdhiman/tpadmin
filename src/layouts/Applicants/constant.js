@@ -9,7 +9,7 @@ export const fields = {
   address: { label: "Address", placeholder: "Address" },
   qualification: { label: "Qualification", placeholder: "Qualification" },
   designation: { label: "Designation", placeholder: "Designation" },
-  dob: { label: "Date of Birth", placeholder: "D.O.B" },
+  dob: { label: "Date of Birth", placeholder: "D.O.B", type:"date" },
   nationality: { label: "Nationality", placeholder: "Nationality" },
   companyName: { label: "Company Name", placeholder: "Company name" },
   companyContactNumber: { label: "Company Contact", placeholder: "Company contact number" },

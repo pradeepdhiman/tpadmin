@@ -28,6 +28,7 @@ import { setScheduleloading } from "layouts/Schedule/functions/scheduleSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setScheduleEdit } from "layouts/Schedule/functions/scheduleSlice";
 import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
+import { setActiveRow } from "layouts/Schedule/functions/scheduleSlice";
 
 // Data
 
@@ -69,21 +70,21 @@ function ScheduleList(props) {
     }
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await refreshSchedule();
-        if (res?.data?.success) {
-          dispatch(setScheduleList(res?.data))
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    if (course?.courseID && !isEdit) {
-      fetchData();
-    }
-  }, [course, isEdit]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await refreshSchedule();
+  //       if (res?.data?.success) {
+  //         dispatch(setScheduleList(res?.data))
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   if (course?.courseID && !isEdit) {
+  //     fetchData();
+  //   }
+  // }, [course, isEdit]);
 
   const renderMenu = (
     <Menu
