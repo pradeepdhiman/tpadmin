@@ -24,7 +24,7 @@ const routes = [
     icon: <DashboardIcon size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -35,7 +35,7 @@ const routes = [
     icon: <PeopleAltIcon size="12px" />,
     component: <Applicants />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -46,7 +46,7 @@ const routes = [
     icon: <MenuBookIcon size="12px" />,
     component: <Courses />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -57,7 +57,7 @@ const routes = [
     icon: <ScheduleIcon size="12px" />,
     component: <Schedule />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   }
   ,
@@ -69,7 +69,7 @@ const routes = [
     icon: <LocalMallIcon size="12px" />,
     component: <Orders />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -80,7 +80,7 @@ const routes = [
     icon: <BiotechIcon size="12px" />,
     component: <Assessments />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -91,7 +91,7 @@ const routes = [
     icon: <BiotechIcon size="12px" />,
     component: <CourseQuestions />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -102,7 +102,7 @@ const routes = [
     icon: <ManageAccountsIcon size="12px" />,
     component: <Settings />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {

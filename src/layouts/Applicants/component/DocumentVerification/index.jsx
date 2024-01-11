@@ -57,7 +57,7 @@ const DocumentVerification = () => {
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <SoftBox p={2}>
-                        
+
                         {/* <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
                             {getLoading && <SoftBarLoader />}
                             {dataObject.length !== 0 ? (
@@ -72,7 +72,7 @@ const DocumentVerification = () => {
                         </SoftBox> */}
                     </SoftBox>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                     <SoftBox p={2}>
                         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
                             {getLoading && <SoftBarLoader />}
@@ -86,6 +86,15 @@ const DocumentVerification = () => {
                                 <SoftTypography>Data not Available</SoftTypography>
                             )}
                         </SoftBox>
+                    </SoftBox>
+                </Grid> */}
+                <Grid xs={12}>
+                    <SoftBox p={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center" }}>
+                        <ul>
+                        {Object.entries(appliedCourse?.data || {}).map(([key, value]) => (
+                            <SoftTypography component="li" key={key}><strong>{key}:</strong> {value}</SoftTypography>
+                        ))}
+                        </ul>
                     </SoftBox>
                 </Grid>
             </Grid>

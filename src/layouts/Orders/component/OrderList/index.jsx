@@ -14,20 +14,35 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import data from "./data";
 import DoneIcon from '@mui/icons-material/Done';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { generateRows } from "utils/utils";
+import { tableheads } from "layouts/Orders/constant";
 
 // Data
 
-function OrderList() {
-  const { columns, rows } = data();
+
+
+function OrderList(props) {
+  const { list = [], loading = false,  } = props
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+
+  const rows = generateRows(list, tableheads);
+
+  function columnClickhandler(item) {
+    console.log(item)
+  }
+
+  function rowClickhandler(item) {
+    // const activeRow = list.data[item]
+    // dispatch(setActiveRow(activeRow))
+  }
+
+
 
   const renderMenu = (
     <Menu
@@ -45,8 +60,7 @@ function OrderList() {
       onClose={closeMenu}
     >
       <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>New Orders</MenuItem>
-      <MenuItem onClick={closeMenu}>Compleated</MenuItem>
+      <MenuItem onClick={closeMenu}>latest</MenuItem>
     </Menu>
   );
 
@@ -55,7 +69,7 @@ function OrderList() {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            Order List
+            Applicant List
           </SoftTypography>
           <SoftBox display="flex" alignItems="center" lineHeight={0}>
             <Icon
@@ -79,8 +93,7 @@ function OrderList() {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
-      px={2}
+      <SoftBox px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {
@@ -90,7 +103,7 @@ function OrderList() {
           },
         }}
       >
-        <Table columns={columns} rows={rows} />
+        <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
       <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

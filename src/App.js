@@ -1,52 +1,32 @@
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
-
-import SoftBox from "components/SoftBox";
 
 import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
 
 import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
-
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
-
 import routes from "./routes";
 import { ProtectedRoute } from "./ProtectedRoute";
 
-import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useSoftUIController, setMiniSidenav } from "context";
 
 import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
- function App() {
+function App() {
   const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+  const { miniSidenav, layout, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
 
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
-
-    setRtlCache(cacheRtl);
-  }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -63,14 +43,6 @@ import 'react-toastify/dist/ReactToastify.css';
       setOnMouseEnter(false);
     }
   };
-
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
-  // Setting the dir attribute for the body element
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
@@ -100,25 +72,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
   return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ToastContainer />
-        {layout === "dashboard" && (
-          <Sidenav
-            color={sidenavColor}
-            brand={brand}
-            brandName="Training Portal"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-        )}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ToastContainer />
+      {layout === "dashboard" && (
+        <Sidenav
+          color={sidenavColor}
+          brand={brand}
+          brandName="Training Portal"
+          routes={routes}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        />
+      )}
+      <Routes>
+        {getRoutes(routes)}
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/dashboard" />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 

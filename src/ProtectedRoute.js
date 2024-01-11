@@ -1,28 +1,17 @@
 import React from "react";
 import { useAuth } from './auth-context/auth.context';
 import { useNavigate, Outlet } from 'react-router-dom';
-import SoftAlert from "./components/SoftAlert";
-// import SweetAlert from "react-bootstrap-sweetalert";
+import { authUser } from "layouts/authentication/functions/query";
 
 export const ProtectedRoute = () => {
   const navigate = useNavigate();
-  let { user } = useAuth();
-    return (<>
-      {(!user || !user.token || user.token === "") ? (
-        // <SweetAlert
-        //   title="You must be signed in!"
-        //   onCancel={() => navigate("/authentication/sign-in")}
-        //   onConfirm={() => navigate("/authentication/sign-in")}
-        //   confirmBtnCssClass={"px-5"}
-        // />
-        <SoftAlert
-          title="You must be signed in!"
-          onCancel={() => navigate("/authentication/sign-in")}
-          onConfirm={() => navigate("/authentication/sign-in")}
-          confirmBtnCssClass={"px-5"}
-        />
-      ) : (
-        <Outlet />
-      )}
-  </>);
+  const user = authUser()
+  
+
+  if (!user || !user.token || user.token === "") {
+    navigate("/authentication/sign-in");
+    return null;
+  }
+
+  return <Outlet />;
 };

@@ -105,7 +105,7 @@ function EditApplicant(props) {
 
   async function onDelete() {
     try {
-      const res = await deleteApplicant(activeRow.applicantID)
+      const res = await deleteApplicant({id:activeRow.applicantID})
       if (res.data.success) {
         closeEdit()
       }

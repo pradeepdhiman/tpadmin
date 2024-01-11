@@ -9,23 +9,24 @@ import SoftBox from "components/SoftBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import typography from "assets/theme/base/typography";
-import SoftButton from "components/SoftButton";
-import { useState } from "react";
 import OrderList from "./component/OrderList";
+import { useCourselistApplicantQuery } from "./functions/query";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 function Orders() {
-  const { size } = typography;
-
-
+  const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useCourselistApplicantQuery();
+  let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.receipt == null)
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg>
-            <OrderList />
-          </Grid>
+          {listLoading && <SoftBarLoader />}
+          {applicantCourseList?.success && (
+            <Grid item xs={12}>
+              <OrderList list={pendingPaymentCourse} loading={listLoading} />
+            </Grid>
+          )}
         </Grid>
       </SoftBox>
       <Footer />
