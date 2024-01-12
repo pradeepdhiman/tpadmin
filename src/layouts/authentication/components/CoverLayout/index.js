@@ -20,7 +20,7 @@ import Footer from "layouts/authentication/components/Footer";
 function CoverLayout({ color, header, title, description, image, top, children }) {
   return (
     <PageLayout background="white">
-      <DefaultNavbar/>
+      {/* <DefaultNavbar/> */}
       <Grid
         container
         justifyContent="center"
@@ -30,7 +30,8 @@ function CoverLayout({ color, header, title, description, image, top, children }
         }}
       >
         <Grid item xs={11} sm={8} md={5} xl={3}>
-          <SoftBox mt={top}>
+          {/* <SoftBox mt={top}> */}
+          <SoftBox >
             <SoftBox pt={3} px={3}>
               {!header ? (
                 <>
@@ -75,7 +76,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
           </SoftBox>
         </Grid>
       </Grid>
-      <Footer />
+      {/* <Footer /> */}
     </PageLayout>
   );
 }

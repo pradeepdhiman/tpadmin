@@ -14,10 +14,14 @@ const dashboardApis = emptySplitApi.injectEndpoints({
         dbCourses: build.query({
             query: () => readRequest("/Course/List"),
         }),
+        dbcourselistApplicant: build.query({
+            query: () => readRequest("/ApplicantCourse/List"),
+        }),
     }),
 });
 
 export const {
     useDbApplicantQuery,
     useDbCoursesQuery,
+    useDbcourselistApplicantQuery,
 } = dashboardApis;

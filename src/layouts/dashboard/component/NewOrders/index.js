@@ -12,8 +12,11 @@ import SoftTypography from "components/SoftTypography";
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import TimelineItem from "examples/Timeline/TimelineItem";
+import { useDbcourselistApplicantQuery } from "layouts/dashboard/functions/query";
 
 function NewOrders() {
+  // const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useDbcourselistApplicantQuery();
+  // let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.receipt == null)
   return (
     <Card className="h-100">
       <SoftBox pt={3} px={3}>
