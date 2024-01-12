@@ -10,6 +10,9 @@ const scheduleApis = emptySplitApi.injectEndpoints({
         listSchedule: build.query({
             query: () => readRequest("/Schedule/List"),
         }),
+        schCoursList: build.query({
+            query: () => readRequest("/Course/List"),
+        }),
         filterSchedule: build.mutation({
             query: (filters) => createRequest("/Schedule/GetSchedules", filters),
         }),
@@ -30,6 +33,7 @@ const scheduleApis = emptySplitApi.injectEndpoints({
 
 export const {
     useListScheduleQuery,
+    useSchCoursListQuery,
     useFilterScheduleMutation,
     useCreateScheduleMutation,
     useUpdateScheduleMutation,

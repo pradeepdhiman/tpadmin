@@ -39,6 +39,7 @@ const MasterForm = (props) => {
                   <SoftInput
                     type={ formFields[fieldName].type ? formFields[fieldName].type :"text"}
                     {...field}
+                    disabled={formFields[fieldName]?.disabled}
                     placeholder={formFields[fieldName].placeholder}
                   />
                   {errors[fieldName] && (

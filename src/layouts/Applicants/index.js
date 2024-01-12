@@ -77,7 +77,7 @@ function Applicants() {
         <Grid container spacing={3}>
           <Grid xs={12}>
             <SoftBox px={3}>
-              <SoftButton disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addApplicant}>Add Applicant</SoftButton>
+              <SoftButton variant="gradient" disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addApplicant}>Add Applicant</SoftButton>
             </SoftBox>
           </Grid>
           {(Object.keys(activeRow).length !== 0 || isEdit) && (

@@ -17,13 +17,22 @@ export const initialValue = {
 export const fields = {
     scheduledName: { label: "Schedule name", placeholder: "Schedule name", hidden: false },
     startDate: { label: "Start date", placeholder: "Start date", hidden: false, type:"date" },
-    endDate: { label: "Start date", placeholder: "Start date", hidden: false, type:"date" },
+    endDate: { label: "End date", placeholder: "End date", hidden: false, type:"date" },
     scheduleCreatedDateTime: { label: "Create datetime", placeholder: "Create datetime", hidden: false, type:"date" },
     validityDateTime: { label: "Validity datetime", placeholder: "Validity datetime", hidden: false, type:"date" },
     location: { label: "Location", placeholder: "Location", hidden: false },
     instructor: { label: "Instructor", placeholder: "Validity datetime", hidden: false },
     remarks: { label: "Remarks", placeholder: "Remarks", hidden: false },
-
+}
+export const editmodefields = {
+    scheduledName: { label: "Schedule name", placeholder: "Schedule name", hidden: false },
+    startDate: { label: "Start date", placeholder: "Start date", hidden: false, type:"date" },
+    endDate: { label: "End date", placeholder: "End date", hidden: false, type:"date" },
+    scheduleCreatedDateTime: { label: "Create datetime", placeholder: "Create datetime", hidden: false, type:"date", disabled:true },
+    validityDateTime: { label: "Validity datetime", placeholder: "Validity datetime", hidden: false, type:"date" },
+    location: { label: "Location", placeholder: "Location", hidden: false },
+    instructor: { label: "Instructor", placeholder: "Validity datetime", hidden: false },
+    remarks: { label: "Remarks", placeholder: "Remarks", hidden: false },
 }
 
 

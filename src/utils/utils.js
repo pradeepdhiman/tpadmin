@@ -297,3 +297,29 @@ export const formatDateFields = (activeRow, fields) => {
   }
   return result;
 };
+
+export function getNestedValue(obj, key) {
+  if (!obj || typeof obj !== 'object') {
+    return undefined;
+  }
+
+  const stack = [{ obj, keys: Object.keys(obj) }];
+
+  while (stack.length > 0) {
+    const { obj, keys } = stack.pop();
+
+    for (const prop of keys) {
+      const value = obj[prop];
+
+      if (prop === key) {
+        return value;
+      }
+
+      if (value && typeof value === 'object') {
+        stack.push({ obj: value, keys: Object.keys(value) });
+      }
+    }
+  }
+
+  return undefined;
+}

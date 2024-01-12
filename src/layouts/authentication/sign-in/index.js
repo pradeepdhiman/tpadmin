@@ -59,17 +59,21 @@ function SignIn() {
   }
 
 
-  const handleRedirect = () => {
-    return navigate("/dashboard");
-  };
 
   useEffect(() => {
     if (data?.success) {
+      if (data?.data?.userType != "Active") {
+        return
+      }
       const userString = JSON.stringify(data.data || {});
       saveObject("user", userString);
       navigate("/dashboard");
     }
   }, [data]);
+
+  const handleRedirect = () => {
+    return navigate("/dashboard");
+  };
 
 
   return (
@@ -144,6 +148,11 @@ function SignIn() {
                 }}
               >
                 {data ? (!data.success ? (data.errors && data.errors.length > 0 ? data.errors[0] : null) : null) : null}
+                {data && data?.data?.userType !== "Active" && (
+                  <p>Applicant cannot log in as admin</p>
+                )}
+
+
               </h6>
             </SoftBox>
             <SoftBox mt={4} mb={1}>
@@ -151,21 +160,6 @@ function SignIn() {
                 sign in
               </SoftButton>
             </SoftBox>
-            {/* <SoftBox mt={3} textAlign="center">
-              <SoftTypography variant="button" color="text" fontWeight="regular">
-                Don&apos;t have an account?{" "}
-                <SoftTypography
-                  component={Link}
-                  to="/authentication/sign-up"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Sign up
-                </SoftTypography>
-              </SoftTypography>
-            </SoftBox> */}
           </SoftBox>
         </>
       )}

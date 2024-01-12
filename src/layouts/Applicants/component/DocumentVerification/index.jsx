@@ -1,41 +1,17 @@
-import { Card, Grid } from "@mui/material";
+import { Card, Grid, Switch } from "@mui/material";
 import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useApplicantCompleteCourseMutation } from "layouts/Applicants/functions/query";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import ListItem from "../ListIem";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { authUser } from "layouts/authentication/functions/query";
 import { useAppliedCourseQuery } from "layouts/Applicants/functions/query";
+import { useCourseProofQuery } from "layouts/Applicants/functions/query";
 
-const dataObject = [
-    {
-        href: "https://source.unsplash.com/random/300x200",
-        title: "Document 1"
-    },
-    {
-        href: "https://source.unsplash.com/random/300x200",
-        title: "Document 2"
-    },
-    {
-        href: "https://source.unsplash.com/random/300x200",
-        title: "Document 22"
-    },
-    {
-        href: "https://source.unsplash.com/random/300x200",
-        title: "Document 855"
-    },
-    {
-        href: "https://via.placeholder.com/150",
-        title: "Document 177"
-    }
-]
 
 const DocumentVerification = () => {
     const { activeRow } = useSelector(state => state.applicant);
     const { data: appliedCourse, isError: appliedErr, isLoading: appliedLoading } = useAppliedCourseQuery({ ApplicantID: activeRow?.applicantID });
+    const { data: proofdoc, isError: proofErr, isLoading: proofLoading } = useCourseProofQuery({ id: appliedCourse?.data?.applicantCourseID });
     const [getCompletedcourse, { data: getResp, isError: getErr, isLoading: getLoading }] = useApplicantCompleteCourseMutation();
 
     console.log(activeRow, "asdfasdfasdf")
@@ -51,6 +27,20 @@ const DocumentVerification = () => {
 
         fetchFunction();
     }, [activeRow, getCompletedcourse]);
+
+    async function statusChangehandler() {
+        let status = proofdoc?.data?.status === null || proofdoc?.data?.status === undefined || proofdoc?.data?.status === 1 ? 0 : 1;
+        let updatedStatus = { ...proofdoc?.data, status };
+    
+        // try {
+        //   const res = await updateCourse(updatedStatus)
+        //   if (res?.data?.success) {
+        //     dispatch(setActiveRow(updatedStatus))
+        //   }
+        // } catch (err) {
+        //   console.log(err)
+        // }
+      }
 
     return (
         <Card id="Complete-course" sx={{ height: "100%" }}>
@@ -89,11 +79,23 @@ const DocumentVerification = () => {
                     </SoftBox>
                 </Grid> */}
                 <Grid xs={12}>
-                    <SoftBox p={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center" }}>
+                    <SoftBox p={2} px={4}>
+                        <SoftBox display="flex" mb={0.25}>
+                            <SoftBox>
+                                <Switch checked={proofdoc?.data?.status === 1} onChange={statusChangehandler} />
+                            </SoftBox>
+                            <SoftBox width="80%" ml={2}>
+                                <SoftTypography variant="button" fontWeight="regular" color="text">
+                                    {proofdoc?.data?.status === 1 ? "Course is Active" : "Course is not active"}
+                                </SoftTypography>
+                            </SoftBox>
+                        </SoftBox>
+                    </SoftBox>
+                    <SoftBox p={2} px={4} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center" }}>
                         <ul>
-                        {Object.entries(appliedCourse?.data || {}).map(([key, value]) => (
-                            <SoftTypography component="li" key={key}><strong>{key}:</strong> {value}</SoftTypography>
-                        ))}
+                            {Object.entries(proofdoc?.data || {}).map(([key, value]) => (
+                                <SoftTypography component="li" key={key}><strong>{key}:</strong> {value}</SoftTypography>
+                            ))}
                         </ul>
                     </SoftBox>
                 </Grid>

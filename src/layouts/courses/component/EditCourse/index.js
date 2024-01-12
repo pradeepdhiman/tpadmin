@@ -55,7 +55,7 @@ function EditCourse(props) {
   });
   const [openOption, setOpenOption] = useState(false);
   const optionListRef = useRef(null);
-  
+
   const [updateCourse, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateCourseMutation()
   const [createCourse, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateCourseMutation()
   const [deleteCourse, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteCourseMutation()
@@ -63,7 +63,7 @@ function EditCourse(props) {
   const { data: categories, error: catErr, isLoading: catLoading, refetch: refreshCat } = useListCategoryQuery()
   const [addCatCourse, { data: addCatRes, error: addCatErr, isLoading: addCatLoading }] = useCreateCategoryMutation()
 
- 
+
   const { activeRow } = useSelector(state => state.courses)
 
 
@@ -240,7 +240,7 @@ function EditCourse(props) {
           {!newCategory && <SoftButton onClick={addCat} fullWidth size="small" variant="outlined" color="info">New Category</SoftButton>}
           {newCategory && <SoftBox className={styles.flexBox}>
             <SoftInput value={newCategoryValue.categoryName} onChange={categoryChangehandler} placeholder="Category name" sx={{ grow: 1 }} />
-            <SoftButton onClick={saveCategory} disabled={!newCategoryValue || addCatLoading} color="dark">Add</SoftButton>
+            <SoftButton variant="gradient" onClick={saveCategory} disabled={!newCategoryValue || addCatLoading} color="dark">Add</SoftButton>
           </SoftBox>}
           <SoftBox mt={1} sx={{ maxHeight: "200px", overflowY: "auto" }}>
             {categories?.data?.map(item => (<SoftBox py={.5} sx={{ cursor: "pointer" }} onClick={() => optionListhandler(item)} key={item.categoryID}>
@@ -269,7 +269,7 @@ function EditCourse(props) {
       </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Applicant
+          Course
         </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
@@ -342,13 +342,13 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Duration
+                          Duration (Hrs)
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
                         type="text"
                         {...field}
-                        placeholder="Duration"
+                        placeholder="Duration (hrs)"
                       />
                       {errors.duration && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -442,13 +442,13 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Tax
+                          Tax/VAT (Amount)
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
                         type="text"
                         {...field}
-                        placeholder=" Tax"
+                        placeholder=" Tax/VAT (Amount)"
                       />
                       {errors.vat && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -557,8 +557,8 @@ function EditCourse(props) {
             </SoftBox>
           </SoftBox>
         </SoftBox>}
-        {activeTab === "material" && <UploadMaterial/>}
-        {activeTab === "schedule" && <AssignSchedule/>}
+        {activeTab === "material" && <UploadMaterial />}
+        {activeTab === "schedule" && <AssignSchedule />}
       </SoftBox>
     </Card>
   );

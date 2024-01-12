@@ -26,6 +26,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from "react";
 import SoftButton from "components/SoftButton";
 import { formatDateFields } from "utils/utils";
+import { editmodefields } from "layouts/Schedule/constant";
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
@@ -141,7 +142,7 @@ function EditSchedule(props) {
       </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Applicant
+          Schedule
         </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
@@ -178,7 +179,7 @@ function EditSchedule(props) {
 
       </SoftBox>
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={fields} loading={addLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+        <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={ Object.keys(activeRow).length === 0 ? fields : editmodefields} loading={addLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
       </SoftBox>
     </Card>
   );

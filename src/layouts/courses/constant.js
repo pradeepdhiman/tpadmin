@@ -17,7 +17,7 @@ export const initialValue = {
 
 export const fields = {
   courseName: { label: "Course Name", placeholder: "Course name" },
-  duration: { label: "Duration", placeholder: "Duration" },
+  duration: { label: "Duration (Hrs)", placeholder: "Duration (Hrs)" },
   categoryID: { label: "Category Id", placeholder: "Category Id", hidden: false },
   syllabus: { label: "Syllabus", placeholder: "Syllabus" },
   trainingfee: { label: "Training Fee", placeholder: "Training Fee" },

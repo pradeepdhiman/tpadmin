@@ -5,7 +5,7 @@ export const fields = {
   firstName: { label: "First Name", placeholder: "First name" },
   lastName: { label: "Last Name", placeholder: "Last name" },
   email: { label: "Email Id", placeholder: "Email id" },
-  phone: { label: "Phone Number", placeholder: "Phone number" },
+  phone: { label: "Phone Number", placeholder: "Phone number", type:"number" },
   address: { label: "Address", placeholder: "Address" },
   qualification: { label: "Qualification", placeholder: "Qualification" },
   designation: { label: "Designation", placeholder: "Designation" },
@@ -21,11 +21,11 @@ export const schema = yup.object().shape({
   firstName: yup.string().required('First Name is required'),
   lastName: yup.string(),
   email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup
-    .number()
-    .min(1000000000, 'Phone must be at least 10 digits')
-    .max(9999999999, 'Phone should not be more then 10 digits')
-    .required('Phone is required'),
+  phone: yup.string()
+  .required('Phone is required')
+  .matches(/^\d+$/, 'Phone must only contain digits')
+  .min(10, 'Min number of digits (10) you can check')
+  .max(10, 'Max number of digits (10) you can check'),
   address: yup.string().required('Address is required'),
   qualification: yup.string().required('Qualification is required'),
   designation: yup.string(),

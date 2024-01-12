@@ -1,6 +1,5 @@
 import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useApplicantCompleteCourseMutation } from "layouts/Applicants/functions/query";
 import { useEffect } from "react";

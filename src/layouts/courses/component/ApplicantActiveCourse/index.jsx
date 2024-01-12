@@ -2,7 +2,6 @@
 
 import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";
-import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
