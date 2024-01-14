@@ -11,7 +11,7 @@ import SoftTypography from "components/SoftTypography";
 // Soft UI Dashboard React examples
 import CloseIcon from '@mui/icons-material/Close';
 import { authUser } from "layouts/authentication/functions/query";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "layouts/Schedule/constant";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,49 +23,75 @@ import moment from "moment";
 import { setActiveRow } from "layouts/Schedule/functions/scheduleSlice";
 import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import { formatDateFields } from "utils/utils";
 import { editmodefields } from "layouts/Schedule/constant";
+import { Grid } from "@mui/material";
+import SoftInput from "components/SoftInput";
+import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
+import { useMasterListByTypeQuery } from "common/query";
+import { masterCode } from "common/constant";
+import { usePostMasterMutation } from "common/query";
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
   // { label: 'Study Material', value: 'material' },
 ];
 
-const a = {
-  "remarks": "Good luck for your career",
-  "instructor": "haider",
-  "location": "delhi",
-  "validityDateTime": "2024-02-01",
-  "scheduleCreatedDateTime": "2024-01-23",
-  "endDate": "2024-01-18",
-  "startDate": "2024-01-11",
-  "scheduledName": "Schedule 1"
-}
+
 
 function EditSchedule(props) {
   const { toggleEdit = false, loading = false } = props
   const [activeTab, setActiveTab] = useState("info");
+  const [instructor, setInstructor] = useState({});
+  const [location, setLocation] = useState({});
+  const [status, setStatus] = useState({});
+
   const dispatch = useDispatch()
-  const { activeRow } = useSelector(state => state.schedule)
+  const { activeRow, course } = useSelector(state => state.schedule)
 
   const [addSchedule, { data: addData, isError: addErr, isLoading: addLoading }] = useUpdateScheduleMutation()
   const [updateSchedule, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useCreateScheduleMutation()
   const [delSchedule, { data: delData, isError: delErr, isLoading: delLoading }] = useDeleteScheduleMutation()
-
+  const { data: instructorList } = useMasterListByTypeQuery({ TypeID: masterCode.Instructor })
+  const { data: locationList } = useMasterListByTypeQuery({ TypeID: masterCode.Location })
+  const { data: statusList } = useMasterListByTypeQuery({ TypeID: masterCode.Status })
+  const [addMaster, { isLoading: masterLoading }] = usePostMasterMutation()
   const user = authUser()
 
+  // {
+  //   "masterCodeID": 0,
+  //   "code": 0,
+  //   "value": "string",
+  //   "fixedColumnName": "string",
+  //   "description": "string",
+  //   "masterCodeTypeID": 0
+  // }
+  useEffect(() => {
+    const isEditing = Object.keys(activeRow).length !== 0;
+    if (isEditing) {
+      let locationId = activeRow.location;
+      let instructorId = activeRow.instructor;
+      let statusId = activeRow.status;
+      let foundStatus = statusList?.data?.find(status => status.masterCodeID === statusId);
+      let foundLocation = locationList?.data?.find(location => location.masterCodeID === locationId);
+      let foundInstructor = instructorList?.data?.find(instructor => instructor.masterCodeID === instructorId);
 
-  const { handleSubmit, control, reset, setValue, formState: { errors } } = useForm({
+      setLocation(foundLocation);
+      setInstructor(foundInstructor);
+      setStatus(foundStatus);
+    }
+  }, [activeRow, locationList, instructorList, statusList]);
+
+
+  const { handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: formatDateFields(activeRow, fields),
   });
 
 
   const submitFormData = async (data) => {
-    console.log(data)
-    return
     const isEditing = Object.keys(activeRow).length !== 0
 
     try {
@@ -76,6 +102,10 @@ function EditSchedule(props) {
           ...data,
           scheduledID: parseInt(activeRow?.scheduledID),
           createdById: parseInt(activeRow?.createdById),
+          courseID: parseInt(activeRow?.courseID),
+          instructor: parseInt(data?.instructor),
+          location: parseInt(data?.location),
+          status: parseInt(data?.status),
           // startDate: moment(data.startDate).format("YYYY-MM-DD"),
           // endDate: moment(data.endDate).format("YYYY-MM-DD"),
           // validityDateTime: moment(data.validityDateTime).format("YYYY-MM-DD"),
@@ -86,12 +116,16 @@ function EditSchedule(props) {
           ...data,
           scheduledID: 0,
           createdById: parseInt(user?.id),
+          courseID: parseInt(course?.courseID),
+          instructor: parseInt(data?.instructor),
+          location: parseInt(data?.location),
           // startDate: moment(data.startDate).format("YYYY-MM-DD"),
           // endDate: moment(data.endDate).format("YYYY-MM-DD"),
           // validityDateTime: moment(data.validityDateTime).format("YYYY-MM-DD"),
           // scheduleCreatedDateTime: moment(data.scheduleCreatedDateTime).format("YYYY-MM-DD"),
         }
       }
+      console.log(newData)
 
       const apiFunction = isEditing ? addSchedule : updateSchedule;
       const res = await apiFunction(newData);
@@ -125,6 +159,59 @@ function EditSchedule(props) {
   function tabhandler(tab) {
     setActiveTab(tab)
   }
+
+  function instructorHandler(_, newVal) {
+    setValue('instructor', parseInt(newVal.masterCodeID));
+    setInstructor(newVal)
+  }
+
+  async function instructorSaveHandler(data) {
+    const newData = {
+      masterCodeID: 0,
+      code: 0,
+      value: data,
+      fixedColumnName: null,
+      description: null,
+      masterCodeTypeID: masterCode.Instructor
+    };
+
+    try {
+      const response = await addMaster(newData);
+      console.log("Add master response:", response);
+    } catch (error) {
+      console.error("Error adding master:", error);
+    }
+  }
+
+  function locationHandler(_, newVal) {
+    setValue('location', parseInt(newVal.masterCodeID));
+    setLocation(newVal)
+  }
+
+  async function locationSaveHandler(data) {
+    const newData = {
+      masterCodeID: 0,
+      code: 0,
+      value: data,
+      fixedColumnName: null,
+      description: null,
+      masterCodeTypeID: masterCode.location
+    };
+
+    try {
+      const response = await addMaster(newData);
+      console.log("Add master response:", response);
+    } catch (error) {
+      console.error("Error adding master:", error);
+    }
+  }
+
+  function statusHandler(_, newVal) {
+    setValue('status', parseInt(newVal.masterCodeID));
+    setStatus(newVal)
+  }
+
+
   return (
     <Card className="h-100">
       {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
@@ -142,7 +229,7 @@ function EditSchedule(props) {
       </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Schedule
+          {course?.courseName} Schedule
         </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
@@ -179,7 +266,240 @@ function EditSchedule(props) {
 
       </SoftBox>
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={ Object.keys(activeRow).length === 0 ? fields : editmodefields} loading={addLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+        {/* <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={Object.keys(activeRow).length === 0 ? fields : editmodefields} loading={addLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} /> */}
+        <form onSubmit={handleSubmit(submitFormData)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="scheduledName"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Schedule Name
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Schedule Name"
+                    />
+                    {errors.scheduledName && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.scheduledName.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="startDate"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Start Date
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="date"
+                      {...field}
+                      placeholder="Start date"
+                    />
+                    {errors.startDate && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.startDate.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="endDate"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        End Date
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="date"
+                      {...field}
+                      placeholder="End date"
+                    />
+                    {errors.endDate && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.endDate.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="scheduleCreatedDateTime"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Schedule Create Datetime
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="date"
+                      {...field}
+                      placeholder="Schedule Create Datetime"
+                      disabled
+                    />
+                    {errors.scheduleCreatedDateTime && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.scheduleCreatedDateTime.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="validityDateTime"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Validity Datetime
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="date"
+                      {...field}
+                      placeholder="Validity Datetime"
+                    />
+                    {errors.validityDateTime && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.validityDateTime.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="remarks"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Remarks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Remarks"
+                    />
+                    {errors.remarks && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.remarks.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Instructor
+                  </SoftTypography>
+                </SoftBox>
+                <SoftAddAbleAutoSelect
+                  dataList={instructorList?.data || []}
+                  selectedValue={instructor}
+                  selectHandler={instructorHandler}
+                  label={null}
+                  placeholder="Instructor"
+                  saveHandler={instructorSaveHandler}
+                  loading={masterLoading}
+                  isEditable={true}
+                />
+                {errors.instructor && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.instructor.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Location
+                  </SoftTypography>
+                </SoftBox>
+                <SoftAddAbleAutoSelect
+                  dataList={locationList?.data || []}
+                  selectedValue={location}
+                  selectHandler={locationHandler}
+                  label={null}
+                  placeholder="Location"
+                  saveHandler={locationSaveHandler}
+                  loading={masterLoading}
+                  isEditable={true}
+                />
+                {errors.location && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.location.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            </Grid>
+            {Object.keys(activeRow).length !== 0 && <Grid item xs={12} sm={6} md={3}>
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Status
+                  </SoftTypography>
+                </SoftBox>
+                <SoftAddAbleAutoSelect
+                  dataList={statusList?.data || []}
+                  selectedValue={status}
+                  selectHandler={statusHandler}
+                  label={null}
+                  placeholder="Status"
+                  loading={masterLoading}
+                  isEditable={false}
+                />
+                {errors.location && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.location.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            </Grid>}
+          </Grid>
+
+
+          <SoftBox mt={4} mb={1}>
+            <SoftButton variant="gradient" color="info" type="submit" fullWidth>
+              {(addLoading || updateLoading) ? 'Loading..' : 'Submit'}
+            </SoftButton>
+          </SoftBox>
+        </form>
       </SoftBox>
     </Card>
   );

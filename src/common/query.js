@@ -26,13 +26,21 @@ const categoryApis = emptySplitApi.injectEndpoints({
         deleteCategory: build.mutation({
             query: (id) => deleteRequest("/CourseCategory", id),
         }),
+        postMaster: build.mutation({
+            query: (data) => createRequest("/MasterCode", data),
+        }),
+        masterListByType: build.query({
+            query: (data) => getRequest("/MasterCode/GetMasterCodeListByType", data),
+        }),
     }),
 });
 
 export const {
     useDblistcoursesQuery,
+    useMasterListByTypeQuery,
     useListCategoryQuery,
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
     useDeleteCategoryMutation,
+    usePostMasterMutation,
 } = categoryApis;

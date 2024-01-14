@@ -62,9 +62,9 @@ function SignIn() {
 
   useEffect(() => {
     if (data?.success) {
-      if (data?.data?.userType != "Active") {
-        return
-      }
+      // if (data?.data?.userType != "Active") {
+      //   return
+      // }
       const userString = JSON.stringify(data.data || {});
       saveObject("user", userString);
       navigate("/dashboard");

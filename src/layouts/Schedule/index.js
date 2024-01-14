@@ -16,20 +16,21 @@ import ScheduleList from "./component/ScheduleList";
 import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow, setScheduleCourse } from "./functions/scheduleSlice";
-import { useCreateScheduleMutation, useListScheduleQuery, useSchCoursListQuery } from "./functions/query";
+import { useCreateScheduleMutation, useListScheduleQuery, useListSchedulebyCourseIDMutation, useSchCoursListQuery } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 const loadingState = { courseName: "Loading..." }
 
 
 function Schedule() {
   const dispatch = useDispatch()
-  const { activeRow} = useSelector(state => state.schedule)
+  const { activeRow, course } = useSelector(state => state.schedule)
   const [editId, setEditId] = useState("")
+  const [selectedCourse, setSelectedCourse] = useState("");
   const { data: scheduleList, isError: schError, isLoading: schLoading, refetch: refreshSchedule } = useListScheduleQuery()
   const { data: courselist, isError: courselistError, isLoading: courselistLoading, refetch: refreshcourselist } = useSchCoursListQuery()
   const [createSchedule, { data: createRes, isError: createErr, isLoading: createLoading }] = useCreateScheduleMutation()
   const [isEdit, setEdit] = useState(false)
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [getSchByCourseId, { data: schDataList, isLoading: schListLoading }] = useListSchedulebyCourseIDMutation()
 
   useEffect(() => {
     if (!selectedCourse) {
@@ -38,15 +39,24 @@ function Schedule() {
     }
   }, [courselist])
 
-  // function addNew() {
-  //   setEdit(true)
-  // }
-  // function editMode() {
-  //   setEdit(false)
-  // }
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await getSchByCourseId({ courseID: course?.courseID });
+      } catch (error) {
+        console.error('Error fetching schedule data:', error);
+      }
+    };
+
+    if (course) {
+      fetchData();
+    }
+  }, [course]);
+
 
   const handleCourseSelect = (event, newValue) => {
-    refreshSchedule()
     setSelectedCourse(newValue);
     dispatch(setScheduleCourse(newValue))
   };
@@ -65,14 +75,13 @@ function Schedule() {
   }
 
 
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
-          <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
+            <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
               <Autocomplete
                 disablePortal
                 disableClearable
@@ -83,6 +92,7 @@ function Schedule() {
                 getOptionLabel={(option) => option.courseName}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} />}
+                disabled={Object.keys(activeRow).length !== 0}
               />
               <SoftButton variant="gradient" disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addSchedule}>Add Schedule</SoftButton>
             </SoftBox>
@@ -92,10 +102,10 @@ function Schedule() {
               <EditSchedule toggleEdit={editMode} editid={editId} addSchedule={createSchedule} loading={createLoading} />
             </Grid>
           )}
-          {schLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && scheduleList?.success && (
+          {schListLoading && <SoftBarLoader />}
+          {Object.keys(activeRow).length === 0 && schDataList?.success && (
             <Grid item xs={12}>
-              <ScheduleList list={scheduleList} loading={schLoading} />
+              <ScheduleList list={schDataList} loading={schListLoading} />
             </Grid>
           )}
         </Grid>

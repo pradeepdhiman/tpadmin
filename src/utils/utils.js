@@ -201,9 +201,9 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
       const columnName = column.name;
       const columnValue = rowItem[columnName];
       rowId = colIndex === 0 ? columnValue : rowId;
-      if (columnName === "status" || columnName === "isDeleted") {
-        const badgeContent = columnValue === 1 ? "Active" : "Deactive";
-        const badgeColor = columnValue === 1 ? "success" : "secondary";
+      if (columnName === "statusName" || columnName === "isDeleted") {
+        const badgeContent = columnValue === "Active" ? "Active" : "Deactive";
+        const badgeColor = columnValue === "Active" ? "success" : "secondary";
 
         rowCells[columnName] = (
           <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
