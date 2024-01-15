@@ -1,3 +1,5 @@
+
+
 export const masterCode = {
     Status: 1,
     UserTypeMaster: 2,
@@ -11,5 +13,6 @@ export const masterCode = {
     Location: 10,
     Instructor: 11,
     TrainingCertificateActivity: 12,
-    TrainingMaterialActivity: 13
+    TrainingMaterialActivity: 13,
+    TrainingMaterialType: 14
 };

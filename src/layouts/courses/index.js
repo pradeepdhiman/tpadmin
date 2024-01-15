@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "./functions/coursesSlice";
 import CoursesList from "./component/CoursesList";
 import EditCourse from "./component/EditCourse";
-import { useCreateCourseMutation, useDeleteCourseMutation, useFilterCourseMutation, useListCourseQuery, useUpdateCourseMutation } from "./functions/query";
+import { useCreateCourseMutation, useListCourseQuery } from "./functions/query";
 
 function Courses() {
 
@@ -31,23 +31,7 @@ function Courses() {
 
 
   const { data: courseList, isError: listErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
-  // const [filterCourse, { data: filterResp, isError: filterErr, isLoading: filterLoading }] = useFilterCourseMutation()
   const [createCourse, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateCourseMutation()
-  const [updateCourse, { data: updateResp, isError: updateErr, isLoading: updateLoading }] = useUpdateCourseMutation()
-  const [delCourse, { data: delResp, isError: delErr, isLoading: delLoading }] = useDeleteCourseMutation()
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await filterCourse(filters);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
 
   function editMode() {

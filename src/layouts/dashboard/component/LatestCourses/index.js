@@ -74,7 +74,7 @@ function LatestCourse() {
               <DoneIcon />
             </Icon>
             <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>30 new</strong> this month
+              &nbsp;<strong>{latestCourseList?.data?.length} new</strong> this month
             </SoftTypography>
           </SoftBox>
         </SoftBox>

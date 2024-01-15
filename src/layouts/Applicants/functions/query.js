@@ -12,7 +12,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         listApplicant: build.query({
             query: () => readRequest("/Applicant/List"),
         }),
-        courseProof: build.query({
+        courseProof: build.mutation({
             query: (data) => getRequest("/ApplicantCourse", data),
         }),
         appliedCourse: build.query({
@@ -51,5 +51,5 @@ export const { useGetApplicantMutation,
     useDeleteApplicantMutation,
     useListApplicantQuery,
     useAppliedCourseQuery,
-    useCourseProofQuery
+    useCourseProofMutation
  } = applicantApis;

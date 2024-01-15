@@ -62,9 +62,9 @@ function SignIn() {
 
   useEffect(() => {
     if (data?.success) {
-      // if (data?.data?.userType != "Active") {
-      //   return
-      // }
+      if (data?.data?.userType != "Admin") {
+        return
+      }
       const userString = JSON.stringify(data.data || {});
       saveObject("user", userString);
       navigate("/dashboard");
@@ -148,7 +148,7 @@ function SignIn() {
                 }}
               >
                 {data ? (!data.success ? (data.errors && data.errors.length > 0 ? data.errors[0] : null) : null) : null}
-                {data && data?.data?.userType !== "Active" && (
+                {data && data?.data?.userType !== "Admin" && (
                   <p>Applicant cannot log in as admin</p>
                 )}
 

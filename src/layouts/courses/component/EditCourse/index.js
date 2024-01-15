@@ -32,10 +32,13 @@ import { useMatListQuery } from "layouts/Courses/functions/query";
 import { useUploadMatMutation } from "layouts/Courses/functions/query";
 import UploadMaterial from "../Uploadmaterial";
 import AssignSchedule from "../AssignSchedule";
+import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
+import { masterCode } from "common/constant";
+import { useMasterListByTypeQuery } from "common/query";
 
 const tabs = [
   { label: 'Info', value: 'info' },
-  { label: 'Status', value: 'status' },
+  // { label: 'Status', value: 'status' },
   { label: 'Study Material', value: 'material' },
   { label: 'Schedule', value: 'schedule' },
 ];
@@ -47,6 +50,7 @@ function EditCourse(props) {
   const [activeTab, setActiveTab] = useState("info");
   const [newCategory, setNewCategory] = useState(false);
   const [selectedCat, setSelectedCat] = useState({});
+  const [crsStatus, setCrsStatus] = useState({});
   const [newCategoryValue, setNewCategoryValue] = useState({
     categoryID: 0,
     categoryName: '',
@@ -62,7 +66,7 @@ function EditCourse(props) {
 
   const { data: categories, error: catErr, isLoading: catLoading, refetch: refreshCat } = useListCategoryQuery()
   const [addCatCourse, { data: addCatRes, error: addCatErr, isLoading: addCatLoading }] = useCreateCategoryMutation()
-
+  const { data: courseStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.CourseStatus })
 
   const { activeRow } = useSelector(state => state.courses)
 
@@ -75,6 +79,13 @@ function EditCourse(props) {
       setSelectedCat(selectedCategory);
     }
   }, [categories, activeRow]);
+
+  useEffect(() => {
+    if (courseStatusList?.success && activeRow && activeRow.status) {
+      const foundStatus = courseStatusList.data.find(x => x.masterCodeID === activeRow.status);
+      setCrsStatus(foundStatus);
+    }
+  }, [courseStatusList, activeRow]);
 
 
   const { handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm({
@@ -100,7 +111,7 @@ function EditCourse(props) {
           createdById: parseInt(activeRow.createdById),
           courseID: parseInt(activeRow.courseID),
           categoryName: selectedCat.categoryName,
-          status: activeRow.status,
+          status: activeRow?.status,
           updatedById: parseInt(user.id),
           updatedDate: new Date(),
           isDeleted: activeRow.isDeleted
@@ -141,8 +152,8 @@ function EditCourse(props) {
 
   async function onDelete() {
     try {
-      const res = await deleteCourse(activeRow.courseID)
-      if (res.data.success) {
+      const res = await deleteCourse({ id: activeRow?.courseID })
+      if (res?.data?.success) {
         closeEdit()
       }
     } catch (err) {
@@ -231,6 +242,10 @@ function EditCourse(props) {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  function statushandler(_, newVal) {
+    setCrsStatus(newVal)
   }
 
   const optionList = () => {
@@ -535,17 +550,46 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
+              {Object.keys(activeRow).length !== 0 ? <Grid item xs={12} sm={6} md={3}>
+                <Controller
+                  name="Status"
+                  control={control}
+                  render={({ field }) => (
+                    <SoftBox mb={2}>
+                      <SoftBox mb={1} ml={0.5}>
+                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                          Status
+                        </SoftTypography>
+                      </SoftBox>
+                      <SoftAddAbleAutoSelect
+                        dataList={courseStatusList?.data || []}
+                        selectedValue={crsStatus}
+                        selectHandler={statushandler}
+                        label={null}
+                        placeholder=" Status"
+                        loading={loadingStatus}
+                        isEditable={false}
+                      />
+                      {errors.remarks && (
+                        <SoftTypography component="label" variant="caption" color="error">
+                          {errors.remarks.message}
+                        </SoftTypography>
+                      )}
+                    </SoftBox>
+                  )}
+                />
+              </Grid> : null}
             </Grid>
 
 
             <SoftBox mt={4} mb={1}>
               <SoftButton variant="gradient" color="info" type="submit" fullWidth>
-                {(loading || updateLoading) ? 'Loading..' : 'Submit'}
+                {(loading || updateLoading || createLoading) ? 'Loading..' : 'Submit'}
               </SoftButton>
             </SoftBox>
           </form>
         </SoftBox>}
-        {activeTab === "status" && <SoftBox>
+        {/* {activeTab === "status" && <SoftBox>
           <SoftBox display="flex" py={1} mb={0.25}>
             <SoftBox mt={0.25}>
               <Switch checked={activeRow.status === 1} onChange={statusChangehandler} />
@@ -556,7 +600,7 @@ function EditCourse(props) {
               </SoftTypography>
             </SoftBox>
           </SoftBox>
-        </SoftBox>}
+        </SoftBox>} */}
         {activeTab === "material" && <UploadMaterial />}
         {activeTab === "schedule" && <AssignSchedule />}
       </SoftBox>

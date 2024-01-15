@@ -40,19 +40,16 @@ export const schema = yup.object().shape({
 
 
 export const coursestableheads = [
-  { name: "courseID", label: " Course Id", align: 'left' },
   { name: "courseName", label: "Course Name", align: 'left' },
+  { name: "statusName", label: "Status Name", align: 'left' },
   { name: "duration", label: "duration", align: 'left' },
-  { name: "categoryID", label: "Category Id", align: 'left' },
   { name: "categoryName", label: "Category Name", align: 'left' },
   { name: "syllabus", label: "Syllabus", align: 'left' },
   { name: "trainingfee", label: "Training Fee", align: 'left' },
   { name: "vat", label: "Vat", align: 'left' },
-  { name: "totalAmount", label: "Total Amount", align: 'left' },
-  { name: "createdById", label: "Created ById", align: 'left' },
-  { name: "description", label: "Description", align: 'left' },
-  { name: "remarks", label: "remarks", align: 'left' }
+  { name: "totalAmount", label: "Total Amount", align: 'left' }
 ];
+
 
 export const initialFilters = {
   draw: 10,

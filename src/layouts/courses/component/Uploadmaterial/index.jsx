@@ -9,6 +9,9 @@ import { authUser } from "layouts/authentication/functions/query";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import MatItem from "../MatItem";
+import { useMasterListByTypeQuery } from "common/query";
+import { masterCode } from "common/constant";
+import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 const fileState = {
     materialID: 0,
     courseID: 0,
@@ -21,13 +24,14 @@ const fileState = {
 const UploadMaterial = () => {
     const { activeRow } = useSelector(state => state.courses)
     const [fileData, setFileData] = useState(fileState);
+    const [matType, setMyType] = useState({});
     const fileInputRef = useRef(null);
 
     const user = authUser()
 
     const { data: matList, error: matListErr, isLoading: matListLoading, refetch: refreshmatList } = useMatListQuery()
     const [uploadMat, { data: addMatRes, error: addMatErr, isLoading: addMatLoading }] = useUploadMatMutation()
-
+    const { data: matTypeList, isLoading: loadingmatType } = useMasterListByTypeQuery({ TypeID: masterCode.TrainingMaterialType })
 
     function uploadchangeHandler(event) {
         const fileInput = event.target;
@@ -41,9 +45,9 @@ const UploadMaterial = () => {
                 ...prev,
                 materialID: 0,
                 courseID: activeRow?.courseID || 0,
-                materialType: fileType || "",
+                materialType: matType?.masterCodeID || "",
                 filePath: filePath || "",
-                createdById: user?.id || 0,
+                createdById: parseInt(user?.id) || 0,
             }));
         }
     }
@@ -63,12 +67,25 @@ const UploadMaterial = () => {
         }
     }
 
+    function matTypeHandler(_, newVal) {
+        setMyType(newVal)
+    }
+
     return (<SoftBox>
         <SoftBox display="flex" py={1} mb={0.25} sx={{ gap: "16px" }}>
             <SoftInput
                 type="file"
                 onChange={uploadchangeHandler}
                 ref={fileInputRef}
+            />
+            <SoftAddAbleAutoSelect
+                dataList={matTypeList?.data || []}
+                selectedValue={matType}
+                selectHandler={matTypeHandler}
+                label={null}
+                placeholder="Material Type"
+                loading={loadingmatType}
+                isEditable={false}
             />
             <SoftButton variant="outlined" onClick={uploadHandler} disabled={addMatLoading}
                 size="small" color="dark">{addMatLoading ? "Uploading" : "Upload"}</SoftButton>

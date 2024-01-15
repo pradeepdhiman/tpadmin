@@ -54,8 +54,8 @@ function EditSchedule(props) {
   const [addSchedule, { data: addData, isError: addErr, isLoading: addLoading }] = useUpdateScheduleMutation()
   const [updateSchedule, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useCreateScheduleMutation()
   const [delSchedule, { data: delData, isError: delErr, isLoading: delLoading }] = useDeleteScheduleMutation()
-  const { data: instructorList } = useMasterListByTypeQuery({ TypeID: masterCode.Instructor })
-  const { data: locationList } = useMasterListByTypeQuery({ TypeID: masterCode.Location })
+  const { data: instructorList, refetch: refreshInstructor } = useMasterListByTypeQuery({ TypeID: masterCode.Instructor })
+  const { data: locationList, refetch: refreshLocation } = useMasterListByTypeQuery({ TypeID: masterCode.Location })
   const { data: statusList } = useMasterListByTypeQuery({ TypeID: masterCode.Status })
   const [addMaster, { isLoading: masterLoading }] = usePostMasterMutation()
   const user = authUser()
@@ -177,6 +177,10 @@ function EditSchedule(props) {
 
     try {
       const response = await addMaster(newData);
+      if (response?.data?.success) {
+        refreshInstructor()
+        return response
+      }
       console.log("Add master response:", response);
     } catch (error) {
       console.error("Error adding master:", error);
@@ -195,11 +199,15 @@ function EditSchedule(props) {
       value: data,
       fixedColumnName: null,
       description: null,
-      masterCodeTypeID: masterCode.location
+      masterCodeTypeID: masterCode.Location
     };
 
     try {
       const response = await addMaster(newData);
+      if (response?.data?.success) {
+        refreshLocation()
+        return response
+      }
       console.log("Add master response:", response);
     } catch (error) {
       console.error("Error adding master:", error);

@@ -65,7 +65,7 @@ function Schedule() {
   function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
-    refreshSchedule()
+    getSchByCourseId({ courseID: course?.courseID })
   }
   function addSchedule() {
     setEdit(true)

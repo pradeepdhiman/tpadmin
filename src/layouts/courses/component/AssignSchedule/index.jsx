@@ -14,6 +14,7 @@ import moment from "moment";
 import SoftButton from "components/SoftButton";
 import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
+import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 // {
 //     "courseScheduleID": 0,
 //     "scheduledID": 0,
@@ -29,12 +30,13 @@ const AssignSchedule = () => {
     const dispatch = useDispatch()
     const [meetingLink, setMeetingLink] = useState("")
     const [selected, setSelected] = useState("")
+    const [scheduleStatus, setScheduleStatus] = useState({})
     const [err, setErr] = useState(false)
     const { activeRow } = useSelector(state => state.courses)
     const { data: schedules, isError: schErr, isLoading: schLoading } = useListSchedulesQuery()
     const [assign, { data: assignData, isError: assignErr, isLoading: assignLoading }] = useAssignScheduleMutation()
     const [getSchedule, { data: schData, isError: schDataErr, isLoading: schDataLoading }] = useScheduleByIdMutation()
-    const {data:courseScheduleStatusList}=useMasterListByTypeQuery({TypeID:masterCode.CourseScheduleStatus})
+    const { data: courseScheduleStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.CourseScheduleStatus })
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,18 +51,18 @@ const AssignSchedule = () => {
         }
     }, [activeRow]);
 
-    async function assignhandler(id) {
+    async function assignhandler() {
         if (!meetingLink) {
             setErr(true)
             return
         }
         const newData = {
             courseScheduleID: 0,
-            scheduledID: id,
-            courseID: activeRow?.courseID,
+            scheduledID: selected?.scheduledID,
+            courseID: selected?.courseID,
             // applicantID: activeRow?.applicantID,
             meetingLink: meetingLink,
-            courseScheduleStatus: courseScheduleStatusList[0]?.data?.masterCodeID,
+            courseScheduleStatus: scheduleStatus?.masterCodeID || courseScheduleStatusList?.data[0]?.masterCodeID,
             createdById: parseInt(user?.id),
             remarks: "remark"
         }
@@ -82,6 +84,9 @@ const AssignSchedule = () => {
         const data = schData?.data?.find(x => x.scheduledID === id)
         setSelected(data)
     }
+    function scheduleStatusHandler(_, newVal) {
+        setScheduleStatus(newVal)
+    }
     return (
         <Grid container spacing={2}>
             <Grid item sx={12} sm>
@@ -98,7 +103,7 @@ const AssignSchedule = () => {
                             ))
                         ) : (
                             <SoftTypography variant="h6" fontWeight="bold">
-                                Study material not available
+                                Schedule not available
                             </SoftTypography>
                         )}
                     </SoftBox>
@@ -110,11 +115,27 @@ const AssignSchedule = () => {
                         <SoftBox mb={1}>
                             <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "15px" }}>
                                 <SoftInput value={meetingLink} onChange={changeHandler} type="text" placeholder="Meeting link" />
-                                <SoftButton color="dark">Assign</SoftButton>
+                                <SoftButton disabled={!meetingLink || assignLoading} onClick={assignhandler} color="dark">{assignLoading ? "Loading" : "Assign"}</SoftButton>
                             </SoftBox>
                             {err && <SoftTypography variant="h6" fontWeight="regular" color="error">
                                 Meeting link required.
                             </SoftTypography>}
+                        </SoftBox>
+                        <SoftBox mb={1}>
+                            <SoftBox >
+                                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                                    Course Schedule Status
+                                </SoftTypography>
+                                <SoftAddAbleAutoSelect
+                                    dataList={courseScheduleStatusList?.data || []}
+                                    selectedValue={scheduleStatus}
+                                    selectHandler={scheduleStatusHandler}
+                                    label={null}
+                                    placeholder="Schedule Status"
+                                    loading={loadingStatus}
+                                    isEditable={false}
+                                />
+                            </SoftBox>
                         </SoftBox>
                         <SoftBox >
                             <SoftTypography display="inline-block" variant="button" fontWeight="medium">
@@ -169,7 +190,7 @@ const AssignSchedule = () => {
                                 Location :
                             </SoftTypography>
                             <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
-                                &nbsp;{locationName}
+                                &nbsp;{selected?.locationName}
                             </SoftTypography>
                         </SoftBox>
                         <SoftBox >
@@ -177,7 +198,7 @@ const AssignSchedule = () => {
                                 Instructor :
                             </SoftTypography>
                             <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
-                                &nbsp;{instructorName}
+                                &nbsp;{selected?.instructorName}
                             </SoftTypography>
                         </SoftBox>
                         <SoftBox >
@@ -185,7 +206,7 @@ const AssignSchedule = () => {
                                 Status :
                             </SoftTypography>
                             <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
-                                &nbsp;{statusName}
+                                &nbsp;{selected?.statusName}
                             </SoftTypography>
                         </SoftBox>
                     </SoftBox>

@@ -25,6 +25,12 @@ const SoftAddAbleAutoSelect = (props) => {
         };
     }, [componentRef]);
 
+    async function Save() {
+        const res = await saveHandler(inputValue)
+        if (res?.data?.success) {
+            setShow(!show)
+        }
+    }
 
     return (
         <SoftBox ref={componentRef}>
@@ -39,15 +45,15 @@ const SoftAddAbleAutoSelect = (props) => {
                     renderInput={(params) => (
                         <TextField {...params} label={label} placeholder={placeholder} />
                     )}
-                    sx={{flexGrow:1}}
+                    sx={{ flexGrow: 1 }}
                 />
                 {isEditable && <IconButton onClick={() => setShow(!show)} color="dark" component="span" sx={{ padding: "0px" }}>
                     {loading ? <CircularProgress /> : <AddIcon fontSize="medium" />}
                 </IconButton>}
             </SoftBox>
             {show && <SoftBox mt={2} sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <SoftInput type="text" placeholder="Type here..." value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-                <IconButton onClick={() => saveHandler(inputValue)} disabled={!inputValue} color="dark" component="span" sx={{ padding: "0px" }}>
+                <SoftInput disabled={loading} type="text" placeholder="Type here..." value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                <IconButton onClick={Save} disabled={!inputValue} color="dark" component="span" sx={{ padding: "0px" }}>
                     <SaveIcon fontSize="medium" />
                 </IconButton>
             </SoftBox>}
