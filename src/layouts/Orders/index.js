@@ -15,7 +15,7 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 function Orders() {
   const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useCourselistApplicantQuery();
-  let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.receipt == null)
+  let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.paymentStatusName === "Pending")
   return (
     <DashboardLayout>
       <DashboardNavbar />

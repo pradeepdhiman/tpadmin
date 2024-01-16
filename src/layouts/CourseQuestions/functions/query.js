@@ -1,5 +1,6 @@
 import emptySplitApi from "utils/emptySplitApi";
 import { deleteRequest } from "utils/utils";
+import { getRequest } from "utils/utils";
 import { updateRequest } from "utils/utils";
 import { createRequest } from "utils/utils";
 import { readRequest } from "utils/utils";
@@ -19,6 +20,9 @@ const questionApis = emptySplitApi.injectEndpoints({
         getQuestion: build.mutation({
             query: (id) => getRequest("/CourseQuestion", id),
         }),
+        questionByCourseId: build.mutation({
+            query: (data) => getRequest("/CourseQuestion/GetCourseQuestionListByCourse", data),
+        }),
         updateQuestion: build.mutation({
             query: (data) => updateRequest("/CourseQuestion", data),
         }),
@@ -34,4 +38,6 @@ export const {
     useCreateQuestionMutation,
     useUpdateQuestionMutation,
     useDeleteQuestionMutation,
+    useQuestionByCourseIdMutation,
 } = questionApis;
+

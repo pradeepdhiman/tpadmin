@@ -27,21 +27,12 @@ export const initialFilters = {
 };
 
 export const tableheads = [
-  { name: "applicantCourseID", label: "Applicant CourseId", align: "left" },
-  { name: "applicantID", label: "Applicant Id", align: "left" },
-  { name: "courseID", label: "Course Id", align: "left" },
+  { name: "applicantName", label: "Applicant Name", align: "left" },
+  { name: "courseName", label: "Course Name", align: "left" },
+  { name: "scheduleName", label: "Schedule Name", align: "left" },
+  { name: "trainingfee", label: "Course Fee", align: "left" },
   { name: "enrollmentDate", label: "Enrollment Date", align: "left" },
-  { name: "completionDate", label: "Completion Date", align: "left" },
-  { name: "receipt", label: "Receipt", align: "left" },
-  { name: "receiptID", label: "Receipt Id", align: "left" },
-  { name: "receiptDate", label: "Receipt Date", align: "left" },
-  { name: "amountPaid", label: "Amount Paid", align: "left" },
-  { name: "status", label: "Status", align: "left" },
-  { name: "createdById", label: "Created ById", align: "left" },
-  { name: "updatedById", label: "Updated ById", align: "left" },
-  { name: "updatedDate", label: "Updated Date", align: "left" },
-  { name: "isDeleted", label: "Is Deleted", align: "left" },
-  { name: "remarks", label: "Remarks", align: "left" },
+  { name: "paymentStatusName", label: "Payment Status", align: "left" },
+  { name: "courseStatusName", label: "Course Status", align: "left" },
 ];
-
 

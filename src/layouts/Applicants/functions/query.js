@@ -30,6 +30,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         updateApplicant: build.mutation({
             query: (data) => updateRequest("/Applicant", data),
         }),
+        updateStatus: build.mutation({
+            query: (data) => updateRequest("/ApplicantCourse", data),
+        }),
         deleteApplicant: build.mutation({
             query: (id) => deleteRequest("/Applicant", id),
         }),
@@ -44,6 +47,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 
 export const { useGetApplicantMutation,
     useUpdateApplicantMutation,
+    useUpdateStatusMutation,
     useApplicantCompleteCourseMutation,
     useApplicantActiveCourseMutation,
     useFilterApplicantMutation,

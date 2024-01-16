@@ -38,8 +38,7 @@ function CoursesContainer() {
           </SoftBox>
           <SoftBox mb={2}>
             <SoftTypography variant="body2" color="white">
-              Wealth creation is an evolutionarily recent positive-sum game. It is all about who
-              take the opportunity first.
+              To get information about available courses. Go directly to course list from here.
             </SoftTypography>
           </SoftBox>
           <SoftTypography

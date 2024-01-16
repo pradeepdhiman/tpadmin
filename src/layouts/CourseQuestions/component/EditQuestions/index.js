@@ -32,9 +32,9 @@ import moment from "moment";
 
 const tabs = [
   { label: 'Info', value: 'info' },
-  { label: 'Status', value: 'status' },
-  { label: 'Study Material', value: 'material' },
-  { label: 'Schedule', value: 'schedule' },
+  // { label: 'Status', value: 'status' },
+  // { label: 'Study Material', value: 'material' },
+  // { label: 'Schedule', value: 'schedule' },
 ];
 
 
@@ -73,11 +73,6 @@ function EditQuestion(props) {
           createdById: (parseInt(activeRow.createdById) || 0),
           updatedDate: moment().format("DD-MM-YYYY"),
           updatedById: parseInt(user.id),
-          marksOptionA: activeRow?.marksOptionA || "1",
-          marksOptionB: activeRow?.marksOptionB || "1",
-          marksOptionC: activeRow?.marksOptionC || "1",
-          marksOptionD: activeRow?.marksOptionD || "1",
-          marksOptionE: activeRow?.marksOptionE || "1",
         }
       } else {
         newData = {
@@ -85,11 +80,6 @@ function EditQuestion(props) {
           questionID: 0,
           courseID: course.courseID,
           createdById: parseInt(user.id),
-          marksOptionA: "1",
-          marksOptionB: "1",
-          marksOptionC: "1",
-          marksOptionD: "1",
-          marksOptionE: "1",
         }
       }
 
@@ -133,7 +123,7 @@ function EditQuestion(props) {
 
   return (
     <Card className="h-100">
-      {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
+      {/* {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
         {tabs.map(({ label, value }) => (
           <SoftButton
             key={value}
@@ -145,7 +135,7 @@ function EditQuestion(props) {
             {label}
           </SoftButton>
         ))}
-      </SoftBox>}
+      </SoftBox>} */}
 
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">

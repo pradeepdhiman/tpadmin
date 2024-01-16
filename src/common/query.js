@@ -32,6 +32,9 @@ const categoryApis = emptySplitApi.injectEndpoints({
         masterListByType: build.query({
             query: (data) => getRequest("/MasterCode/GetMasterCodeListByType", data),
         }),
+        masterList: build.mutation({
+            query: (data) => getRequest("/MasterCode/GetMasterCodeListByType", data),
+        }),
     }),
 });
 
@@ -42,5 +45,6 @@ export const {
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
     useDeleteCategoryMutation,
+    useMasterListMutation,
     usePostMasterMutation,
 } = categoryApis;

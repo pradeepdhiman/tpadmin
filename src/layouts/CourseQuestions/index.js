@@ -20,7 +20,7 @@ import QuestionList from "./component/QuestionsList";
 import { useListCourseQuery } from "layouts/Courses/functions/query";
 import { setQuestionCourse, setActiveRow } from "./functions/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateQuestionMutation, useListQuestionQuery } from "./functions/query";
+import { useCreateQuestionMutation, useQuestionByCourseIdMutation } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 const loadingState = { courseName: "Loading..." }
@@ -34,8 +34,8 @@ function CourseQuestions() {
   const { activeRow } = useSelector(state => state.question)
 
   const { data: courses, error: courseErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
-  const { data: courseslist, error: courseListErr, isLoading: courseListLoading, refetch: refreshQuestion } = useListQuestionQuery()
-  const [createSchedule, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateQuestionMutation()
+  const [createQuestion, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateQuestionMutation()
+  const [questListByID, { data: questionList, isError: questionErr, isLoading: questionLoading }] = useQuestionByCourseIdMutation()
 
   useEffect(() => {
     if (!selectedCourse) {
@@ -44,6 +44,19 @@ function CourseQuestions() {
     }
   }, [courses])
 
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      try {
+        const res = await questListByID({ CourseID: selectedCourse?.courseID });
+        console.log("Response:", res);
+      } catch (err) {
+        console.error("Error fetching question:", err);
+      }
+    };
+  
+    fetchQuestion();
+  
+  }, [selectedCourse]);
   
 
   const handleCourseSelect = (event, newValue) => {
@@ -54,7 +67,7 @@ function CourseQuestions() {
   function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
-    refreshQuestion()
+    questListByID({ CourseID: selectedCourse?.courseID })
   }
   function addschedule() {
     setEdit(true)
@@ -83,13 +96,13 @@ function CourseQuestions() {
           </Grid>
           {(Object.keys(activeRow).length !== 0 || isEdit) && (
             <Grid item xs={12}>
-              <EditQuestion toggleEdit={editMode} editid={editId} addCourse={createSchedule} loading={createLoading} />
+              <EditQuestion toggleEdit={editMode} editid={editId} addCourse={createQuestion} loading={createLoading} />
             </Grid>
           )}
-          {courseListLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && courseslist?.success && (
+          {questionLoading && <SoftBarLoader />}
+          {Object.keys(activeRow).length === 0 && questionList?.success && (
             <Grid item xs={12}>
-              <QuestionList list={courseslist} loading={courseListLoading} />
+              <QuestionList list={questionList} loading={questionLoading} />
             </Grid>
           )}
         </Grid>

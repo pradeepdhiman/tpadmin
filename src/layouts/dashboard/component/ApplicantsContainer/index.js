@@ -31,8 +31,7 @@ function ApplicantsContainer() {
               </SoftTypography>
               <SoftBox mb={6}>
                 <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements, you will find the full
-                  documentation.
+                  Applicant can be increase day by day. Go directly to all applicant list from here.
                 </SoftTypography>
               </SoftBox>
               <SoftTypography
@@ -60,7 +59,7 @@ function ApplicantsContainer() {
                 }}
               >
                 See All
-                <Icon sx={{ fontWeight: "bold" }}><ArrowForwardIcon/></Icon>
+                <Icon sx={{ fontWeight: "bold" }}><ArrowForwardIcon /></Icon>
               </SoftTypography>
             </SoftBox>
           </Grid>

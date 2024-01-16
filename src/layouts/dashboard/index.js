@@ -19,7 +19,7 @@ import CoursesContainer from "./component/CoursesContainer";
 import NewOrders from "./component/NewOrders";
 import LatestCourse from "./component/LatestCourses";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { useDbApplicantQuery, useDbCoursesQuery } from "./functions/query";
+import { useDbApplicantQuery, useDbCoursesQuery, useDbcourselistApplicantQuery } from "./functions/query";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
@@ -85,9 +85,8 @@ function Dashboard() {
     error: coursesListError,
   } = useDbCoursesQuery();
 
-  console.log(coursesList)
-  console.log(applicantList)
-
+  const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useDbcourselistApplicantQuery();
+  let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.paymentStatusName === "Pending")
   // const [createCourse, {
   //   data: latestCoursesList,
   //   isLoading: isLatestCoursesLoading,
@@ -125,7 +124,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "New Request" }}
-                count="45"
+                count={listLoading ? "Loading..." : pendingPaymentCourse?.length}
                 percentage={{ color: "error", text: "-2%" }}
                 icon={{ color: "info", component: <PeopleAltIcon /> }}
               />
@@ -158,7 +157,7 @@ function Dashboard() {
             <LatestCourse />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <NewOrders />
+            <NewOrders list={pendingPaymentCourse} loading={listLoading} />
           </Grid>
         </Grid>
       </SoftBox>

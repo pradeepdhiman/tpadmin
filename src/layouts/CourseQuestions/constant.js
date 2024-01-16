@@ -30,10 +30,15 @@ export const fields = {
     questionType: { label: "Question Type", placeholder: "Question Type", hidden: false, },
     correctAnswer: { label: "Correct Answer", placeholder: "Correct Answer", hidden: false, },
     optionA: { label: "Option A", placeholder: "Option A", hidden: false, },
+    marksOptionA: { type: "number", label: "Marks A", placeholder: "Marks A", hidden: false, },
     optionB: { label: "Option B", placeholder: "Option B", hidden: false, },
+    marksOptionB: { type: "number", label: "Marks B", placeholder: "Marks B", hidden: false, },
     optionC: { label: "Option C", placeholder: "Option C", hidden: false },
+    marksOptionC: { type: "number", label: "Marks C", placeholder: "Marks C", hidden: false, },
     optionD: { label: "Option D", placeholder: "Option D", hidden: false },
+    marksOptionD: { type: "number", label: "Marks D", placeholder: "Marks D", hidden: false, },
     optionE: { label: "Option E", placeholder: "Option E", hidden: false },
+    marksOptionE: { type: "number", label: "Marks E", placeholder: "Marks E", hidden: false, },
     remarks: { label: "Remarks", placeholder: "Remarks", hidden: false },
 }
 
@@ -63,11 +68,10 @@ export const schema = yup.object().shape({
 
 
 export const questiontableheads = [
-    { name: "questionID", label: "questionID", align: "left" },
-    { name: "courseID", label: "courseID", align: "left" },
     { name: "courseName", label: "courseName", align: "left" },
     { name: "questionTitle", label: "questionTitle", align: "left" },
     { name: "questionType", label: "questionType", align: "left" },
+    { name: "statusName", label: "Status", align: "left" },
     { name: "correctAnswer", label: "correctAnswer", align: "left" },
     { name: "optionA", label: "optionA", align: "left" },
     { name: "optionB", label: "optionB", align: "left" },
@@ -79,13 +83,7 @@ export const questiontableheads = [
     { name: "marksOptionC", label: "marksOptionC", align: "left" },
     { name: "marksOptionD", label: "marksOptionD", align: "left" },
     { name: "marksOptionE", label: "marksOptionE", align: "left" },
-    { name: "status", label: "status", align: "left" },
-    { name: "createdById", label: "createdById", align: "left" },
-    { name: "updatedById", label: "updatedById", align: "left" },
-    { name: "updatedDate", label: "updatedDate", align: "left" },
-    { name: "isDeleted", label: "isDeleted", align: "left" },
     { name: "remarks", label: "remarks", align: "left" },
-    // { name: "action", label: "action", align: "left" }
 ];
 
 

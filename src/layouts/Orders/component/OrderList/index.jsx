@@ -82,7 +82,7 @@ function OrderList(props) {
               <DoneIcon />
             </Icon>
             <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>30 new</strong> this month
+              &nbsp;<strong>{list?.length} new</strong> this month
             </SoftTypography>
           </SoftBox>
         </SoftBox>
