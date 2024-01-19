@@ -39,6 +39,23 @@ export const schema = yup.object().shape({
 });
 
 
+export const assessmentInfofields = {
+  assessmentType: { label: "Assessment Type", placeholder: "Assessment Type" },
+  passingScore: { label: "Passing Score", placeholder: "Passing Score" },
+  duration: { label: "Duration", placeholder: "Duration" },
+  numberofQuestions: { label: "Number of Questions", placeholder: "Number of Questions" },
+  remarks: { label: "Remarks", placeholder: "Remarks" }
+};
+
+export const assessmentInfoSchema = yup.object().shape({
+  assessmentType: yup.string().required('Assessment Type is required'),
+  passingScore: yup.string().required('Passing Score is required'),
+  duration: yup.string().required('Duration is required'),
+  numberofQuestions: yup.string().required('Number of questions is required'),
+  remarks: yup.string()
+});
+
+
 export const coursestableheads = [
   { name: "courseName", label: "Course Name", align: 'left' },
   { name: "statusName", label: "Status Name", align: 'left' },

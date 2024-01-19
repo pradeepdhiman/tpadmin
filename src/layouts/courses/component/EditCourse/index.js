@@ -27,20 +27,19 @@ import { useListCategoryQuery } from "common/query";
 import { setActiveRow } from "layouts/Courses/functions/coursesSlice";
 import { schema } from "layouts/Courses/constant";
 import { authUser } from "layouts/authentication/functions/query";
-import MatItem from "../MatItem";
-import { useMatListQuery } from "layouts/Courses/functions/query";
-import { useUploadMatMutation } from "layouts/Courses/functions/query";
 import UploadMaterial from "../Uploadmaterial";
 import AssignSchedule from "../AssignSchedule";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { masterCode } from "common/constant";
 import { useMasterListByTypeQuery } from "common/query";
+import AssessmentInfo from "../AssessmentInfo";
 
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
   { label: 'Study Material', value: 'material' },
   { label: 'Schedule', value: 'schedule' },
+  { label: 'Assessment Info', value: 'assessInfo' },
 ];
 
 
@@ -603,6 +602,7 @@ function EditCourse(props) {
         </SoftBox>} */}
         {activeTab === "material" && <UploadMaterial />}
         {activeTab === "schedule" && <AssignSchedule />}
+        {activeTab === "assessInfo" && <AssessmentInfo />}
       </SoftBox>
     </Card>
   );
