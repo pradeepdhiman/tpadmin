@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Card, Grid } from "@mui/material";
 import SoftBox from "components/SoftBox";
@@ -13,6 +13,8 @@ import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { useSelector } from "react-redux";
 import { useAddAssessmentInfoMutation } from "layouts/Courses/functions/query";
+import { useGetAssessmentInfoMutation } from "layouts/Courses/functions/query";
+import { useUpdateAssessmentInfoMutation } from "layouts/Courses/functions/query";
 
 const AssessmentInfo = () => {
     const { activeRow } = useSelector(state => state.courses)
@@ -20,6 +22,8 @@ const AssessmentInfo = () => {
     const user = authUser();
     const { data: assessmentTypeList } = useMasterListByTypeQuery({ TypeID: masterCode.AssessmentType })
     const [addAssessmentInfo, { data: assessmentResp, isLoading: assessmentLoading }] = useAddAssessmentInfoMutation()
+    const [getAssessmentInfo, { data: getassessmentResp, isLoading: getassessmentLoading }] = useGetAssessmentInfoMutation()
+    const [updateAssessmentInfo, { data: updateassessmentResp, isLoading: updateassessmentLoading }] = useUpdateAssessmentInfoMutation()
 
     const {
         handleSubmit,
@@ -33,20 +37,64 @@ const AssessmentInfo = () => {
         defaultValues: {},
     });
 
+    useEffect(() => {
+        async function fetchInfo() {
+            try {
+                await getAssessmentInfo({ id: activeRow?.courseID })
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchInfo()
+    }, [activeRow])
+
+    useEffect(() => {
+        if (assessmentTypeList?.success && getassessmentResp?.success) {
+            const type = getassessmentResp?.data?.assessmentType;
+            const foundType = assessmentTypeList?.data?.find(x => x.masterCodeID === type);
+            setSelectedType(foundType ?? null);
+        }
+    }, [assessmentTypeList, getassessmentResp]);
+
+    useEffect(() => {
+        if (getassessmentResp?.data) {
+            reset(getassessmentResp.data);
+        }
+    }, [getassessmentResp, reset]);
 
     const submitFormData = async (data) => {
-        let newData = {
-            assessmentID: 0,
-            courseID: activeRow?.courseID,
-            assessmentType: parseInt(data?.assessmentType),
-            passingScore: parseInt(data?.passingScore),
-            duration: parseInt(data?.duration),
-            numberofQuestions: parseInt(data?.numberofQuestions),
-            weightage: 0,
-            createdById: parseInt(user?.id)
+        const isEdit = Object.keys(activeRow).length
+        let newData = {}
+        if (isEdit) {
+            newData = {
+
+                courseID: activeRow?.courseID,
+                assessmentType: parseInt(data?.assessmentType),
+                passingScore: data?.passingScore,
+                duration: data?.duration,
+                numberofQuestions: parseInt(data?.numberofQuestions),
+                updatedById: parseInt(user?.id),
+                assessmentID: parseInt(getassessmentResp.data.assessmentID),
+                status: parseInt(getassessmentResp.data.status),
+                weightage: getassessmentResp.data.weightage,
+                remarks: data.remarks
+            }
+        } else {
+            newData = {
+                assessmentID: 0,
+                courseID: activeRow?.courseID,
+                assessmentType: parseInt(data?.assessmentType),
+                passingScore: parseInt(data?.passingScore),
+                duration: parseInt(data?.duration),
+                numberofQuestions: parseInt(data?.numberofQuestions),
+                weightage: 0,
+                createdById: parseInt(user?.id),
+                remarks: data.remarks
+            }
         }
+
         try {
-            await addAssessmentInfo(newData)
+            isEdit ? await updateAssessmentInfo(newData) : await addAssessmentInfo(newData)
         } catch (err) {
             console.log(err)
         }

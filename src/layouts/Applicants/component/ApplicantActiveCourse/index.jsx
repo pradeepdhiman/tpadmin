@@ -2,13 +2,13 @@
 
 import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ListItem from "../ListIem";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useApplicantActiveCourseMutation } from "layouts/Applicants/functions/query";
 import moment from "moment";
+import SoftTypography from "components/SoftTypography";
 
 
 

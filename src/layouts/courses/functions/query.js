@@ -29,6 +29,12 @@ const coursesApis = emptySplitApi.injectEndpoints({
         addAssessmentInfo: build.mutation({
             query: (data) => createRequest("/CourseAssessment", data),
         }),
+        updateAssessmentInfo: build.mutation({
+            query: (data) => updateRequest("/CourseAssessment", data),
+        }),
+        getAssessmentInfo: build.mutation({
+            query: (data) => getRequest("/CourseAssessment", data),
+        }),
         createCourse: build.mutation({
             query: (data) => createRequest("/Course", data),
         }),
@@ -61,5 +67,7 @@ export const {
     useAssignScheduleMutation,
     useScheduleByIdMutation,
     useAddAssessmentInfoMutation,
+    useGetAssessmentInfoMutation,
+    useUpdateAssessmentInfoMutation,
 } = coursesApis;
 

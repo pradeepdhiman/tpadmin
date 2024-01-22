@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ListItem from "../ListIem";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import moment from "moment";
+import SoftTypography from "components/SoftTypography";
 
 const dataObject = [
     {

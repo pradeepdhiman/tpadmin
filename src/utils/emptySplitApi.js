@@ -7,7 +7,8 @@ import { _apiUrl } from 'config/constant';
 const baseQuery = fetchBaseQuery({ baseUrl: _apiUrl });
 
 const emptySplitApi = createApi({
-  baseQuery: responseInterceptor(baseQuery),
+  // baseQuery: responseInterceptor(baseQuery),
+  baseQuery: baseQuery,
   endpoints: () => ({}),
 });
 

@@ -173,9 +173,20 @@ const DocumentVerification = () => {
                             <SoftTypography sx={{ textTransform: "uppercase" }} display="inline-block" variant="button" fontWeight="medium">
                                 Payment Screeshot
                             </SoftTypography>
-                            <SoftTypography component={Link} target="_blank" to={_apiBaseUrl} display="inline-block" variant="caption" fontWeight="bold" color="info">
+                            <SoftTypography
+                                onClick={() => window.open(`${_apiBaseUrl}Content/Receipts/${proofdoc?.data?.receipt}`, "_blank")}
+                                display="inline-block"
+                                variant="caption"
+                                fontWeight="bold"
+                                color="info"
+                                sx={{cursor:"pointer"}}
+                            >
                                 {proofdoc?.data?.receipt}
                             </SoftTypography>
+
+                            {/* <SoftTypography component={Link} target="_blank" to={`${_apiBaseUrl}Content/Receipts/${proofdoc?.data?.receipt}`} display="inline-block" variant="caption" fontWeight="bold" color="info">
+                                {proofdoc?.data?.receipt}
+                            </SoftTypography> */}
                         </SoftBox>
                     </SoftBox> : <SoftBox p={2} px={4} >
                         <SoftTypography sx={{ textTransform: "uppercase" }} display="inline-block" variant="button" fontWeight="medium">
