@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { useAddAssessmentInfoMutation } from "layouts/Courses/functions/query";
 import { useGetAssessmentInfoMutation } from "layouts/Courses/functions/query";
 import { useUpdateAssessmentInfoMutation } from "layouts/Courses/functions/query";
+import { toastHandler } from "utils/utils";
 
 const AssessmentInfo = () => {
     const { activeRow } = useSelector(state => state.courses)
@@ -94,7 +95,13 @@ const AssessmentInfo = () => {
         }
 
         try {
-            isEdit ? await updateAssessmentInfo(newData) : await addAssessmentInfo(newData)
+            if (isEdit) {
+                const res = await updateAssessmentInfo(newData)
+                toastHandler(res)
+            } else {
+                const res = await addAssessmentInfo(newData)
+                toastHandler(res)
+            }
         } catch (err) {
             console.log(err)
         }

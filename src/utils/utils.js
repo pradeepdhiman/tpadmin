@@ -316,6 +316,8 @@ export const responseInterceptor = (baseQuery) => async (args, api, extraOptions
   }
 };
 
+
+
 const convertToDateObject = (value, type) => {
   return type === "date" ? moment(value).format("YYYY-MM-DD") : value;
 };
@@ -355,3 +357,28 @@ export function getNestedValue(obj, key) {
 
   return undefined;
 }
+
+
+
+export const toastHandler = (response) => {
+  const { data } = response;
+  if (data?.success) {
+    toast.success(data?.message, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
+  } else {
+    toast.error(data?.errors[0], {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
+  }
+};

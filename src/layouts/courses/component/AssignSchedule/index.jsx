@@ -15,6 +15,7 @@ import SoftButton from "components/SoftButton";
 import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
+import { toastHandler } from "utils/utils";
 // {
 //     "courseScheduleID": 0,
 //     "scheduledID": 0,
@@ -68,6 +69,7 @@ const AssignSchedule = () => {
         }
         try {
             const res = await assign(newData)
+            toastHandler(res)
             if (res?.data?.success) {
                 dispatch(setActiveRow({}))
             }

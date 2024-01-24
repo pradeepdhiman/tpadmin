@@ -36,6 +36,7 @@ import { formatDateFields } from "utils/utils";
 import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
+import { toastHandler } from "utils/utils";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -121,6 +122,7 @@ function EditApplicant(props) {
       };
       const apiFunction = isEditing ? updateApplicant : createApplicant;
       const res = await apiFunction(newData);
+      toastHandler(res)
       if (res?.data?.success) {
         closeEdit()
       }
@@ -143,6 +145,7 @@ function EditApplicant(props) {
   async function onDelete() {
     try {
       const res = await deleteApplicant({ id: activeRow.applicantID })
+      toastHandler(res)
       if (res.data.success) {
         closeEdit()
       }

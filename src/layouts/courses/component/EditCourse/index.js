@@ -33,6 +33,7 @@ import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { masterCode } from "common/constant";
 import { useMasterListByTypeQuery } from "common/query";
 import AssessmentInfo from "../AssessmentInfo";
+import { toastHandler } from "utils/utils";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -128,6 +129,7 @@ function EditCourse(props) {
       const apiFunction = isEditing ? updateCourse : createCourse;
 
       const res = await apiFunction(newData);
+      toastHandler(res)
 
       if (res?.data?.success) {
         closeEdit()
@@ -152,6 +154,7 @@ function EditCourse(props) {
   async function onDelete() {
     try {
       const res = await deleteCourse({ id: activeRow?.courseID })
+      toastHandler(res)
       if (res?.data?.success) {
         closeEdit()
       }
@@ -248,7 +251,7 @@ function EditCourse(props) {
   }
 
   const optionList = () => {
-    return (<SoftBox mt={.5} sx={{position:"absolute", zIndex:2}} >
+    return (<SoftBox mt={.5} sx={{ position: "absolute", zIndex: 2 }} >
       <Card>
         <SoftBox p={2}>
           {!newCategory && <SoftButton onClick={addCat} fullWidth size="small" variant="outlined" color="info">New Category</SoftButton>}
@@ -374,7 +377,7 @@ function EditCourse(props) {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <SoftBox mb={2} ref={optionListRef} sx={{position:"relative"}}>
+                <SoftBox mb={2} ref={optionListRef} sx={{ position: "relative" }}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">
                       Course Category

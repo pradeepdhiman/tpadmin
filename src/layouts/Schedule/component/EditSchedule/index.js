@@ -33,6 +33,7 @@ import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import { usePostMasterMutation } from "common/query";
+import { toastHandler } from "utils/utils";
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
@@ -129,7 +130,7 @@ function EditSchedule(props) {
 
       const apiFunction = isEditing ? addSchedule : updateSchedule;
       const res = await apiFunction(newData);
-
+      toastHandler(res)
       if (res?.data?.success) {
         closeEdit();
       }
@@ -143,6 +144,7 @@ function EditSchedule(props) {
   async function onDelete() {
     try {
       const res = await delSchedule(activeRow.scheduledID)
+      toastHandler(res)
       if (res.data.success) {
         closeEdit()
       }
@@ -176,12 +178,12 @@ function EditSchedule(props) {
     };
 
     try {
-      const response = await addMaster(newData);
-      if (response?.data?.success) {
+      const res = await addMaster(newData);
+      toastHandler(res)
+      if (res?.data?.success) {
         refreshInstructor()
-        return response
+        return res
       }
-      console.log("Add master response:", response);
     } catch (error) {
       console.error("Error adding master:", error);
     }
@@ -203,12 +205,12 @@ function EditSchedule(props) {
     };
 
     try {
-      const response = await addMaster(newData);
-      if (response?.data?.success) {
+      const res = await addMaster(newData);
+      toastHandler(res)
+      if (res?.data?.success) {
         refreshLocation()
-        return response
+        return res
       }
-      console.log("Add master response:", response);
     } catch (error) {
       console.error("Error adding master:", error);
     }

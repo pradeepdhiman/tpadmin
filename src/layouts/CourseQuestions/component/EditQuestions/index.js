@@ -29,6 +29,7 @@ import { CircularProgress } from "@mui/material";
 import { setActiveRow } from "layouts/CourseQuestions/functions/questionSlice";
 import { useDeleteQuestionMutation } from "layouts/CourseQuestions/functions/query";
 import moment from "moment";
+import { toastHandler } from "utils/utils";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -86,7 +87,7 @@ function EditQuestion(props) {
       const apiFunction = isEditing ? updateSch : createSch;
 
       const res = await apiFunction(newData);
-
+      toastHandler(res)
       if (res?.data?.success) {
         closeEdit()
       }
@@ -111,6 +112,7 @@ function EditQuestion(props) {
   async function onDelete() {
     try {
       const res = await deleteSch({ id: activeRow?.questionID })
+      toastHandler(res)
       if (res.data.success) {
         closeEdit()
       }

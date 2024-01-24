@@ -16,6 +16,8 @@ import { authUser } from "layouts/authentication/functions/query";
 import { useUpdateStatusMutation } from "layouts/Applicants/functions/query";
 import moment from "moment";
 import { _sourcePath } from "config/constant";
+import { toastHandler } from "utils/utils";
+import SoftButton from "components/SoftButton";
 
 
 const DocumentVerification = () => {
@@ -56,13 +58,57 @@ const DocumentVerification = () => {
     async function statushandler(_, newVal) {
         setPayStatus(newVal);
 
+        // let correspondingCourseStatus;
+        // if (newVal.value === 'Verified') {
+        //     correspondingCourseStatus = courseStatusList?.data?.find(status => status.value === 'Active');
+        // } else if (newVal.value === 'Pending') {
+        //     correspondingCourseStatus = courseStatusList?.data?.find(status => status.value === 'Applied');
+        // }
+
+
+        // const { data } = proofdoc;
+        // const newData = {
+        //     applicantCourseID: parseInt(data.applicantCourseID),
+        //     applicantID: parseInt(data.applicantID),
+        //     courseID: parseInt(data.courseID),
+        //     scheduleID: parseInt(data.scheduleID),
+        //     enrollmentDate: data.enrollmentDate,
+        //     completionDate: data.completionDate,
+        //     // enrollmentDate: moment(data.enrollmentDate).format("DD-MM-YYYY"),
+        //     // completionDate: moment(data.completionDate).format("DD-MM-YYYY"),
+        //     receiptID: data.receiptID,
+        //     receiptDate: data.receiptDate,
+        //     // receiptDate: moment(data.receiptDate).format("DD-MM-YYYY"),
+        //     amountPaid: data.amountPaid,
+        //     paymentStatus: parseInt(newVal.masterCodeID),
+        //     courseStatus: correspondingCourseStatus ? parseInt(correspondingCourseStatus.masterCodeID) : 0,
+        //     status: parseInt(1),
+        //     updatedById: parseInt(user?.id),
+        //     remarks: ""
+        // };
+
+
+        // try {
+        //     const res = await changeStatus(newData)
+        //     toastHandler(res)
+        //     if (res?.data?.success) {
+        //         const appliedCourseID = appliedCourse?.data[0]?.applicantCourseID;
+        //         await getProof({ id: appliedCourseID })
+        //     }
+        // } catch (Err) {
+        //     console.log(Err)
+        // }
+
+    }
+
+    async function statusUploadhandler() {
+
         let correspondingCourseStatus;
-        if (newVal.value === 'Verified') {
+        if (payStatus.value === 'Verified') {
             correspondingCourseStatus = courseStatusList?.data?.find(status => status.value === 'Active');
-        } else if (newVal.value === 'Pending') {
+        } else if (payStatus.value === 'Pending') {
             correspondingCourseStatus = courseStatusList?.data?.find(status => status.value === 'Applied');
         }
-
 
         const { data } = proofdoc;
         const newData = {
@@ -78,7 +124,7 @@ const DocumentVerification = () => {
             receiptDate: data.receiptDate,
             // receiptDate: moment(data.receiptDate).format("DD-MM-YYYY"),
             amountPaid: data.amountPaid,
-            paymentStatus: parseInt(newVal.masterCodeID),
+            paymentStatus: parseInt(payStatus?.masterCodeID),
             courseStatus: correspondingCourseStatus ? parseInt(correspondingCourseStatus.masterCodeID) : 0,
             status: parseInt(1),
             updatedById: parseInt(user?.id),
@@ -88,6 +134,7 @@ const DocumentVerification = () => {
 
         try {
             const res = await changeStatus(newData)
+            toastHandler(res)
             if (res?.data?.success) {
                 const appliedCourseID = appliedCourse?.data[0]?.applicantCourseID;
                 await getProof({ id: appliedCourseID })
@@ -103,7 +150,7 @@ const DocumentVerification = () => {
             <Grid container spacing={2}>
                 <Grid xs={12}>
                     <SoftBox p={2} px={4}>
-                        <SoftBox display="flex" mb={0.25}>
+                        <SoftBox display="flex" mb={0.25} gap="16px">
                             <SoftBox>
                                 <SoftAddAbleAutoSelect
                                     dataList={paymentStatusList?.data || []}
@@ -113,6 +160,7 @@ const DocumentVerification = () => {
                                     isEditable={false}
                                 />
                             </SoftBox>
+                            <SoftButton onClick={statusUploadhandler} disabled={statusLoading} variant="gradient" color="info">Change Status</SoftButton>
                         </SoftBox>
                     </SoftBox>
                     {statusLoading && <SoftBox >
@@ -180,7 +228,7 @@ const DocumentVerification = () => {
                                 variant="caption"
                                 fontWeight="bold"
                                 color="info"
-                                sx={{cursor:"pointer"}}
+                                sx={{ cursor: "pointer" }}
                             >
                                 {proofdoc?.data?.receipt}
                             </SoftTypography>

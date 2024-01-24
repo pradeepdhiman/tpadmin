@@ -15,6 +15,7 @@ import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { useUploadMatFormMutation } from "layouts/Courses/functions/query";
 import { useForm } from "react-hook-form";
 import { useMatListbycourseQuery } from "layouts/Courses/functions/query";
+import { toastHandler } from "utils/utils";
 const fileState = {
     materialID: 0,
     courseID: 0,
@@ -88,6 +89,7 @@ const UploadMaterial = () => {
         formData.append('Remarks', '');
         try {
             const res = await uploadMat(formData)
+            toastHandler(res)
             if (res?.data?.success) {
                 if (fileInputRef.current) {
                     fileInputRef.current.value = '';
