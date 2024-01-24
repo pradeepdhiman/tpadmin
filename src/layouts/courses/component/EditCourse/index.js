@@ -204,7 +204,7 @@ function EditCourse(props) {
   }
   function categoryChangehandler(e) {
     const value = e.target.value;
-    setNewCategoryValue(prev => ({ ...prev, categoryName: value, createdById: user.id }));
+    setNewCategoryValue(prev => ({ ...prev, categoryName: value, createdById: parseInt(user?.id) }));
   }
 
   function addCat() {
@@ -218,6 +218,7 @@ function EditCourse(props) {
   async function saveCategory() {
     try {
       const res = await addCatCourse(newCategoryValue)
+      toastHandler(res)
       if (res?.data?.success) {
         refreshCat()
         setNewCategoryValue({
@@ -238,6 +239,7 @@ function EditCourse(props) {
 
     try {
       const res = await updateCourse(updatedStatus)
+      toastHandler(res)
       if (res?.data?.success) {
         dispatch(setActiveRow(updatedStatus))
       }
