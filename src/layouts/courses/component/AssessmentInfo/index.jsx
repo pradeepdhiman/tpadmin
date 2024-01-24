@@ -41,7 +41,7 @@ const AssessmentInfo = () => {
     useEffect(() => {
         async function fetchInfo() {
             try {
-                await getAssessmentInfo({ id: activeRow?.courseID })
+                await getAssessmentInfo({ CourseID: activeRow?.courseID })
             } catch (err) {
                 console.log(err)
             }
@@ -64,36 +64,35 @@ const AssessmentInfo = () => {
     }, [getassessmentResp, reset]);
 
     const submitFormData = async (data) => {
-        const isEdit = Object.keys(activeRow).length
+
+        const isEdit = Object.keys(activeRow).length && getassessmentResp
         let newData = {}
         if (isEdit) {
             newData = {
-
-                courseID: activeRow?.courseID,
+                courseID: parseInt(activeRow?.courseID),
                 assessmentType: parseInt(data?.assessmentType),
-                passingScore: data?.passingScore,
+                passingScore:  data?.passingScore,
                 duration: data?.duration,
                 numberofQuestions: parseInt(data?.numberofQuestions),
                 updatedById: parseInt(user?.id),
-                assessmentID: parseInt(getassessmentResp.data.assessmentID),
-                status: parseInt(getassessmentResp.data.status),
-                weightage: getassessmentResp.data.weightage,
-                remarks: data.remarks
+                assessmentID: parseInt(getassessmentResp.data?.assessmentID),
+                status: parseInt(getassessmentResp.data?.status),
+                weightage: getassessmentResp.data?.weightage,
+                remarks: data?.remarks
             }
         } else {
             newData = {
                 assessmentID: 0,
-                courseID: activeRow?.courseID,
+                courseID: parseInt(activeRow?.courseID),
                 assessmentType: parseInt(data?.assessmentType),
-                passingScore: parseInt(data?.passingScore),
-                duration: parseInt(data?.duration),
+                passingScore: data?.passingScore,
+                duration: data?.duration,
                 numberofQuestions: parseInt(data?.numberofQuestions),
-                weightage: 0,
+                weightage: "30%",
                 createdById: parseInt(user?.id),
-                remarks: data.remarks
+                remarks: data?.remarks
             }
         }
-
         try {
             if (isEdit) {
                 const res = await updateAssessmentInfo(newData)
