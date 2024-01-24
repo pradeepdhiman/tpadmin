@@ -1,5 +1,6 @@
 import emptySplitApi from "utils/emptySplitApi";
 import { deleteRequest } from "utils/utils";
+import { postForm } from "utils/utils";
 import { getRequest } from "utils/utils";
 import { updateRequest } from "utils/utils";
 import { createRequest } from "utils/utils";
@@ -19,6 +20,9 @@ const coursesApis = emptySplitApi.injectEndpoints({
         }),
         matList: build.query({
             query: () => readRequest("/TrainingMaterial/List"),
+        }),
+        matListbycourse: build.query({
+            query: (data) => getRequest("/TrainingMaterial/GetTrainingMaterialListByCourse", data),
         }),
         filterCourse: build.mutation({
             query: (filters) => createRequest("/Course/GetCourses", filters),
@@ -41,6 +45,9 @@ const coursesApis = emptySplitApi.injectEndpoints({
         uploadMat: build.mutation({
             query: (data) => createRequest("/TrainingMaterial", data),
         }),
+        uploadMatForm: build.mutation({
+            query: (data) => postForm("/TrainingMaterial", data),
+        }),
         getCourse: build.mutation({
             query: (id) => getRequest("/Course", id),
         }),
@@ -58,8 +65,10 @@ const coursesApis = emptySplitApi.injectEndpoints({
 export const {
     useListCourseQuery,
     useMatListQuery,
+    useMatListbycourseQuery,
     useListSchedulesQuery,
     useUploadMatMutation,
+    useUploadMatFormMutation,
     useFilterCourseMutation,
     useCreateCourseMutation,
     useUpdateCourseMutation,

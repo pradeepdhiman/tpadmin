@@ -33,7 +33,7 @@ function LatestCourse() {
 
   const { data: latestCourseList, isError: courseListErr, isLoading: courseListLoading } = useDblistcoursesQuery()
 
-  const rows = generateRows(latestCourseList, dbcoursestableheads)
+  const rows = generateRows(latestCourseList, dbcoursestableheads).reverse()
 
   const renderMenu = (
     <Menu

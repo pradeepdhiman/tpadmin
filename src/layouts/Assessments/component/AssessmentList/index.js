@@ -14,20 +14,40 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import data from "./data";
-import DoneIcon from '@mui/icons-material/Done';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useDispatch, useSelector } from "react-redux";
+import { generateRows } from "utils/utils";
+import { assessmentTableHeads } from "layouts/Assessments/constant";
+import { setActiveRow } from "layouts/Assessments/function/assessmentSlice";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 // Data
 
-function AssessmentList() {
-  const { columns, rows } = data();
+function AssessmentList(props) {
+  
+  const { list = [], loading = false, } = props
+  // const { columns, rows } = data();
+  const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
+  const { activeRow } = useSelector(state => state.assessment)
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+  const rows = generateRows(list, assessmentTableHeads).reverse()
+
+  function columnClickhandler(item) {
+    console.log(item)
+  }
+
+  function rowClickhandler(item) {
+    const activeRow = list.data[item]
+    dispatch(setActiveRow(activeRow))
+  }
+
+
+ 
+
 
   const renderMenu = (
     <Menu
@@ -55,7 +75,7 @@ function AssessmentList() {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            Assessments List
+            Assessment List
           </SoftTypography>
         </SoftBox>
         <SoftBox color="text" px={2}>
@@ -65,8 +85,9 @@ function AssessmentList() {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
-      px={2}
+      {loading && <SoftBarLoader/>}
+      {!loading && <SoftBox
+        px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {
@@ -76,13 +97,13 @@ function AssessmentList() {
           },
         }}
       >
-        <Table columns={columns} rows={rows} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2}>
+        <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+      </SoftBox>}
+      {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />
         </Stack>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

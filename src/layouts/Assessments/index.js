@@ -10,9 +10,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AssessmentList from "./component/AssessmentList";
 import AssessmentDetails from "./component/AssessmentDetails";
+import {  useAssessListQuery } from "./function/query";
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -26,19 +27,13 @@ const top100Films = [
 
 function Assessments() {
   const { size } = typography;
-  const [isEdit, setEdit] = useState(true)
-  const [selectedCourse, setSelectedCourse] = useState(top100Films[0]);
-
-  const handleCourseSelect = (event, newValue) => {
-    setSelectedCourse(newValue);
-  };
+  const [isEdit, setEdit] = useState(false)
+  const  { data: assessList, isLoading: assessLoading } = useAssessListQuery()
 
   function editMode() {
     setEdit(false)
   }
-  function addApplicant() {
-    setEdit(true)
-  }
+  
 
   return (
     <DashboardLayout>
@@ -46,7 +41,7 @@ function Assessments() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg>
-            <AssessmentList />
+            <AssessmentList list={assessList} loading={assessLoading} />
           </Grid>
           {isEdit && <Grid item xs={12} md={6} lg={4}>
             <AssessmentDetails toggleEdit={editMode} />

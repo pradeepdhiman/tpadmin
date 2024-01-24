@@ -88,7 +88,7 @@ function QuestionList(props) {
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
-  const rows = generateRows(list, questiontableheads);
+  const rows = generateRows(list, questiontableheads).reverse();
 
   function columnClickhandler(item) {
     console.log(item)
@@ -148,11 +148,11 @@ function QuestionList(props) {
       >
         <Table columns={questiontableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
-      <SoftBox mt={2} mb={2}>
+      {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />
         </Stack>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

@@ -41,7 +41,7 @@ function ScheduleList(props) {
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-  const rows = generateRows(list, scheduletableheads)
+  const rows = generateRows(list, scheduletableheads).reverse()
 
   function columnClickhandler(item) {
     console.log(item)
@@ -135,11 +135,11 @@ function ScheduleList(props) {
       >
         <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
-      <SoftBox mt={2} mb={2}>
+      {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />
         </Stack>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

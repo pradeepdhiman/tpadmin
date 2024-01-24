@@ -112,11 +112,11 @@ function ApplicantList(props) {
       >
         <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
-      <SoftBox mt={2} mb={2}>
+      {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />
         </Stack>
-      </SoftBox>
+      </SoftBox> */}
     </Card>
   );
 }

@@ -55,12 +55,12 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
         textAlign={align}
         fontSize={size.xxs}
         fontWeight={fontWeightBold}
-        color="secondary"
+        color="white"
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
-        onClick={()=>columnFunc(name)}
+        onClick={() => columnFunc(name)}
       >
-        {name.toUpperCase()}
+        {label.toUpperCase()}
       </SoftBox>
     );
   });
@@ -113,15 +113,15 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
       return template;
     });
 
-    return <TableRow key={rowKey} onClick={()=>rowFunc(key)}>{tableRow}</TableRow>;
+    return <TableRow key={rowKey} onClick={() => rowFunc(key)}>{tableRow}</TableRow>;
   });
 
   return useMemo(
     () => (
       <TableContainer>
         <MuiTable>
-          <SoftBox component="thead">
-            <TableRow>{renderColumns}</TableRow>
+          <SoftBox component="thead" >
+            <TableRow sx={{backgroundColor:"#5a5a5a"}}>{renderColumns}</TableRow>
           </SoftBox>
           <TableBody>{renderRows}</TableBody>
         </MuiTable>
@@ -135,8 +135,8 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
 Table.defaultProps = {
   columns: [],
   rows: [{}],
-  columnFunc: () => {},
-  rowFunc: () => {}
+  columnFunc: () => { },
+  rowFunc: () => { }
 };
 
 // Typechecking props for the Table

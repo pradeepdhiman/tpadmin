@@ -10,12 +10,21 @@ import { toast } from "react-toastify";
 import SoftBadge from "components/SoftBadge";
 import moment from "moment";
 
-const createHeaders = () => {
+const createHeaders = (isForm) => {
   const user = authUser();
-  return {
-    Authorization: `Bearer ${user.token}`,
-    "Content-Type": "application/json",
-  };
+  const headers = {};
+
+  if (isForm) {
+    // headers["Content-Type"] = "multipart/form-data";
+  } else {
+    headers["Content-Type"] = "application/json";
+  }
+
+  if (user) {
+    headers["Authorization"] = `Bearer ${user.token}`;
+  }
+
+  return headers;
 };
 
 export const createRequest = (endpoint, data) => ({
@@ -25,14 +34,34 @@ export const createRequest = (endpoint, data) => ({
   headers: createHeaders(),
 });
 
+// export const getRequest = (endpoint, queryParam) => {
+//   const [a, b] = Object.entries(queryParam)[0];
+//   return {
+//     url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+//     headers: createHeaders(),
+//   };
+// };
+
 export const getRequest = (endpoint, queryParam) => {
-  const [a, b] = Object.entries(queryParam)[0];
+  const [paramKey, paramValue] = Object.entries(queryParam || [])[0] || [];
+
+  const url =
+    paramKey && paramValue
+      ? `${endpoint}?${paramKey}=${paramValue}`
+      : endpoint;
+
   return {
-    url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+    url,
     headers: createHeaders(),
   };
 };
 
+export const postForm = (endpoint, data) => ({
+  url: `${endpoint}`,
+  method: "POST",
+  body: data,
+  headers: createHeaders(true),
+});
 
 export const readRequest = (endpoint, id) => ({
   url: id ? `${endpoint}/${id}` : `${endpoint}`,
@@ -193,7 +222,10 @@ export function formatDateString(dateString) {
 export const generateRows = (list, tableheads, onEdit, onDelete) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
-  return rowArr.map((rowItem, rowIndex) => {
+  // if (rowArr.length > 0) {
+  //   rowArr.reverse();
+  // }
+  return rowArr?.map((rowItem, rowIndex) => {
     let rowCells = {};
     let rowId = "";
 

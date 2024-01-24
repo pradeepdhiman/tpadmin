@@ -29,7 +29,7 @@ function CategoryTable() {
   const [updateCat, { data: updateData, isError: updateErr, isLoading: updateLoading }] = useUpdateCategoryMutation()
   const [delCat, { data: delData, isError: delErr, isLoading: delLoading }] = useDeleteCategoryMutation()
   const user = authUser()
-  const rows = generateRows(catList || [], categorytableheads, onEdit, onDelete)
+  const rows = generateRows(catList || [], categorytableheads, onEdit, onDelete).reverse()
 
   function onEdit(id) {
     setEditFields(catList.data.find(x => x.categoryID == id))

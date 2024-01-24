@@ -15,6 +15,7 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { authUser } from "layouts/authentication/functions/query";
 import { useUpdateStatusMutation } from "layouts/Applicants/functions/query";
 import moment from "moment";
+import { _sourcePath } from "config/constant";
 
 
 const DocumentVerification = () => {
@@ -174,7 +175,7 @@ const DocumentVerification = () => {
                                 Payment Screeshot
                             </SoftTypography>
                             <SoftTypography
-                                onClick={() => window.open(`${_apiBaseUrl}Content/Receipts/${proofdoc?.data?.receipt}`, "_blank")}
+                                onClick={() => window.open(`${_sourcePath}Content/Receipts/${proofdoc?.data?.receipt}`, "_blank")}
                                 display="inline-block"
                                 variant="caption"
                                 fontWeight="bold"
