@@ -15,7 +15,7 @@ import SoftTypography from "components/SoftTypography";
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
 import DoneIcon from '@mui/icons-material/Done';
-import { Pagination, Stack } from "@mui/material";
+import { FormControl, InputLabel, Pagination, Select, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { generateRows } from "utils/utils";
 import { useDispatch } from "react-redux";
@@ -30,6 +30,7 @@ function CoursesList(props) {
   const dispatch = useDispatch()
   const { list = [], loading = false, } = props
   const [menu, setMenu] = useState(null);
+  const [rowPerPage, setRowPerPage] = useState(10);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -43,6 +44,12 @@ function CoursesList(props) {
   function rowClickhandler(item) {
     const activeRow = list.data[item]
     dispatch(setActiveRow(activeRow))
+  }
+  function handlerRowperpagechange(event) {
+    setRowPerPage(event.target.value);
+  }
+  function paginghandler(e, value) {
+    alert(value)
   }
 
 
@@ -65,6 +72,25 @@ function CoursesList(props) {
       <MenuItem onClick={closeMenu}>All</MenuItem>
       <MenuItem onClick={closeMenu}>latest</MenuItem>
     </Menu>
+  );
+  const renderRowperpage = (
+    <SoftBox sx={{ display: "flex", alignItems: "center" }}>
+      <SoftTypography variant="button" fontWeight="regular" color="text">
+        Row per page :  &nbsp;
+      </SoftTypography>
+      <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
+        <Select
+          labelId="demo-select-small-label"
+          id="demo-select-small"
+          value={rowPerPage}
+          onChange={handlerRowperpagechange}
+        >
+          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={20}>20</MenuItem>
+          <MenuItem value={25}>25</MenuItem>
+        </Select>
+      </FormControl>
+    </SoftBox>
   );
 
   return (
@@ -108,11 +134,12 @@ function CoursesList(props) {
       >
         <Table columns={coursestableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox>
-      {/* <SoftBox mt={2} mb={2}>
-        <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
+      <SoftBox mt={2} mb={2} px={2}>
+        <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          {renderRowperpage}
+          <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
         </Stack>
-      </SoftBox> */}
+      </SoftBox>
     </Card>
   );
 }

@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "./functions/coursesSlice";
 import CoursesList from "./component/CoursesList";
 import EditCourse from "./component/EditCourse";
-import { useCreateCourseMutation, useListCourseQuery } from "./functions/query";
+import { useCreateCourseMutation, useFilterCourseQuery, useListCourseQuery } from "./functions/query";
 
 function Courses() {
 
@@ -30,7 +30,8 @@ function Courses() {
   const { activeRow = {} } = useSelector(state => state.courses)
 
 
-  const { data: courseList, isError: listErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
+  // const { data: courseList, isError: listErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
+  const { data: courseList, isError: listErr, isLoading: courseLoading, refetch: refreshCourse } = useFilterCourseQuery(filters)
   const [createCourse, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateCourseMutation()
 
 
@@ -59,7 +60,7 @@ function Courses() {
             </Grid>
           )}
           {courseLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && courseList?.success && (
+          {Object.keys(activeRow).length === 0 && courseList?.data?.length && (
             <Grid item xs={12}>
               <CoursesList list={courseList} loading={courseLoading} />
             </Grid>

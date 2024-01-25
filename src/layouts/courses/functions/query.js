@@ -24,7 +24,7 @@ const coursesApis = emptySplitApi.injectEndpoints({
         matListbycourse: build.query({
             query: (data) => getRequest("/TrainingMaterial/GetTrainingMaterialListByCourse", data),
         }),
-        filterCourse: build.mutation({
+        filterCourse: build.query({
             query: (filters) => createRequest("/Course/GetCourses", filters),
         }),
         assignSchedule: build.mutation({
@@ -69,7 +69,7 @@ export const {
     useListSchedulesQuery,
     useUploadMatMutation,
     useUploadMatFormMutation,
-    useFilterCourseMutation,
+    useFilterCourseQuery,
     useCreateCourseMutation,
     useUpdateCourseMutation,
     useDeleteCourseMutation,

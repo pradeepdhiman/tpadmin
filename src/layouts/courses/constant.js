@@ -69,28 +69,38 @@ export const coursestableheads = [
 
 
 export const initialFilters = {
-  draw: 10,
-  start: 0,
-  length: 10,
-  columns: [
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
     {
-      data: "firstName",
-      name: "firstName",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "firstName",
-        regex: "test",
-      },
+      "data": "CourseName",
+      "name": "CourseName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "Sample",
+        "regex": "false"
+      }
     },
+    {
+      "data": "Duration",
+      "name": "Duration",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "Sample",
+        "regex": "false"
+      }
+    }
   ],
-  search: {
-    value: "firstName",
-    regex: "test",
+  "search": {
+    "value": "Basic",
+    "regex": "false"
   },
-  order: {
-    orderBy: "firstName",
-    orderDirection: "desc",
+  "order": {
+    "orderBy": "Duration",
+    "orderDirection": "asc"
   },
-  filter: null,
-};
+  "filter": null
+}
