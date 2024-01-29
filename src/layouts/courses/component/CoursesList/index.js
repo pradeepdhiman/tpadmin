@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -28,28 +28,41 @@ import { coursestableheads } from "layouts/Courses/constant";
 
 function CoursesList(props) {
   const dispatch = useDispatch()
-  const { list = [], loading = false, } = props
+  const { list = [], loading = false, changeFilter } = props
   const [menu, setMenu] = useState(null);
   const [rowPerPage, setRowPerPage] = useState(10);
+  const [rows, setRows] = useState();
+  const [orderby, setOrderby] = useState("");
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
 
-  const rows = generateRows(list, coursestableheads).reverse();
+  useEffect(() => {
+    const rowList = generateRows(list.data, coursestableheads, orderby, "asc");
+    setRows(rowList);
+  }, [list, orderby]);
 
   function columnClickhandler(item) {
-    console.log(item)
+    if (orderby === item) {
+      setOrderby("")
+    } else {
+      setOrderby(item)
+    }
   }
+
+  
 
   function rowClickhandler(item) {
     const activeRow = list.data[item]
     dispatch(setActiveRow(activeRow))
   }
   function handlerRowperpagechange(event) {
+    changeFilter(prev => ({ ...prev, start: 0, length: event.target.value }))
     setRowPerPage(event.target.value);
   }
   function paginghandler(e, value) {
-    alert(value)
+    let startfrom = (rowPerPage * value) - rowPerPage
+    changeFilter(prev => ({ ...prev, start: startfrom }))
   }
 
 

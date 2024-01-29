@@ -29,6 +29,7 @@ const SoftAddAbleAutoSelect = (props) => {
         const res = await saveHandler(inputValue)
         if (res?.data?.success) {
             setShow(!show)
+            setInputValue("")
         }
     }
 

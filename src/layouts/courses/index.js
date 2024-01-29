@@ -34,6 +34,14 @@ function Courses() {
   const { data: courseList, isError: listErr, isLoading: courseLoading, refetch: refreshCourse } = useFilterCourseQuery(filters)
   const [createCourse, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateCourseMutation()
 
+  useEffect(() => {
+    async function fatchListData() {
+      try {
+        await refreshCourse(filters)
+      } catch (err) { console.log(err) }
+    }
+    fatchListData()
+  }, [filters])
 
   function editMode() {
     setEdit(false)
@@ -62,7 +70,7 @@ function Courses() {
           {courseLoading && <SoftBarLoader />}
           {Object.keys(activeRow).length === 0 && courseList?.data?.length && (
             <Grid item xs={12}>
-              <CoursesList list={courseList} loading={courseLoading} />
+              <CoursesList list={courseList} loading={courseLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

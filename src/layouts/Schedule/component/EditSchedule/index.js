@@ -27,13 +27,14 @@ import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import { formatDateFields } from "utils/utils";
 import { editmodefields } from "layouts/Schedule/constant";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import SoftInput from "components/SoftInput";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import { usePostMasterMutation } from "common/query";
 import { toastHandler } from "utils/utils";
+import { toast } from "react-toastify";
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
@@ -48,6 +49,10 @@ function EditSchedule(props) {
   const [instructor, setInstructor] = useState({});
   const [location, setLocation] = useState({});
   const [status, setStatus] = useState({});
+  const [localLoading, setLocalLoading] = useState({
+    instructorloading:false,
+    locationloading:false
+  });
 
   const dispatch = useDispatch()
   const { activeRow, course } = useSelector(state => state.schedule)
@@ -106,7 +111,7 @@ function EditSchedule(props) {
           courseID: parseInt(activeRow?.courseID),
           instructor: parseInt(data?.instructor),
           location: parseInt(data?.location),
-          status: parseInt(data?.status),
+          status: parseInt(status?.masterCodeID),
           // startDate: moment(data.startDate).format("YYYY-MM-DD"),
           // endDate: moment(data.endDate).format("YYYY-MM-DD"),
           // validityDateTime: moment(data.validityDateTime).format("YYYY-MM-DD"),
@@ -126,8 +131,6 @@ function EditSchedule(props) {
           // scheduleCreatedDateTime: moment(data.scheduleCreatedDateTime).format("YYYY-MM-DD"),
         }
       }
-      console.log(newData)
-
       const apiFunction = isEditing ? addSchedule : updateSchedule;
       const res = await apiFunction(newData);
       toastHandler(res)
@@ -143,7 +146,7 @@ function EditSchedule(props) {
 
   async function onDelete() {
     try {
-      const res = await delSchedule(activeRow.scheduledID)
+      const res = await delSchedule({ id: activeRow.scheduledID })
       toastHandler(res)
       if (res.data.success) {
         closeEdit()
@@ -168,6 +171,18 @@ function EditSchedule(props) {
   }
 
   async function instructorSaveHandler(data) {
+    if(instructorList?.data?.find(x => x.value === data)){
+      toast.error('Duplicate Instructor not allowed', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return
+    }
+    setLocalLoading(prev => ({...prev, instructorloading:true}))
     const newData = {
       masterCodeID: 0,
       code: 0,
@@ -181,11 +196,14 @@ function EditSchedule(props) {
       const res = await addMaster(newData);
       toastHandler(res)
       if (res?.data?.success) {
+        setInstructor(res?.data?.data)
         refreshInstructor()
+        setLocalLoading(prev => ({...prev, instructorloading:false}))
         return res
       }
     } catch (error) {
       console.error("Error adding master:", error);
+      setLocalLoading(prev => ({...prev, instructorloading:false}))
     }
   }
 
@@ -195,6 +213,19 @@ function EditSchedule(props) {
   }
 
   async function locationSaveHandler(data) {
+    if(locationList?.data?.find(x => x.value === data)){
+      toast.error('Duplicate Location not allowed', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return
+    }
+
+    setLocalLoading(prev => ({...prev, locationloading:true}))
     const newData = {
       masterCodeID: 0,
       code: 0,
@@ -208,11 +239,14 @@ function EditSchedule(props) {
       const res = await addMaster(newData);
       toastHandler(res)
       if (res?.data?.success) {
+        setLocation(res?.data?.data)
         refreshLocation()
+        setLocalLoading(prev => ({...prev, locationloading:false}))
         return res
       }
     } catch (error) {
       console.error("Error adding master:", error);
+      setLocalLoading(prev => ({...prev, locationloading:false}))
     }
   }
 
@@ -444,7 +478,7 @@ function EditSchedule(props) {
                   label={null}
                   placeholder="Instructor"
                   saveHandler={instructorSaveHandler}
-                  loading={masterLoading}
+                  loading={localLoading.instructorloading}
                   isEditable={true}
                 />
                 {errors.instructor && (
@@ -468,7 +502,7 @@ function EditSchedule(props) {
                   label={null}
                   placeholder="Location"
                   saveHandler={locationSaveHandler}
-                  loading={masterLoading}
+                  loading={localLoading.locationloading}
                   isEditable={true}
                 />
                 {errors.location && (

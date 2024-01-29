@@ -41,7 +41,7 @@ function ScheduleList(props) {
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-  const rows = generateRows(list, scheduletableheads).reverse()
+  const rows = generateRows(list, scheduletableheads)
 
   function columnClickhandler(item) {
     console.log(item)
@@ -53,22 +53,6 @@ function ScheduleList(props) {
   }
 
 
-  function onEdit(item) {
-    dispatch(setScheduleEdit(item))
-    editFun()
-  }
-
-  async function onDelete(id) {
-    try {
-      const deleteRes = await deleteSchedule(id);
-      if (deleteRes?.data?.success) {
-        const fetchRes = await refreshSchedule();
-        dispatch(setScheduleList(fetchRes?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   // useEffect(() => {
   //   const fetchData = async () => {

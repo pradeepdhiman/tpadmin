@@ -219,13 +219,23 @@ export function formatDateString(dateString) {
   }
 }
 
-export const generateRows = (list, tableheads, onEdit, onDelete) => {
+export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
-  // if (rowArr.length > 0) {
-  //   rowArr.reverse();
-  // }
-  return rowArr?.map((rowItem, rowIndex) => {
+  let sortRows = rowArr.slice().sort((a, b) => {
+    const aValue = a[orderBy];
+    const bValue = b[orderBy];
+
+    if (typeof aValue === 'string' || typeof bValue === 'string') {
+      // If values are strings, perform case-insensitive comparison
+      return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    } else {
+      // If values are numbers, perform numeric comparison
+      return order === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  return sortRows?.map((rowItem, rowIndex) => {
     let rowCells = {};
     let rowId = "";
 
@@ -233,6 +243,7 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
       const columnName = column.name;
       const columnValue = rowItem[columnName];
       rowId = colIndex === 0 ? columnValue : rowId;
+      
       if (columnName === "statusName" || columnName === "isDeleted") {
         const badgeContent = columnValue === "Active" ? "Active" : "Deactive";
         const badgeColor = columnValue === "Active" ? "success" : "secondary";
@@ -241,28 +252,30 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
           <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
         );
       } else if (columnName === "action") {
-        rowCells[columnName] = (<SoftBox width="8rem" textAlign="left">
-          <IconButton
-            size="small"
-            color="inherit"
-            aria-controls="edit"
-            aria-haspopup="true"
-            variant="contained"
-            onClick={() => onEdit(rowId)}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            color="error"
-            aria-controls="delete"
-            aria-haspopup="true"
-            variant="contained"
-            onClick={() => onDelete(rowId)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </SoftBox>)
+        rowCells[columnName] = (
+          <SoftBox width="8rem" textAlign="left">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-controls="edit"
+              aria-haspopup="true"
+              variant="contained"
+              onClick={() => onEdit(rowId)}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              size="small"
+              color="error"
+              aria-controls="delete"
+              aria-haspopup="true"
+              variant="contained"
+              onClick={() => onDelete(rowId)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </SoftBox>
+        );
       } else {
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="text" fontWeight="medium">
@@ -274,9 +287,66 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
 
     return rowCells;
   });
-
-
 };
+
+// export const generateRows = (list, tableheads, onEdit, onDelete) => {
+//   let rowArr = Array.isArray(list) ? list : (list?.data || []);
+
+//   // if (rowArr.length > 0) {
+//   //   rowArr.reverse();
+//   // }
+//   return rowArr?.map((rowItem, rowIndex) => {
+//     let rowCells = {};
+//     let rowId = "";
+
+//     tableheads.forEach((column, colIndex) => {
+//       const columnName = column.name;
+//       const columnValue = rowItem[columnName];
+//       rowId = colIndex === 0 ? columnValue : rowId;
+//       if (columnName === "statusName" || columnName === "isDeleted") {
+//         const badgeContent = columnValue === "Active" ? "Active" : "Deactive";
+//         const badgeColor = columnValue === "Active" ? "success" : "secondary";
+
+//         rowCells[columnName] = (
+//           <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
+//         );
+//       } else if (columnName === "action") {
+//         rowCells[columnName] = (<SoftBox width="8rem" textAlign="left">
+//           <IconButton
+//             size="small"
+//             color="inherit"
+//             aria-controls="edit"
+//             aria-haspopup="true"
+//             variant="contained"
+//             onClick={() => onEdit(rowId)}
+//           >
+//             <EditIcon />
+//           </IconButton>
+//           <IconButton
+//             size="small"
+//             color="error"
+//             aria-controls="delete"
+//             aria-haspopup="true"
+//             variant="contained"
+//             onClick={() => onDelete(rowId)}
+//           >
+//             <DeleteIcon />
+//           </IconButton>
+//         </SoftBox>)
+//       } else {
+//         rowCells[columnName] = (
+//           <SoftTypography variant="caption" color="text" fontWeight="medium">
+//             {formatDateString(columnValue)}
+//           </SoftTypography>
+//         );
+//       }
+//     });
+
+//     return rowCells;
+//   });
+
+
+// };
 
 
 export const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
