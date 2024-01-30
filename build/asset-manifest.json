@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.7276a6cf.css",
-    "main.js": "/static/js/main.39a96c4e.js",
+    "main.css": "/static/css/main.0d12e113.css",
+    "main.js": "/static/js/main.608a3e50.js",
     "static/media/curved0.jpg": "/static/media/curved0.d146ec6e9401aa9d52c5.jpg",
     "static/media/waves-white.svg": "/static/media/waves-white.eac3c8078f7e1e28ef33f010c9782f40.svg",
     "static/media/rocket-white.png": "/static/media/rocket-white.de5786399f850a27a362.png",
@@ -20,11 +20,11 @@
     "static/media/logo-jira.svg": "/static/media/logo-jira.f9c1ddbe3e751a29bd16580977ade064.svg",
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html",
-    "main.7276a6cf.css.map": "/static/css/main.7276a6cf.css.map",
-    "main.39a96c4e.js.map": "/static/js/main.39a96c4e.js.map"
+    "main.0d12e113.css.map": "/static/css/main.0d12e113.css.map",
+    "main.608a3e50.js.map": "/static/js/main.608a3e50.js.map"
   },
   "entrypoints": [
-    "static/css/main.7276a6cf.css",
-    "static/js/main.39a96c4e.js"
+    "static/css/main.0d12e113.css",
+    "static/js/main.608a3e50.js"
   ]
 }
