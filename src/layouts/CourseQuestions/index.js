@@ -48,7 +48,6 @@ function CourseQuestions() {
     const fetchQuestion = async () => {
       try {
         const res = await questListByID({ CourseID: selectedCourse?.courseID });
-        console.log("Response:", res);
       } catch (err) {
         console.error("Error fetching question:", err);
       }
@@ -57,6 +56,10 @@ function CourseQuestions() {
     fetchQuestion();
   
   }, [selectedCourse]);
+
+  useEffect(() => {
+    dispatch(setActiveRow({}))
+  }, [])
   
 
   const handleCourseSelect = (event, newValue) => {

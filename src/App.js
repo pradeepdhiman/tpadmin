@@ -1,4 +1,6 @@
 
+import './App.css';
+
 import { useState, useEffect } from "react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";

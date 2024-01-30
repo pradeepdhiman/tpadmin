@@ -47,6 +47,10 @@ function Applicants() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    dispatch(setActiveRow({}))
+  }, [])
+
 
   function editMode() {
     setEdit(false)
@@ -56,19 +60,7 @@ function Applicants() {
   function addApplicant() {
     setEdit(true)
   }
-  function onEdit(id) {
-    setEdit(true)
-  }
-  async function onDelete(id) {
-    try {
-      const res = await deleteApplicant(id)
-      if (res.data.success) {
-        refreshList()
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  
 
   return (
     <DashboardLayout>

@@ -23,13 +23,13 @@ export const fields = {
   trainingfee: { label: "Training Fee", placeholder: "Training Fee" },
   vat: { label: "Tax", placeholder: "Tax" },
   totalAmount: { label: "Total Amount", placeholder: "Total Amount" },
-  description: { label: "Description", placeholder: "Description" },
+  // description: { label: "Description", placeholder: "Description" },
   remarks: { label: "Remarks", placeholder: "Remarks" }
 };
 
 export const schema = yup.object().shape({
   courseName: yup.string().required('Course Name is required'),
-  description: yup.string().required('Description is required'),
+  // description: yup.string().required('Description is required'),
   duration: yup.number().required('Duration is required'),
   syllabus: yup.string().required('Syllabus is required'),
   trainingfee: yup.number().required('Training fee is required'),
@@ -47,12 +47,32 @@ export const assessmentInfofields = {
   remarks: { label: "Remarks", placeholder: "Remarks" }
 };
 
+// export const assessmentInfoSchema = yup.object().shape({
+//   assessmentType: yup.string().required('Assessment Type is required'),
+//   passingScore: yup.string(),
+//   duration: yup.string().required('Duration is required'),
+//   weightage: yup.string(),
+//   numberofQuestions: yup.string().required('Number of questions is required'),
+//   remarks: yup.string()
+// });
+
 export const assessmentInfoSchema = yup.object().shape({
   assessmentType: yup.string().required('Assessment Type is required'),
-  passingScore: yup.string().required('Passing Score is required'),
+  passingScore: yup
+    .string()
+    .test('either-passing-score-or-weightage', 'Either Passing Score or Weightage is required', function (value) {
+      const weightage = this.parent.weightage;
+      return !!value || !!weightage;
+    }),
   duration: yup.string().required('Duration is required'),
+  weightage: yup
+    .string()
+    .test('either-passing-score-or-weightage', 'Either Passing Score or Weightage is required', function (value) {
+      const passingScore = this.parent.passingScore;
+      return !!value || !!passingScore;
+    }),
   numberofQuestions: yup.string().required('Number of questions is required'),
-  remarks: yup.string()
+  remarks: yup.string(),
 });
 
 

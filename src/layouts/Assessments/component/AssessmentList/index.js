@@ -97,7 +97,7 @@ function AssessmentList(props) {
           },
         }}
       >
-        <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+        <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler}  />
       </SoftBox>}
       {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

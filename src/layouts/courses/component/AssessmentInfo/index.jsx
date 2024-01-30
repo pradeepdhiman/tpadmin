@@ -59,9 +59,16 @@ const AssessmentInfo = () => {
 
     useEffect(() => {
         if (getassessmentResp?.data) {
-            reset(getassessmentResp.data);
+          const originalWeightage = getassessmentResp.data.weightage || '0%';
+          const numericWeightage = parseFloat(originalWeightage.replace('%', ''));
+      
+          reset({
+            ...getassessmentResp.data,
+            weightage: numericWeightage,
+          });
         }
-    }, [getassessmentResp, reset]);
+      }, [getassessmentResp, reset]);
+      
 
     const submitFormData = async (data) => {
 
@@ -77,7 +84,7 @@ const AssessmentInfo = () => {
                 updatedById: parseInt(user?.id),
                 assessmentID: parseInt(getassessmentResp.data?.assessmentID),
                 status: parseInt(getassessmentResp.data?.status),
-                weightage: getassessmentResp.data?.weightage,
+                weightage: data?.weightage+"%",
                 remarks: data?.remarks
             }
         } else {
@@ -88,7 +95,7 @@ const AssessmentInfo = () => {
                 passingScore: data?.passingScore,
                 duration: data?.duration,
                 numberofQuestions: parseInt(data?.numberofQuestions),
-                weightage: "30%",
+                weightage: data?.weightage+"%",
                 createdById: parseInt(user?.id),
                 remarks: data?.remarks
             }
@@ -110,7 +117,7 @@ const AssessmentInfo = () => {
         setValue("assessmentType", newVal?.masterCodeID)
         setSelectedType(newVal)
     }
-
+    // weightage
     return (
         <Card>
             <SoftBox p={2}>
@@ -139,7 +146,7 @@ const AssessmentInfo = () => {
                             </SoftBox>
                         </Grid>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={3}>
                                 <Controller
                                     name="passingScore"
                                     control={control}
@@ -166,6 +173,39 @@ const AssessmentInfo = () => {
                                                     color="error"
                                                 >
                                                     {errors.passingScore.message}
+                                                </SoftTypography>
+                                            )}
+                                        </SoftBox>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <Controller
+                                    name="weightage"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <SoftBox mb={2}>
+                                            <SoftBox mb={1} ml={0.5}>
+                                                <SoftTypography
+                                                    component="label"
+                                                    variant="caption"
+                                                    fontWeight="bold"
+                                                >
+                                                    Weightage (%)
+                                                </SoftTypography>
+                                            </SoftBox>
+                                            <SoftInput
+                                                type="number"
+                                                {...field}
+                                                placeholder="Weightage"
+                                            />
+                                            {errors.courseName && (
+                                                <SoftTypography
+                                                    component="label"
+                                                    variant="caption"
+                                                    color="error"
+                                                >
+                                                    {errors.weightage.message}
                                                 </SoftTypography>
                                             )}
                                         </SoftBox>

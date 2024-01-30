@@ -55,6 +55,9 @@ function Schedule() {
     }
   }, [course]);
 
+  useEffect(() => {
+    dispatch(setActiveRow({}))
+  }, [])
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);

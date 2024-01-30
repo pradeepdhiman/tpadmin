@@ -34,6 +34,7 @@ import { masterCode } from "common/constant";
 import { useMasterListByTypeQuery } from "common/query";
 import AssessmentInfo from "../AssessmentInfo";
 import { toastHandler } from "utils/utils";
+import { toast } from "react-toastify";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -180,6 +181,7 @@ function EditCourse(props) {
     const handleOutsideClick = (event) => {
       if (optionListRef.current && !optionListRef.current.contains(event.target)) {
         setOpenOption(false)
+        setNewCategory(false)
       }
     };
 
@@ -216,10 +218,25 @@ function EditCourse(props) {
   }
 
   async function saveCategory() {
+    let duplicateEntry = categories?.data?.find(x => x.categoryName === newCategoryValue?.categoryName)
+    if (duplicateEntry && Object.keys(duplicateEntry).length) {
+      toast.error('Duplicate category not allowed', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return
+    }
     try {
       const res = await addCatCourse(newCategoryValue)
       toastHandler(res)
       if (res?.data?.success) {
+        setSelectedCat(res?.data?.data)
+        setOpenOption(!openOption)
+        setNewCategory(false)
         refreshCat()
         setNewCategoryValue({
           categoryID: 0,
@@ -233,20 +250,7 @@ function EditCourse(props) {
     }
   }
 
-  async function statusChangehandler() {
-    let status = activeRow.status === null || activeRow.status === undefined || activeRow.status === 1 ? 0 : 1;
-    let updatedStatus = { ...activeRow, status };
 
-    try {
-      const res = await updateCourse(updatedStatus)
-      toastHandler(res)
-      if (res?.data?.success) {
-        dispatch(setActiveRow(updatedStatus))
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   function statushandler(_, newVal) {
     setCrsStatus(newVal)
@@ -389,8 +393,6 @@ function EditCourse(props) {
                     type="text"
                     readOnly
                     placeholder="Course Category"
-                    // defaultValue={categories?.data?.length !== 0 ? activeRow?.categoryID ? categories?.data?.find((x) => x.categoryID === activeRow?.categoryID)?.categoryName : '' : ""}
-                    // defaultValue={activeRow?.categoryID ? categories?.data?.find((x) => x.categoryID === activeRow?.categoryID)?.categoryName : ''}
                     onClick={toogleoptionlist}
                     value={selectedCat.categoryName}
                   />
@@ -403,7 +405,7 @@ function EditCourse(props) {
                   {openOption && optionList()}
                 </SoftBox>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={12} md={12}>
                 <Controller
                   name="syllabus"
                   control={control}
@@ -411,14 +413,21 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Syllabus
+                          Course Details
                         </SoftTypography>
                       </SoftBox>
-                      <SoftInput
+                      {/* <SoftInput
                         type="text"
                         {...field}
                         placeholder="Syllabus"
-                      />
+                      /> */}
+                      <SoftBox>
+                        <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
+                          type="text"
+                          {...field}
+                          placeholder="Details"
+                        />
+                      </SoftBox>
                       {errors.syllabus && (
                         <SoftTypography component="label" variant="caption" color="error">
                           {errors.syllabus.message}
@@ -440,7 +449,7 @@ function EditCourse(props) {
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
-                        type="text"
+                        type="number"
                         {...field}
                         placeholder=" Training Fee"
                       />
@@ -465,7 +474,7 @@ function EditCourse(props) {
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
-                        type="text"
+                        type="number"
                         {...field}
                         placeholder=" Tax/VAT (Amount)"
                       />
@@ -504,7 +513,7 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              {/* <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="description"
                   control={control}
@@ -528,7 +537,7 @@ function EditCourse(props) {
                     </SoftBox>
                   )}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="remarks"
@@ -540,11 +549,18 @@ function EditCourse(props) {
                           Remarks
                         </SoftTypography>
                       </SoftBox>
-                      <SoftInput
+                      {/* <SoftInput
                         type="text"
                         {...field}
                         placeholder=" Remarks"
-                      />
+                      /> */}
+                      <SoftBox>
+                        <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
+                          type="text"
+                          {...field}
+                          placeholder="Remarks"
+                        />
+                      </SoftBox>
                       {errors.remarks && (
                         <SoftTypography component="label" variant="caption" color="error">
                           {errors.remarks.message}

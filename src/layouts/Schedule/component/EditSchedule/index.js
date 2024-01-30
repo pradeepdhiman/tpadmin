@@ -196,6 +196,7 @@ function EditSchedule(props) {
       const res = await addMaster(newData);
       toastHandler(res)
       if (res?.data?.success) {
+        setValue('instructor', parseInt(res?.data?.data?.masterCodeID));
         setInstructor(res?.data?.data)
         refreshInstructor()
         setLocalLoading(prev => ({...prev, instructorloading:false}))
@@ -239,6 +240,7 @@ function EditSchedule(props) {
       const res = await addMaster(newData);
       toastHandler(res)
       if (res?.data?.success) {
+        setValue('location', parseInt(res?.data?.data?.masterCodeID));
         setLocation(res?.data?.data)
         refreshLocation()
         setLocalLoading(prev => ({...prev, locationloading:false}))

@@ -68,7 +68,7 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
   const renderRows = rows.map((row, key) => {
     const rowKey = `row-${key}`;
 
-    const tableRow = columns.map(({ name, align }) => {
+    const tableRow = columns.map(({ name, align }, columnIndex) => {
       let template;
 
       if (Array.isArray(row[name])) {
@@ -90,30 +90,53 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
           </SoftBox>
         );
       } else {
-        template = (
-          <SoftBox
-            key={uuidv4()}
-            component="td"
-            p={1}
-            textAlign={align}
-            borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-          >
-            <SoftTypography
-              variant="button"
-              fontWeight="regular"
-              color="secondary"
-              sx={{ display: "inline-block", width: "max-content" }}
+        if (columnIndex === 0 && typeof rowFunc === 'function') {
+          template = (
+            <SoftBox
+              key={uuidv4()}
+              component="td"
+              p={1}
+              textAlign={align}
+              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+              onClick={() => rowFunc(key)}
+              style={{ cursor: 'pointer' }}
             >
-              {row[name]}
-            </SoftTypography>
-          </SoftBox>
-        );
+              <SoftTypography
+                variant="button"
+                sx={{ display: "inline-block", width: "max-content" }}
+                color="info"
+              fontWeight="bold"
+              >
+                {row[name]}
+              </SoftTypography>
+            </SoftBox>
+          );
+        } else {
+          template = (
+            <SoftBox
+              key={uuidv4()}
+              component="td"
+              p={1}
+              textAlign={align}
+              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+            >
+              <SoftTypography
+                variant="button"
+                fontWeight="regular"
+                color="secondary"
+                sx={{ display: "inline-block", width: "max-content" }}
+              >
+                {row[name]}
+              </SoftTypography>
+            </SoftBox>
+          );
+        }
       }
 
       return template;
     });
 
-    return <TableRow key={rowKey} onClick={() => rowFunc(key)}>{tableRow}</TableRow>;
+    return <TableRow key={rowKey} >{tableRow}</TableRow>;
   });
 
   return useMemo(
@@ -121,7 +144,7 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
       <TableContainer>
         <MuiTable>
           <SoftBox component="thead" >
-            <TableRow sx={{backgroundColor:"#5a5a5a"}}>{renderColumns}</TableRow>
+            <TableRow sx={{ backgroundColor: "#5a5a5a" }}>{renderColumns}</TableRow>
           </SoftBox>
           <TableBody>{renderRows}</TableBody>
         </MuiTable>
@@ -136,7 +159,7 @@ Table.defaultProps = {
   columns: [],
   rows: [{}],
   columnFunc: () => { },
-  rowFunc: () => { }
+  // rowFunc: () => { }
 };
 
 // Typechecking props for the Table
@@ -144,7 +167,7 @@ Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object),
   rows: PropTypes.arrayOf(PropTypes.object),
   columnFunc: PropTypes.func,
-  rowFunc: PropTypes.func
+  // rowFunc: PropTypes.func
 };
 
 export default Table;

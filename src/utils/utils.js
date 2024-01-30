@@ -278,7 +278,7 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
         );
       } else {
         rowCells[columnName] = (
-          <SoftTypography variant="caption" color="text" fontWeight="medium">
+          <SoftTypography variant="caption" color="inharit" fontWeight="inharit">
             {formatDateString(columnValue)}
           </SoftTypography>
         );

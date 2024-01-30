@@ -43,6 +43,10 @@ function Courses() {
     fatchListData()
   }, [filters])
 
+  useEffect(() => {
+    dispatch(setActiveRow({}))
+  }, [])
+
   function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
