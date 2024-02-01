@@ -20,7 +20,7 @@ import { initialFilters } from "./constant";
 import { setActiveRow } from "./function/assessmentSlice";
 
 
-function Assessments() {
+function CourseAlumni() {
   const [isEdit, setEdit] = useState(false)
   const [editId, setEditId] = useState("")
   const [filters, setFilters] = useState(initialFilters)
@@ -60,7 +60,7 @@ function Assessments() {
             </Grid>
           )}
           {assessLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && (
+          {Object.keys(activeRow).length === 0 && assessList?.data?.length && (
             <Grid item xs={12}>
               <AssessmentList list={assessList?.data} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
@@ -72,4 +72,4 @@ function Assessments() {
   );
 }
 
-export default Assessments;
+export default CourseAlumni;

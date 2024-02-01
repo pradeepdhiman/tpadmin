@@ -25,11 +25,14 @@ import { authUser } from "layouts/authentication/functions/query";
 import { useCreateQuestionMutation } from "layouts/CourseQuestions/functions/query";
 import { useUpdateQuestionMutation } from "layouts/CourseQuestions/functions/query";
 import { setQuestionEdit } from "layouts/CourseQuestions/functions/questionSlice";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { setActiveRow } from "layouts/CourseQuestions/functions/questionSlice";
 import { useDeleteQuestionMutation } from "layouts/CourseQuestions/functions/query";
 import moment from "moment";
 import { toastHandler } from "utils/utils";
+import { masterCode } from "common/constant";
+import { useMasterListByTypeQuery } from "common/query";
+import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -44,12 +47,23 @@ function EditQuestion(props) {
   const dispatch = useDispatch()
   const { toggleEdit = false, loading = false } = props
   const [activeTab, setActiveTab] = useState("info");
+  const [questiontype, setQuestiontype] = useState({});
 
   const [updateSch, { data: updateRes, error: updateErr, isLoading: updateLoading }] = useUpdateQuestionMutation()
   const [createSch, { data: createRes, error: createError, isLoading: createLoading }] = useCreateQuestionMutation()
   const [deleteSch, { data: delRes, error: delErr, isLoading: delLoading }] = useDeleteQuestionMutation()
-
+  const { data: masterquestiontype } = useMasterListByTypeQuery({ TypeID: masterCode.QuestionType })
   const { activeRow, course } = useSelector(state => state.question)
+
+  useEffect(() => {
+    const isEditing = Object.keys(activeRow).length !== 0;
+    if (isEditing) {
+      let qtypeId = activeRow.questionTypeID;
+      let fountType = masterquestiontype?.data?.find(item => item.masterCodeID === qtypeId);
+
+      setQuestiontype(fountType);
+    }
+  }, [activeRow, masterquestiontype]);
 
 
   const user = authUser()
@@ -74,6 +88,7 @@ function EditQuestion(props) {
           createdById: (parseInt(activeRow.createdById) || 0),
           updatedDate: moment().format("DD-MM-YYYY"),
           updatedById: parseInt(user.id),
+          questionTypeID:parseInt(questiontype?.masterCodeID)
         }
       } else {
         newData = {
@@ -81,6 +96,7 @@ function EditQuestion(props) {
           questionID: 0,
           courseID: course.courseID,
           createdById: parseInt(user.id),
+          questionTypeID:parseInt(questiontype?.masterCodeID)
         }
       }
 
@@ -121,7 +137,10 @@ function EditQuestion(props) {
     }
   }
 
-
+  function questiontypehandler(_, newval) {
+    setValue('questionTypeID', parseInt(newval.masterCodeID));
+    setQuestiontype(newval)
+  }
 
   return (
     <Card className="h-100">
@@ -179,7 +198,388 @@ function EditQuestion(props) {
       </SoftBox>
 
       <SoftBox p={2}>
-        <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={fields} loading={createLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} />
+        {/* <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={fields} loading={createLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} /> */}
+        <form onSubmit={handleSubmit(submitFormData)}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="questionTitle"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Question
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Question"
+                    />
+                    {errors.questionTitle && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.questionTitle.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Question Type
+                  </SoftTypography>
+                </SoftBox>
+                <SoftAddAbleAutoSelect
+                  dataList={masterquestiontype?.data || []}
+                  selectedValue={questiontype}
+                  selectHandler={questiontypehandler}
+                  label={null}
+                  placeholder="Question Type"
+                  isEditable={false}
+                />
+                {errors.questionTypeID && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.questionTypeID.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="correctAnswer"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Correct Answer
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Correct answer"
+                    />
+                    {errors.correctAnswer && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.correctAnswer.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="optionA"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option A
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Option A"
+                    />
+                    {errors.optionA && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.optionA.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="marksOptionA"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option A Marks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="number"
+                      {...field}
+                      placeholder="Option A Marks"
+                    />
+                    {errors.marksOptionA && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.marksOptionA.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="optionB"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option B
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Option B"
+                    />
+                    {errors.optionB && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.optionB.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="marksOptionB"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option B Marks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="number"
+                      {...field}
+                      placeholder="Option D Marks"
+                    />
+                    {errors.marksOptionB && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.marksOptionB.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="optionC"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option C
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Option C"
+                    />
+                    {errors.optionC && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.optionC.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="marksOptionC"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option C Marks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="number"
+                      {...field}
+                      placeholder="Option C Marks"
+                    />
+                    {errors.marksOptionC && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.marksOptionC.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="optionD"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option D
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Option D"
+                    />
+                    {errors.optionD && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.optionD.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="marksOptionD"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option D Marks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="number"
+                      {...field}
+                      placeholder="Option D Marks"
+                    />
+                    {errors.marksOptionD && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.marksOptionD.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="optionE"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option E
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Option E"
+                    />
+                    {errors.optionE && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.optionE.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="marksOptionE"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Option E Marks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="number"
+                      {...field}
+                      placeholder="Option E Marks"
+                    />
+                    {errors.marksOptionE && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.marksOptionE.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="remarks"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Remarks
+                      </SoftTypography>
+                    </SoftBox>
+                    <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Remarks"
+                    />
+                    {errors.remarks && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.remarks.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
+            {/* {Object.keys(activeRow).length !== 0 && <Grid item xs={12} sm={6} md={3}>
+              <SoftBox mb={2}>
+                <SoftBox mb={1} ml={0.5}>
+                  <SoftTypography component="label" variant="caption" fontWeight="bold">
+                    Status
+                  </SoftTypography>
+                </SoftBox>
+                <SoftAddAbleAutoSelect
+                  dataList={statusList?.data || []}
+                  selectedValue={status}
+                  selectHandler={statusHandler}
+                  label={null}
+                  placeholder="Status"
+                  loading={masterLoading}
+                  isEditable={false}
+                />
+                {errors.location && (
+                  <SoftTypography component="label" variant="caption" color="error">
+                    {errors.location.message}
+                  </SoftTypography>
+                )}
+              </SoftBox>
+            </Grid>} */}
+          </Grid>
+
+
+          <SoftBox mt={4} mb={1}>
+            <SoftButton variant="gradient" color="info" type="submit" fullWidth>
+              {(createLoading || updateLoading) ? 'Loading..' : 'Submit'}
+            </SoftButton>
+          </SoftBox>
+        </form>
       </SoftBox>
     </Card>
   );

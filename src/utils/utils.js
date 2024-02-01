@@ -241,8 +241,10 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
 
     tableheads.forEach((column, colIndex) => {
       const columnName = column.name;
+      const columnType = column.type;
       const columnValue = rowItem[columnName];
       rowId = colIndex === 0 ? columnValue : rowId;
+
       
       if (columnName === "statusName" || columnName === "isDeleted") {
         const badgeContent = columnValue === "Active" ? "Active" : "Deactive";
@@ -279,7 +281,9 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
       } else {
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="inharit" fontWeight="inharit">
-            {formatDateString(columnValue)}
+            {columnType === "string" ? columnValue : null}
+            {columnType === "number" ? parseInt(columnValue) : null}
+            {columnType === "date" ? formatDateString(columnValue) : null}
           </SoftTypography>
         );
       }

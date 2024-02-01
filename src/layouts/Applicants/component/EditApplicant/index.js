@@ -69,41 +69,41 @@ function EditApplicant(props) {
 
   useEffect(() => {
     if (nationalityList?.success && designationList?.success && qualificationList?.success) {
-        let nationId = activeRow?.nationality;
-        let qlyId = activeRow?.qualification;
-        let desgId = activeRow?.designation;
-        let statusId = activeRow?.status;
+      let nationId = activeRow?.nationality;
+      let qlyId = activeRow?.qualification;
+      let desgId = activeRow?.designation;
+      let statusId = activeRow?.status;
 
-        if (nationId !== undefined && qlyId !== undefined && desgId !== undefined) {
-            if (nationId !== nationType?.masterCodeID) {
-                let foundNationType = nationalityList?.data?.find(x => x.masterCodeID === nationId);
-                setNationType(foundNationType);
-            }
-
-            if (qlyId !== qualiType?.masterCodeID) {
-                let foundQlyType = qualificationList?.data?.find(x => x.masterCodeID === qlyId);
-                setQualiType(foundQlyType);
-            }
-
-            if (desgId !== desgType?.masterCodeID) {
-                let foundDesgType = designationList?.data?.find(x => x.masterCodeID === desgId);
-                setDesgType(foundDesgType);
-            }
-
-            if (statusId !== statusType?.masterCodeID) {
-                let foundStatus = statusList?.data?.find(x => x.masterCodeID === desgId);
-                setStatusType(foundStatus);
-            }
+      if (nationId !== undefined && qlyId !== undefined && desgId !== undefined) {
+        if (nationId !== nationType?.masterCodeID) {
+          let foundNationType = nationalityList?.data?.find(x => x.masterCodeID === nationId);
+          setNationType(foundNationType);
         }
+
+        if (qlyId !== qualiType?.masterCodeID) {
+          let foundQlyType = qualificationList?.data?.find(x => x.masterCodeID === qlyId);
+          setQualiType(foundQlyType);
+        }
+
+        if (desgId !== desgType?.masterCodeID) {
+          let foundDesgType = designationList?.data?.find(x => x.masterCodeID === desgId);
+          setDesgType(foundDesgType);
+        }
+
+        if (statusId !== statusType?.masterCodeID) {
+          let foundStatus = statusList?.data?.find(x => x.masterCodeID === statusId);
+          setStatusType(foundStatus);
+        }
+      }
     }
-}, [activeRow, nationalityList, qualificationList, designationList, statusList]);
+  }, [activeRow, nationalityList, qualificationList, designationList, statusList]);
 
 
   const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: formatDateFields(activeRow, fields),
   });
-  
+
 
 
 

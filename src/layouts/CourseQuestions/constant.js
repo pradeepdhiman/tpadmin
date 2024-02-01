@@ -68,22 +68,22 @@ export const schema = yup.object().shape({
 
 
 export const questiontableheads = [
-    { name: "courseName", label: "courseName", align: "left" },
-    { name: "questionTitle", label: "questionTitle", align: "left" },
-    { name: "questionType", label: "questionType", align: "left" },
-    { name: "statusName", label: "Status", align: "left" },
-    { name: "correctAnswer", label: "correctAnswer", align: "left" },
-    { name: "optionA", label: "optionA", align: "left" },
-    { name: "optionB", label: "optionB", align: "left" },
-    { name: "optionC", label: "optionC", align: "left" },
-    { name: "optionD", label: "optionD", align: "left" },
-    { name: "optionE", label: "optionE", align: "left" },
-    { name: "marksOptionA", label: "marksOptionA", align: "left" },
-    { name: "maaksOptionB", label: "maaksOptionB", align: "left" },
-    { name: "marksOptionC", label: "marksOptionC", align: "left" },
-    { name: "marksOptionD", label: "marksOptionD", align: "left" },
-    { name: "marksOptionE", label: "marksOptionE", align: "left" },
-    { name: "remarks", label: "remarks", align: "left" },
+    { name: "questionTitle", label: "Question", align: "left" , type: "string"},
+    { name: "courseName", label: "Course Name", align: "left" , type: "string"},
+    { name: "questionTypeName", label: "question Type", align: "left" , type: "string"},
+    { name: "statusName", label: "Status", align: "left" , type: "string"},
+    { name: "correctAnswer", label: "Correct Answer", align: "left" , type: "string"},
+    { name: "optionA", label: "option A", align: "left" , type: "string"},
+    { name: "optionB", label: "option B", align: "left" , type: "string"},
+    { name: "optionC", label: "option C", align: "left" , type: "string"},
+    { name: "optionD", label: "option D", align: "left" , type: "string"},
+    { name: "optionE", label: "option E", align: "left" , type: "string"},
+    { name: "marksOptionA", label: "Option A Marks", align: "left" , type: "number"},
+    { name: "marksOptionB", label: "Option B Marks", align: "left" , type: "number"},
+    { name: "marksOptionC", label: "Option C Marks", align: "left" , type: "number"},
+    { name: "marksOptionD", label: "Option D Marks", align: "left" , type: "number"},
+    { name: "marksOptionE", label: "Option E Marks", align: "left" , type: "number"},
+    { name: "remarks", label: "Remarks", align: "left", type: "string" },
 ];
 
 

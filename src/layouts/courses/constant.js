@@ -77,14 +77,14 @@ export const assessmentInfoSchema = yup.object().shape({
 
 
 export const coursestableheads = [
-  { name: "courseName", label: "Course Name", align: 'left' },
-  { name: "statusName", label: "Status Name", align: 'left' },
-  { name: "duration", label: "duration", align: 'left' },
-  { name: "categoryName", label: "Category Name", align: 'left' },
-  { name: "syllabus", label: "Syllabus", align: 'left' },
-  { name: "trainingfee", label: "Training Fee", align: 'left' },
-  { name: "vat", label: "Vat", align: 'left' },
-  { name: "totalAmount", label: "Total Amount", align: 'left' }
+  { name: "courseName", label: "Course Name", align: 'left' , type: "string"},
+  { name: "statusName", label: "Status Name", align: 'left' , type: "string"},
+  { name: "duration", label: "duration", align: 'left', type: "number" },
+  { name: "categoryName", label: "Category Name", align: 'left' , type: "string"},
+  { name: "syllabus", label: "Syllabus", align: 'left', type: "string" },
+  { name: "trainingfee", label: "Training Fee", align: 'left' , type: "number"},
+  { name: "vat", label: "Vat", align: 'left', type: "number"},
+  { name: "totalAmount", label: "Total Amount", align: 'left', type: "number" }
 ];
 
 

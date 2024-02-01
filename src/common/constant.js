@@ -14,5 +14,6 @@ export const masterCode = {
     Instructor: 11,
     TrainingCertificateActivity: 12,
     TrainingMaterialActivity: 13,
-    TrainingMaterialType: 14
+    TrainingMaterialType: 14,
+    QuestionType: 15
 };

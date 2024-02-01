@@ -1,41 +1,41 @@
-// let BACKEND_SERVER = null;
-// if (process.env.REACT_APP_BACKEND_SERVER) {
-//   BACKEND_SERVER = process.env.REACT_APP_BACKEND_SERVER;
-// } else {
-//   BACKEND_SERVER = "https://localhost:7208/api/";
-// }
+let BACKEND_SERVER = null;
+if (process.env.REACT_APP_BACKEND_SERVER) {
+  BACKEND_SERVER = process.env.REACT_APP_BACKEND_SERVER;
+} else {
+  BACKEND_SERVER = "https://localhost:7208/api/";
+}
 
-// export const API_SERVER = BACKEND_SERVER;
-// export const ADMIN = 1;
-// export const USER = 2;
-
-
-// const { protocol, host } = window.location;
-
-// let _apiBaseUrl, _apiUrl, _sourcePath;
-
-// if (window.location.href.indexOf('localhost') === -1) {
-//   const cleanedHost = host.replace('admin.', '');
-
-//   _apiBaseUrl = `${protocol}//service.${cleanedHost}/`;
-//   _apiUrl = `${protocol}//service.${cleanedHost}/api/`;
-//   _sourcePath = `${protocol}//service.${cleanedHost}/`;
-// } else {
-//   _apiBaseUrl = "https://localhost:7208/api/";
-//   _apiUrl = "https://localhost:7208/api/";
-//   _sourcePath = "https://localhost:7208/";
-// }
+export const API_SERVER = BACKEND_SERVER;
+export const ADMIN = 1;
+export const USER = 2;
 
 
-// console.log(_apiUrl, "_apiUrl")
-
-// export { _apiBaseUrl, _apiUrl, _sourcePath };
+const { protocol, host } = window.location;
 
 let _apiBaseUrl, _apiUrl, _sourcePath;
 
-_apiBaseUrl="http://service.compliance360.bilberrysolutions.com/api/"
-_apiUrl="http://service.compliance360.bilberrysolutions.com/api/"
-_sourcePath="http://service.compliance360.bilberrysolutions.com/"
+if (window.location.href.indexOf('localhost') === -1) {
+  const cleanedHost = host.replace('admin.', '');
 
-export const API_SERVER = _apiUrl
+  _apiBaseUrl = `${protocol}//service.${cleanedHost}/`;
+  _apiUrl = `${protocol}//service.${cleanedHost}/api/`;
+  _sourcePath = `${protocol}//service.${cleanedHost}/`;
+} else {
+  _apiBaseUrl = "https://localhost:7208/api/";
+  _apiUrl = "https://localhost:7208/api/";
+  _sourcePath = "https://localhost:7208/";
+}
+
+
+console.log(_apiUrl, "_apiUrl")
+
 export { _apiBaseUrl, _apiUrl, _sourcePath };
+
+// let _apiBaseUrl, _apiUrl, _sourcePath;
+
+// _apiBaseUrl="http://service.compliance360.bilberrysolutions.com/api/"
+// _apiUrl="http://service.compliance360.bilberrysolutions.com/api/"
+// _sourcePath="http://service.compliance360.bilberrysolutions.com/"
+
+// export const API_SERVER = _apiUrl
+// export { _apiBaseUrl, _apiUrl, _sourcePath };

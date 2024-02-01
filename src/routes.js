@@ -14,11 +14,17 @@ import SignIn from "layouts/authentication/sign-in";
 import BiotechIcon from '@mui/icons-material/Biotech';
 import CourseQuestions from "layouts/CourseQuestions";
 import Courses from "layouts/Courses";
+import DeactiveCourses from "layouts/DeactiveCourse";
+import CourseAlumni from "layouts/CourseAlumni";
+import Reassessment from "layouts/Reassessment";
+import ReplayIcon from '@mui/icons-material/Replay';
+import GolfCourseIcon from '@mui/icons-material/GolfCourse';
+import QuizIcon from '@mui/icons-material/Quiz';
 
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Admin Dashboard",
     key: "dashboard",
     route: "/dashboard",
     icon: <DashboardIcon size="12px" />,
@@ -45,6 +51,17 @@ const routes = [
     route: "/courses",
     icon: <MenuBookIcon size="12px" />,
     component: <Courses />,
+    noCollapse: true,
+    protected: true,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Discontinued Courses",
+    key: "discontinued-courses",
+    route: "/discontinued-courses",
+    icon: <MenuBookIcon size="12px" />,
+    component: <DeactiveCourses />,
     noCollapse: true,
     protected: true,
     sidebar:true
@@ -85,11 +102,33 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Course Questions",
+    name: "Assessment Questions",
     key: "questions",
     route: "/questions",
-    icon: <BiotechIcon size="12px" />,
+    icon: <QuizIcon size="12px" />,
     component: <CourseQuestions />,
+    noCollapse: true,
+    protected: true,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Reassessment",
+    key: "reassessment",
+    route: "/reassessment",
+    icon: <ReplayIcon size="12px" />,
+    component: <Reassessment />,
+    noCollapse: true,
+    protected: true,
+    sidebar:true
+  },
+  {
+    type: "collapse",
+    name: "Course Alumni",
+    key: "course-alumni",
+    route: "/course-alumni",
+    icon: <GolfCourseIcon size="12px" />,
+    component: <CourseAlumni />,
     noCollapse: true,
     protected: true,
     sidebar:true

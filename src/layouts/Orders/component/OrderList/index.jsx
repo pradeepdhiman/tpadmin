@@ -25,7 +25,7 @@ import { tableheads } from "layouts/Orders/constant";
 
 
 function OrderList(props) {
-  const { list = [], loading = false,  } = props
+  const { list = [], loading = false, } = props
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
@@ -93,7 +93,7 @@ function OrderList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox px={2}
+      {rows?.length ? <SoftBox px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {
@@ -104,7 +104,11 @@ function OrderList(props) {
         }}
       >
         <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
+      </SoftBox> :
+        <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
+          <SoftTypography >Data not available.</SoftTypography>
+        </SoftBox>
+      }
       {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />

@@ -10,10 +10,13 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction }) {
+function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction, redirectTo }) {
+  function goto() {
+    redirectTo()
+  }
   return (
     <Card>
-      <SoftBox bgColor={bgColor} variant="gradient">
+      <SoftBox bgColor={bgColor} variant="gradient" onClick={goto} >
         <SoftBox p={2}>
           <Grid container alignItems="center">
             {direction === "left" ? (
@@ -36,7 +39,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 </SoftBox>
               </Grid>
             ) : null}
-            <Grid item xs={8}>
+            <Grid item xs={9}>
               <SoftBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <SoftTypography
                   variant="p"
@@ -44,6 +47,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   color={bgColor === "white" ? "text" : "white"}
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="capitalize"
+                  fontSize="16px"
                   fontWeight={title.fontWeight}
                 >
                   {title.text}
@@ -61,7 +65,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               </SoftBox>
             </Grid>
             {direction === "right" ? (
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <SoftBox
                   variant="gradient"
                   bgColor={bgColor === "white" ? icon.color : "white"}

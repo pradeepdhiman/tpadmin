@@ -22,6 +22,8 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { useDbApplicantQuery, useDbCoursesQuery, useDbcourselistApplicantQuery } from "./functions/query";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { useDbschedulelistQuery } from "common/query";
 
 const initialFilter = {
   draw: 5,
@@ -72,6 +74,7 @@ const initialFilter = {
 
 function Dashboard() {
   const [filters, setFilters] = useState(initialFilter)
+  const navigate = useNavigate();
   const { size } = typography;
   const {
     data: applicantList,
@@ -86,6 +89,7 @@ function Dashboard() {
   } = useDbCoursesQuery();
 
   const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useDbcourselistApplicantQuery();
+  const { data: schedulelist, isLoading: schloading, isError: scherr, refetch: refreshschedule } = useDbschedulelistQuery();
   let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.paymentStatusName === "Pending")
   // const [createCourse, {
   //   data: latestCoursesList,
@@ -107,37 +111,41 @@ function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Courses" }}
+                title={{ text: "Active Courses" }}
                 count={isCoursesListLoading ? "Loading..." : coursesList?.data?.length || "0"}
                 percentage={{ color: "success", text: "+55%" }}
                 icon={{ color: "info", component: <MenuBookIcon /> }}
+                redirectTo={() => navigate("/courses?type=active")}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Applicants" }}
+                title={{ text: "Active Learners" }}
                 count={isApplicantListLoading ? "Loading..." : applicantList?.data?.length || "0"}
                 percentage={{ color: "success", text: "+3%" }}
                 icon={{ color: "info", component: <PersonIcon /> }}
+                redirectTo={() => navigate("/applicants?type=active")}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "New Request" }}
+                title={{ text: "Activation Requests" }}
                 count={listLoading ? "Loading..." : pendingPaymentCourse?.length}
                 percentage={{ color: "error", text: "-2%" }}
                 icon={{ color: "info", component: <PeopleAltIcon /> }}
+                redirectTo={() => navigate("/orders?type=active")}
               />
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "Today sales" }}
-                count="$103,430"
+                title={{ text: "Active Schedules" }}
+                count={schloading ? "Loading...": schedulelist?.data?.length}
                 percentage={{ color: "success", text: "+5%" }}
                 icon={{
                   color: "info",
                   component: <TrendingUpIcon />,
                 }}
+                redirectTo={() => navigate("/schedule?type=active")}
               />
             </Grid>
           </Grid>

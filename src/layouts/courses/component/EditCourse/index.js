@@ -67,7 +67,7 @@ function EditCourse(props) {
 
   const { data: categories, error: catErr, isLoading: catLoading, refetch: refreshCat } = useListCategoryQuery()
   const [addCatCourse, { data: addCatRes, error: addCatErr, isLoading: addCatLoading }] = useCreateCategoryMutation()
-  const { data: courseStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.CourseStatus })
+  const { data: courseStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.Status })
 
   const { activeRow } = useSelector(state => state.courses)
 
@@ -107,25 +107,28 @@ function EditCourse(props) {
 
       if (isEditing) {
         newData = {
-          ...data,
-          categoryID: selectedCat.categoryID,
-          createdById: parseInt(activeRow.createdById),
           courseID: parseInt(activeRow.courseID),
-          categoryName: selectedCat.categoryName,
-          status: activeRow?.status,
+          courseName: data?.courseName,
+          description: "",
+          duration: parseInt(data?.duration),
+          categoryID: parseInt(selectedCat?.categoryID),
+          syllabus: data?.syllabus,
+          trainingfee: data?.trainingfee,
+          vat: parseInt(data?.vat),
+          totalAmount: parseInt(data?.totalAmount),
+          status: parseInt(crsStatus?.masterCodeID),
           updatedById: parseInt(user.id),
-          updatedDate: new Date(),
-          isDeleted: activeRow.isDeleted
+          remarks: data?.remarks
         }
       } else {
         newData = {
           ...data,
           categoryID: selectedCat?.categoryID,
           createdById: parseInt(user.id),
+          status: parseInt(crsStatus?.masterCodeID),
           courseID: 0
         }
       }
-
 
       const apiFunction = isEditing ? updateCourse : createCourse;
 
@@ -253,6 +256,7 @@ function EditCourse(props) {
 
 
   function statushandler(_, newVal) {
+    setValue("Status", parseInt(newVal.masterCodeID))
     setCrsStatus(newVal)
   }
 
@@ -572,7 +576,7 @@ function EditCourse(props) {
               </Grid>
               {Object.keys(activeRow).length !== 0 ? <Grid item xs={12} sm={6} md={3}>
                 <Controller
-                  name="Status"
+                  name="status"
                   control={control}
                   render={({ field }) => (
                     <SoftBox mb={2}>
@@ -590,9 +594,9 @@ function EditCourse(props) {
                         loading={loadingStatus}
                         isEditable={false}
                       />
-                      {errors.remarks && (
+                      {errors.status && (
                         <SoftTypography component="label" variant="caption" color="error">
-                          {errors.remarks.message}
+                          {errors.status.message}
                         </SoftTypography>
                       )}
                     </SoftBox>

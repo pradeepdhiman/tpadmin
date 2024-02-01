@@ -14,27 +14,16 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import data from "./data";
-import DoneIcon from '@mui/icons-material/Done';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
-import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useListScheduleQuery } from "layouts/Schedule/functions/query";
 import { scheduletableheads } from "layouts/Schedule/constant";
 import { generateRows } from "utils/utils";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { setScheduleList } from "layouts/Schedule/functions/scheduleSlice";
-import { setScheduleloading } from "layouts/Schedule/functions/scheduleSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setScheduleEdit } from "layouts/Schedule/functions/scheduleSlice";
-import { useDeleteScheduleMutation } from "layouts/Schedule/functions/query";
 import { setActiveRow } from "layouts/Schedule/functions/scheduleSlice";
 
 // Data
 
 function ScheduleList(props) {
   const { list = [], loading = false, } = props
-  // const { columns, rows } = data();
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
   const { course, editid } = useSelector(state => state.schedule)
@@ -106,7 +95,7 @@ function ScheduleList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      <SoftBox
+      {rows?.length ? <SoftBox
         px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
@@ -118,7 +107,11 @@ function ScheduleList(props) {
         }}
       >
         <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
+      </SoftBox> :
+        <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
+          <SoftTypography >Data not available.</SoftTypography>
+        </SoftBox>
+      }
       {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />

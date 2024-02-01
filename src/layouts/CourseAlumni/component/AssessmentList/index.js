@@ -25,7 +25,7 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 // Data
 
 function AssessmentList(props) {
-
+  
   const { list = [], loading = false, } = props
   // const { columns, rows } = data();
   const dispatch = useDispatch()
@@ -46,7 +46,7 @@ function AssessmentList(props) {
   }
 
 
-
+ 
 
 
   const renderMenu = (
@@ -85,8 +85,8 @@ function AssessmentList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox>
-      {loading && <SoftBarLoader />}
-      {rows?.length ? <SoftBox
+      {loading && <SoftBarLoader/>}
+      {!loading && <SoftBox
         px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
@@ -98,11 +98,7 @@ function AssessmentList(props) {
         }}
       >
         <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox> :
-        <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
-          <SoftTypography >Data not available.</SoftTypography>
-        </SoftBox>
-      }
+      </SoftBox>}
       {/* <SoftBox mt={2} mb={2}>
         <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Pagination count={5} variant="outlined" shape="rounded" />

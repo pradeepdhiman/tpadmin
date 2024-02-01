@@ -49,14 +49,13 @@ export const schema = yup.object().shape({
 
 
 export const scheduletableheads = [
-    { name: "scheduledName", label: "Scheduled Name", align: "left" },
-    { name: "courseName", label: "Course Name", align: "left" },
-    { name: "statusName", label: "Status Name", align: "left" },
-    { name: "instructorName", label: "instructor Name", align: "left" },
-    { name: "locationName", label: "Location Name", align: "left" },
-    { name: "startDate", label: "Start Date", align: "left" },
-    { name: "endDate", label: "End Date", align: "left" },
-    { name: "scheduleCreatedDateTime", label: "Schedule Created DateTime", align: "left" },
-    { name: "validityDateTime", label: "Validity DateTime", align: "left" },
-
+    { name: "scheduledName", label: "Scheduled Name", align: "left", type: "string" },
+    { name: "courseName", label: "Course Name", align: "left", type: "string" },
+    { name: "statusName", label: "Status Name", align: "left", type: "string" },
+    { name: "instructorName", label: "instructor Name", align: "left", type: "string" },
+    { name: "locationName", label: "Location Name", align: "left", type: "string" },
+    { name: "startDate", label: "Start Date", align: "left", type: "date" },
+    { name: "endDate", label: "End Date", align: "left", type: "date" },
+    { name: "scheduleCreatedDateTime", label: "Schedule Created DateTime", align: "left", type: "date" },
+    { name: "validityDateTime", label: "Validity DateTime", align: "left", type: "date" },
 ];

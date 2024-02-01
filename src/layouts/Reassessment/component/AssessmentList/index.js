@@ -18,13 +18,13 @@ import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch, useSelector } from "react-redux";
 import { generateRows } from "utils/utils";
-import { assessmentTableHeads } from "layouts/Assessments/constant";
-import { setActiveRow } from "layouts/Assessments/function/assessmentSlice";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { assessmentTableHeads } from "layouts/Reassessment/constant";
+import { setActiveRow } from "layouts/Reassessment/function/assessmentSlice";
 
 // Data
 
-function AssessmentList(props) {
+function ReAssessmentList(props) {
 
   const { list = [], loading = false, } = props
   // const { columns, rows } = data();
@@ -78,12 +78,12 @@ function AssessmentList(props) {
             Assessment List
           </SoftTypography>
         </SoftBox>
-        <SoftBox color="text" px={2}>
+        {/* <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
             <MoreVertIcon />
           </Icon>
-        </SoftBox>
-        {renderMenu}
+        </SoftBox> */}
+        {/* {renderMenu} */}
       </SoftBox>
       {loading && <SoftBarLoader />}
       {rows?.length ? <SoftBox
@@ -99,7 +99,7 @@ function AssessmentList(props) {
       >
         <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox> :
-        <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
+        <SoftBox p={2} sx={{display:"block", width:"100%"}}>
           <SoftTypography >Data not available.</SoftTypography>
         </SoftBox>
       }
@@ -112,4 +112,4 @@ function AssessmentList(props) {
   );
 }
 
-export default AssessmentList;
+export default ReAssessmentList;
