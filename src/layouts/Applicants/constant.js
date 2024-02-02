@@ -74,7 +74,7 @@ export const initialFilters = {
 export const tableheads = [
   { name: "firstName", label: "First Name", align: 'left', type: "string" },
   { name: "lastName", label: "Last Name", align: 'left', type: "string" },
-  { name: "status", label: "Status", align: 'left', type: "string" },
+  { name: "statusName", label: "Status", align: 'left', type: "string" },
   { name: "email", label: "Email", align: 'left', type: "string" },
   { name: "phone", label: "Phone", align: 'left', type: "number" },
   { name: "address", label: "Address", align: 'left', type: "string" },

@@ -19,6 +19,8 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import SoftBadge from "components/SoftBadge";
 import AssessItem from "./AssessItem";
+import { useTestDetailQuery } from "layouts/Assessments/function/query";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 let dummy = {
   "data": {
@@ -102,8 +104,7 @@ let dummy = {
 function AssessmentDetails(props) {
   const { toggleEdit = false, loading = false } = props
   const { activeRow } = useSelector(state => state.assessment)
-
-  console.log(activeRow)
+  const { data: testdata, isLoading: testLoading, isError: testErr } = useTestDetailQuery({ id: activeRow?.candidateAssesmentID })
 
   function closeEdit() {
     toggleEdit()
@@ -192,7 +193,13 @@ function AssessmentDetails(props) {
         </SoftBox>
         <Divider />
         <SoftBox mb={2} mt={2}>
-          {dummy.data.candidateAssesmentDeatilList.map(item => <AssessItem />)}
+          <SoftBox mb={1}>
+            <SoftTypography variant="h6" fontWeight="medium">
+              Test Details
+            </SoftTypography>
+          </SoftBox>
+          {testLoading && <SoftBarLoader />}
+          {testdata?.data?.candidateAssesmentDeatilList?.map(item => <AssessItem key={item.detailID} data={item} />)}
         </SoftBox>
       </SoftBox>
     </Card>

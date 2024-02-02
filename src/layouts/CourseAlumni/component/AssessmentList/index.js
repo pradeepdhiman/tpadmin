@@ -75,7 +75,7 @@ function AssessmentList(props) {
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            Assessment List
+            Course Alumni list
           </SoftTypography>
         </SoftBox>
         <SoftBox color="text" px={2}>

@@ -22,7 +22,7 @@ function Orders() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           {listLoading && <SoftBarLoader />}
-          {applicantCourseList?.success && (
+          {pendingPaymentCourse?.length && (
             <Grid item xs={12}>
               <OrderList list={pendingPaymentCourse} loading={listLoading} />
             </Grid>

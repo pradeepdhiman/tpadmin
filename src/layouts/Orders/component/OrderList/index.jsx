@@ -19,6 +19,7 @@ import { Pagination, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { generateRows } from "utils/utils";
 import { tableheads } from "layouts/Orders/constant";
+import { useNavigate } from "react-router-dom";
 
 // Data
 
@@ -27,6 +28,7 @@ import { tableheads } from "layouts/Orders/constant";
 function OrderList(props) {
   const { list = [], loading = false, } = props
   const [menu, setMenu] = useState(null);
+  const navigate = useNavigate()
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -38,8 +40,10 @@ function OrderList(props) {
   }
 
   function rowClickhandler(item) {
-    // const activeRow = list.data[item]
+    const activeRow = list[item]
+    console.log(activeRow)
     // dispatch(setActiveRow(activeRow))
+    navigate(`/applicants?id=${activeRow?.applicantID}&verify=true`)
   }
 
 

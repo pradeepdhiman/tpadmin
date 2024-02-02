@@ -115,12 +115,30 @@ export const initialFilters = {
     }
   ],
   "search": {
-    "value": "Basic",
+    "value": "Sample",
     "regex": "false"
   },
   "order": {
     "orderBy": "Duration",
     "orderDirection": "asc"
   },
-  "filter": null
+  "filter": {
+    "courseID": 0,
+    "courseName": "",
+    "description": "",
+    "duration": "",
+    "categoryID": 0,
+    "categoryName": "",
+    "syllabus": "",
+    "trainingfee": "",
+    "vat": "",
+    "totalAmount": "",
+    "status": 26,
+    "statusName": "",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": "2024-01-01",
+    "isDeleted": false,
+    "remarks": ""
+  }
 }

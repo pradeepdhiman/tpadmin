@@ -27,12 +27,12 @@ export const initialFilters = {
 };
 
 export const tableheads = [
-  { name: "applicantName", label: "Applicant Name", align: "left" },
-  { name: "courseName", label: "Course Name", align: "left" },
-  { name: "scheduleName", label: "Schedule Name", align: "left" },
-  { name: "trainingfee", label: "Course Fee", align: "left" },
-  { name: "enrollmentDate", label: "Enrollment Date", align: "left" },
-  { name: "paymentStatusName", label: "Payment Status", align: "left" },
-  { name: "courseStatusName", label: "Course Status", align: "left" },
+  { name: "applicantName", label: "Applicant Name", align: "left", type: "string" },
+  { name: "courseName", label: "Course Name", align: "left", type: "string" },
+  { name: "scheduleName", label: "Schedule Name", align: "left", type: "string" },
+  { name: "trainingfee", label: "Course Fee($)", align: "left", type: "number" },
+  { name: "enrollmentDate", label: "Enrollment Date", align: "left", type: "date" },
+  { name: "paymentStatusName", label: "Payment Status", align: "left", type: "string" },
+  { name: "courseStatusName", label: "Course Status", align: "left", type: "string" },
 ];
 

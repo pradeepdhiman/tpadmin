@@ -35,7 +35,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Applicants",
+    name: "Active Learners",
     key: "applicants",
     route: "/applicants",
     icon: <PeopleAltIcon size="12px" />,
@@ -46,7 +46,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Courses",
+    name: "Active Courses",
     key: "courses",
     route: "/courses",
     icon: <MenuBookIcon size="12px" />,

@@ -58,23 +58,33 @@ export const initialFilters = {
   "length": 10,
   "columns": [
     {
-      "data": "",
-      "name": "",
+      "data": "CourseName",
+      "name": "CourseName",
       "searchable": true,
       "orderable": true,
       "search": {
-        "value": "",
-        "regex": ""
+        "value": "Sample",
+        "regex": "false"
+      }
+    },
+    {
+      "data": "Duration",
+      "name": "Duration",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "Sample",
+        "regex": "false"
       }
     }
   ],
   "search": {
-    "value": "",
-    "regex": ""
+    "value": "Sample",
+    "regex": "false"
   },
   "order": {
-    "orderBy": "",
-    "orderDirection": ""
+    "orderBy": "Duration",
+    "orderDirection": "asc"
   },
   "filter": {
     "courseID": 0,
@@ -87,11 +97,11 @@ export const initialFilters = {
     "trainingfee": "",
     "vat": "",
     "totalAmount": "",
-    "status": 0,
+    "status": 27,
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "",
+    "updatedDate": "2024-01-01",
     "isDeleted": false,
     "remarks": ""
   }

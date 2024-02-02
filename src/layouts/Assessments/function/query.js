@@ -11,9 +11,13 @@ export const assessmentApis = emptySplitApi.injectEndpoints({
         assessList: build.query({
             query: () => getRequest("/CandidateAssesment/List"),
         }),
+        testDetail: build.query({
+            query: (data) => getRequest("/CandidateAssesment", data),
+        }),
     }),
 });
 
 export const { 
-    useAssessListQuery
+    useAssessListQuery,
+    useTestDetailQuery
  } = assessmentApis;

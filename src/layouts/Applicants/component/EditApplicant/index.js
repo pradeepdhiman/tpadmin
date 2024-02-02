@@ -37,6 +37,7 @@ import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { toastHandler } from "utils/utils";
+import { useLocation } from "react-router-dom";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -46,6 +47,11 @@ const tabs = [
 ];
 
 function EditApplicant(props) {
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const verify = queryParams.get('verify');
   const dispatch = useDispatch()
   const { toggleEdit = false, loading = false } = props
   const [activeTab, setActiveTab] = useState("info");
@@ -65,7 +71,11 @@ function EditApplicant(props) {
   const { activeRow } = useSelector(state => state.applicant)
 
   const user = authUser()
-
+  useEffect(() => {
+    if (id) {
+      setActiveTab("verification")
+    }
+  }, [id, verify])
 
   useEffect(() => {
     if (nationalityList?.success && designationList?.success && qualificationList?.success) {

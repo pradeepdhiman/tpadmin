@@ -19,8 +19,16 @@ import { initialFilters } from "./constant";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "./functions/applicantSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 function Applicants() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id');
+  const verify = queryParams.get('verify');
 
   const { size } = typography;
   const [isEdit, setEdit] = useState(false)
@@ -34,7 +42,6 @@ function Applicants() {
   const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateApplicantMutation()
   const [deleteApplicant, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteApplicantMutation()
 
- 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,11 +55,25 @@ function Applicants() {
   }, []);
 
   useEffect(() => {
+    if (id && verify && applicantList && applicantList.data) {
+      const foundUser = applicantList.data.find((x) => x.applicantID === +id);
+      if (foundUser !== undefined) {
+        dispatch(setActiveRow(foundUser));
+      }
+    }
+  }, [applicantList, dispatch]);
+
+
+  useEffect(() => {
+    if (id) return
     dispatch(setActiveRow({}))
   }, [])
 
 
   function editMode() {
+    if(id){
+      navigate(window.location.pathname, { replace: true });
+    }
     setEdit(false)
     dispatch(setActiveRow({}))
     refreshList()
@@ -60,7 +81,7 @@ function Applicants() {
   function addApplicant() {
     setEdit(true)
   }
-  
+
 
   return (
     <DashboardLayout>
@@ -80,7 +101,7 @@ function Applicants() {
           {listLoading && <SoftBarLoader />}
           {Object.keys(activeRow).length === 0 && applicantList?.success && (
             <Grid item xs={12}>
-              <ApplicantList list={applicantList} loading={listLoading}  />
+              <ApplicantList list={applicantList} loading={listLoading} />
             </Grid>
           )}
         </Grid>
