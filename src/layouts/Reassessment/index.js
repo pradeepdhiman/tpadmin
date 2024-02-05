@@ -49,6 +49,15 @@ function Reassessment() {
   function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
+    async function fetchData() {
+      try {
+        await refreshlist();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  
+    fetchData();
   }
 
 
