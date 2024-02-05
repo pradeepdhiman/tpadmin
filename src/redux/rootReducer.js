@@ -6,6 +6,7 @@ import assessmentSlice from "layouts/Assessments/function/assessmentSlice";
 import questionSlice from "layouts/CourseQuestions/functions/questionSlice";
 import coursesSlice from "layouts/Courses/functions/coursesSlice";
 import orderSlice from "layouts/Orders/functions/orderSlice";
+import reassessmentSlice from "layouts/Reassessment/function/reassessmentSlice";
 import scheduleSlice from "layouts/Schedule/functions/scheduleSlice";
 import emptySplitApi from "utils/emptySplitApi";
 
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
     question:questionSlice.reducer,
     order:orderSlice.reducer,
     assessment:assessmentSlice.reducer,
+    reassessment:reassessmentSlice.reducer,
 });
 
 export const middlewareArr = [

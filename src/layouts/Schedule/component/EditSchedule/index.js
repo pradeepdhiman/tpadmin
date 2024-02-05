@@ -50,8 +50,8 @@ function EditSchedule(props) {
   const [location, setLocation] = useState({});
   const [status, setStatus] = useState({});
   const [localLoading, setLocalLoading] = useState({
-    instructorloading:false,
-    locationloading:false
+    instructorloading: false,
+    locationloading: false
   });
 
   const dispatch = useDispatch()
@@ -171,7 +171,7 @@ function EditSchedule(props) {
   }
 
   async function instructorSaveHandler(data) {
-    if(instructorList?.data?.find(x => x.value === data)){
+    if (instructorList?.data?.find(x => x.value === data)) {
       toast.error('Duplicate Instructor not allowed', {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
@@ -182,7 +182,7 @@ function EditSchedule(props) {
       });
       return
     }
-    setLocalLoading(prev => ({...prev, instructorloading:true}))
+    setLocalLoading(prev => ({ ...prev, instructorloading: true }))
     const newData = {
       masterCodeID: 0,
       code: 0,
@@ -199,12 +199,12 @@ function EditSchedule(props) {
         setValue('instructor', parseInt(res?.data?.data?.masterCodeID));
         setInstructor(res?.data?.data)
         refreshInstructor()
-        setLocalLoading(prev => ({...prev, instructorloading:false}))
+        setLocalLoading(prev => ({ ...prev, instructorloading: false }))
         return res
       }
     } catch (error) {
       console.error("Error adding master:", error);
-      setLocalLoading(prev => ({...prev, instructorloading:false}))
+      setLocalLoading(prev => ({ ...prev, instructorloading: false }))
     }
   }
 
@@ -214,7 +214,7 @@ function EditSchedule(props) {
   }
 
   async function locationSaveHandler(data) {
-    if(locationList?.data?.find(x => x.value === data)){
+    if (locationList?.data?.find(x => x.value === data)) {
       toast.error('Duplicate Location not allowed', {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
@@ -226,7 +226,7 @@ function EditSchedule(props) {
       return
     }
 
-    setLocalLoading(prev => ({...prev, locationloading:true}))
+    setLocalLoading(prev => ({ ...prev, locationloading: true }))
     const newData = {
       masterCodeID: 0,
       code: 0,
@@ -243,12 +243,12 @@ function EditSchedule(props) {
         setValue('location', parseInt(res?.data?.data?.masterCodeID));
         setLocation(res?.data?.data)
         refreshLocation()
-        setLocalLoading(prev => ({...prev, locationloading:false}))
+        setLocalLoading(prev => ({ ...prev, locationloading: false }))
         return res
       }
     } catch (error) {
       console.error("Error adding master:", error);
-      setLocalLoading(prev => ({...prev, locationloading:false}))
+      setLocalLoading(prev => ({ ...prev, locationloading: false }))
     }
   }
 
@@ -424,13 +424,13 @@ function EditSchedule(props) {
                   <SoftBox mb={2}>
                     <SoftBox mb={1} ml={0.5}>
                       <SoftTypography component="label" variant="caption" fontWeight="bold">
-                        Validity Datetime
+                        Validity
                       </SoftTypography>
                     </SoftBox>
                     <SoftInput
                       type="date"
                       {...field}
-                      placeholder="Validity Datetime"
+                      placeholder="Validity "
                     />
                     {errors.validityDateTime && (
                       <SoftTypography component="label" variant="caption" color="error">
@@ -442,35 +442,10 @@ function EditSchedule(props) {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Controller
-                name="remarks"
-                control={control}
-                render={({ field }) => (
-                  <SoftBox mb={2}>
-                    <SoftBox mb={1} ml={0.5}>
-                      <SoftTypography component="label" variant="caption" fontWeight="bold">
-                        Remarks
-                      </SoftTypography>
-                    </SoftBox>
-                    <SoftInput
-                      type="text"
-                      {...field}
-                      placeholder="Remarks"
-                    />
-                    {errors.remarks && (
-                      <SoftTypography component="label" variant="caption" color="error">
-                        {errors.remarks.message}
-                      </SoftTypography>
-                    )}
-                  </SoftBox>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
               <SoftBox mb={2}>
                 <SoftBox mb={1} ml={0.5}>
                   <SoftTypography component="label" variant="caption" fontWeight="bold">
-                    Instructor
+                    Trainer
                   </SoftTypography>
                 </SoftBox>
                 <SoftAddAbleAutoSelect
@@ -478,7 +453,7 @@ function EditSchedule(props) {
                   selectedValue={instructor}
                   selectHandler={instructorHandler}
                   label={null}
-                  placeholder="Instructor"
+                  placeholder="Trainer"
                   saveHandler={instructorSaveHandler}
                   loading={localLoading.instructorloading}
                   isEditable={true}
@@ -537,6 +512,38 @@ function EditSchedule(props) {
                 )}
               </SoftBox>
             </Grid>}
+            <Grid item xs={12} sm={6} md={3}>
+              <Controller
+                name="remarks"
+                control={control}
+                render={({ field }) => (
+                  <SoftBox mb={2}>
+                    <SoftBox mb={1} ml={0.5}>
+                      <SoftTypography component="label" variant="caption" fontWeight="bold">
+                        Remarks
+                      </SoftTypography>
+                    </SoftBox>
+                    {/* <SoftInput
+                      type="text"
+                      {...field}
+                      placeholder="Remarks"
+                    /> */}
+                    <SoftBox>
+                      <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
+                        type="text"
+                        {...field}
+                        placeholder="Remarks"
+                      />
+                    </SoftBox>
+                    {errors.remarks && (
+                      <SoftTypography component="label" variant="caption" color="error">
+                        {errors.remarks.message}
+                      </SoftTypography>
+                    )}
+                  </SoftBox>
+                )}
+              />
+            </Grid>
           </Grid>
 
 

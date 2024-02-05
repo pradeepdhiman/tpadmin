@@ -58,10 +58,15 @@ function CoursesContainer() {
                 fontSize: "1.125rem",
                 transform: `translate(2px, -0.5px)`,
                 transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
+               
               },
 
-              "&:hover .material-icons-round, &:focus  .material-icons-round": {
-                transform: `translate(6px, -0.5px)`,
+              "&:hover": {
+                "& .material-icons-round": {
+                  transform: `translate(6px, -0.5px)`,
+                  color: "blue", 
+                },
+                color: "blue", 
               },
             }}
           >

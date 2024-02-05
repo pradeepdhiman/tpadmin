@@ -33,7 +33,9 @@ export const schema = yup.object().shape({
   duration: yup.number().required('Duration is required'),
   syllabus: yup.string().required('Syllabus is required'),
   trainingfee: yup.number().required('Training fee is required'),
-  vat: yup.number(),
+  vat: yup.number()
+    .positive('VAT should be a positive value')
+    .max(99, 'It can not be more then 100%'),
   totalAmount: yup.number(),
   remarks: yup.string()
 });
@@ -77,13 +79,13 @@ export const assessmentInfoSchema = yup.object().shape({
 
 
 export const coursestableheads = [
-  { name: "courseName", label: "Course Name", align: 'left' , type: "string"},
-  { name: "statusName", label: "Status Name", align: 'left' , type: "string"},
+  { name: "courseName", label: "Course Name", align: 'left', type: "string" },
+  { name: "statusName", label: "Status Name", align: 'left', type: "string" },
   { name: "duration", label: "duration", align: 'left', type: "number" },
-  { name: "categoryName", label: "Category Name", align: 'left' , type: "string"},
+  { name: "categoryName", label: "Category Name", align: 'left', type: "string" },
   { name: "syllabus", label: "Syllabus", align: 'left', type: "string" },
-  { name: "trainingfee", label: "Training Fee", align: 'left' , type: "number"},
-  { name: "vat", label: "Vat", align: 'left', type: "number"},
+  { name: "trainingfee", label: "Training Fee", align: 'left', type: "number" },
+  { name: "vat", label: "Vat", align: 'left', type: "number" },
   { name: "totalAmount", label: "Total Amount", align: 'left', type: "number" }
 ];
 

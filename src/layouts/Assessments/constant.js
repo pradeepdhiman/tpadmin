@@ -1,11 +1,12 @@
 import * as yup from 'yup';
 
 export const assessmentTableHeads = [
-  { name: "applicantName", label: "Applicant", align: 'left', type: "string" },
+  { name: "applicantName", label: "Name", align: 'left', type: "string" },
   { name: "courseName", label: "Course", align: 'left' , type: "string"},
-  { name: "assesmentDate", label: "Date", align: 'left', type: "date" },
-  { name: "totalQuestions", label: "Total Question", align: 'left' , type: "number"},
+  { name: "assesmentDate", label: "Assessment Date", align: 'left', type: "date" },
+  { name: "totalQuestions", label: "Total Questions Asked", align: 'left' , type: "number"},
   { name: "correctAnswers", label: "Correct Answer", align: 'left' , type: "number"},
+  { name: "", label: "% of Marks Scored", align: 'left' , type: "number"},
   { name: "result", label: "Result", align: 'left' , type: "string"},
 ];
 

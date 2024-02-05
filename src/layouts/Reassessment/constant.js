@@ -1,9 +1,9 @@
 import * as yup from 'yup';
 
 export const assessmentTableHeads = [
-  { name: "applicantName", label: "Applicant", align: 'left' },
-  { name: "courseName", label: "Course Name", align: 'left' },
-  { name: "statusName", label: "Status", align: 'left' },
+  { name: "applicantName", label: "Applicant", align: 'left', type:"string" },
+  { name: "courseName", label: "Course Name", align: 'left', type:"string" },
+  { name: "statusName", label: "Status", align: 'left', type:"string" },
 ];
 
 

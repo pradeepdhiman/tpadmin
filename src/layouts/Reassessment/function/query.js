@@ -14,10 +14,14 @@ export const assessmentApis = emptySplitApi.injectEndpoints({
         filterReassessment: build.mutation({
             query: (filter) => createRequest("/CandidateReassessment/GetCandidateReassessments", filter),
         }),
+        updateReassessment: build.mutation({
+            query: (data) => updateRequest("/CandidateReassessment", data),
+        }),
     }),
 });
 
-export const { 
+export const {
     useReAssessListQuery,
-    useFilterReassessmentMutation
- } = assessmentApis;
+    useFilterReassessmentMutation,
+    useUpdateReassessmentMutation,
+} = assessmentApis;

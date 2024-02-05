@@ -34,7 +34,15 @@ export const schema = yup.object().shape({
   address: yup.string().required('Address is required'),
   qualification: yup.string().required('Qualification is required'),
   designation: yup.string(),
-  dob: yup.date().required('Date of Birth is required'),
+  dob: yup.date()
+    .required('Date of Birth is required')
+    .test('age', 'Must be at least 15 years old', function (value) {
+      const currentDate = new Date();
+      const birthDate = new Date(value);
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+      return age >= 15;
+    }),
   nationality: yup.string().required('Nationality is required'),
   companyName: yup.string(),
   companyContactNumber: yup

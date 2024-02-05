@@ -136,7 +136,8 @@ function EditCourse(props) {
       toastHandler(res)
 
       if (res?.data?.success) {
-        closeEdit()
+        dispatch(setActiveRow(res?.data?.data))
+        // closeEdit()
       }
 
       return res;
@@ -170,8 +171,11 @@ function EditCourse(props) {
   useEffect(() => {
     const calculateTotalAmount = () => {
       const trainingFeeValue = parseFloat(trainingFee) || 0;
-      const vatValue = parseFloat(vat) || 0;
+      const vatPercentage = parseFloat(vat) || 0;
+
+      const vatValue = (trainingFeeValue * vatPercentage) / 100;
       const totalAmount = trainingFeeValue + vatValue;
+
       setValue('totalAmount', totalAmount.toFixed(2));
     };
 
@@ -261,7 +265,7 @@ function EditCourse(props) {
   }
 
   const optionList = () => {
-    return (<SoftBox mt={.5} sx={{ position: "absolute", zIndex: 2 }} >
+    return (<SoftBox mt={.5} sx={{ position: "absolute", zIndex: 2, width: "100%" }} >
       <Card>
         <SoftBox p={2}>
           {!newCategory && <SoftButton onClick={addCat} fullWidth size="small" variant="outlined" color="info">New Category</SoftButton>}
@@ -296,7 +300,7 @@ function EditCourse(props) {
       </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Course
+          {activeRow?.courseName || "New Course"}
         </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
@@ -417,7 +421,7 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Course Details
+                          Course Contents
                         </SoftTypography>
                       </SoftBox>
                       {/* <SoftInput
@@ -474,13 +478,13 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Tax/VAT (Amount)
+                          Tax/VAT (%)
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
                         type="number"
                         {...field}
-                        placeholder=" Tax/VAT (Amount)"
+                        placeholder=" Tax/VAT (%)"
                       />
                       {errors.vat && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -542,6 +546,35 @@ function EditCourse(props) {
                   )}
                 />
               </Grid> */}
+              {Object.keys(activeRow).length !== 0 ? <Grid item xs={12} sm={6} md={3}>
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <SoftBox mb={2}>
+                      <SoftBox mb={1} ml={0.5}>
+                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                          Status
+                        </SoftTypography>
+                      </SoftBox>
+                      <SoftAddAbleAutoSelect
+                        dataList={courseStatusList?.data || []}
+                        selectedValue={crsStatus}
+                        selectHandler={statushandler}
+                        label={null}
+                        placeholder=" Status"
+                        loading={loadingStatus}
+                        isEditable={false}
+                      />
+                      {errors.status && (
+                        <SoftTypography component="label" variant="caption" color="error">
+                          {errors.status.message}
+                        </SoftTypography>
+                      )}
+                    </SoftBox>
+                  )}
+                />
+              </Grid> : null}
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="remarks"
@@ -574,35 +607,6 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
-              {Object.keys(activeRow).length !== 0 ? <Grid item xs={12} sm={6} md={3}>
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <SoftBox mb={2}>
-                      <SoftBox mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Status
-                        </SoftTypography>
-                      </SoftBox>
-                      <SoftAddAbleAutoSelect
-                        dataList={courseStatusList?.data || []}
-                        selectedValue={crsStatus}
-                        selectHandler={statushandler}
-                        label={null}
-                        placeholder=" Status"
-                        loading={loadingStatus}
-                        isEditable={false}
-                      />
-                      {errors.status && (
-                        <SoftTypography component="label" variant="caption" color="error">
-                          {errors.status.message}
-                        </SoftTypography>
-                      )}
-                    </SoftBox>
-                  )}
-                />
-              </Grid> : null}
             </Grid>
 
 

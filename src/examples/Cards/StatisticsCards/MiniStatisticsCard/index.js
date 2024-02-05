@@ -14,9 +14,15 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
   function goto() {
     redirectTo()
   }
+  const cardStyles = {
+    transition: 'background-color 0.3s ease',
+    ':hover': {
+      backgroundColor: '#afccfb', 
+    },
+  };
   return (
-    <Card>
-      <SoftBox bgColor={bgColor} variant="gradient" onClick={goto} >
+    <Card >
+      <SoftBox bgColor={bgColor} variant="gradient" onClick={goto} sx={cardStyles} >
         <SoftBox p={2}>
           <Grid container alignItems="center">
             {direction === "left" ? (

@@ -9,15 +9,14 @@ import SoftBox from "components/SoftBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import typography from "assets/theme/base/typography";
 import { useEffect, useState } from "react";
 import AssessmentDetails from "./component/AssessmentDetails";
 import {  useFilterReassessmentMutation, useReAssessListQuery } from "./function/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { initialFilters } from "./constant";
-import { setActiveRow } from "./function/assessmentSlice";
 import ReAssessmentList from "./component/AssessmentList";
+import { setActiveRow } from "./function/reassessmentSlice";
 
 
 function Reassessment() {
@@ -25,7 +24,7 @@ function Reassessment() {
   const [editId, setEditId] = useState("")
   const [filters, setFilters] = useState(initialFilters)
   const dispatch = useDispatch()
-  const { activeRow = {} } = useSelector(state => state.assessment)
+  const { activeRow } = useSelector(state => state.reassessment)
 
   const { data: assessList, isLoading: assessLoading, refatch: refreshlist } = useReAssessListQuery()
   // const [filterData, { data: assessList, isLoading: assessLoading }] = useFilterReassessmentMutation()
@@ -64,17 +63,12 @@ function Reassessment() {
               <AssessmentDetails toggleEdit={editMode} editid={editId} />
             </Grid>
           )}
-          {assessLoading && <SoftBarLoader />}
+          {/* {assessLoading && <SoftBarLoader />} */}
           {(Object.keys(activeRow).length === 0 ) && (
             <Grid item xs={12}>
               <ReAssessmentList list={assessList?.data} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
           )}
-          {/* {Object.keys(activeRow).length === 0 && assessList?.data?.length && (
-            <Grid item xs={12}>
-              <ReAssessmentList list={assessList?.data} loading={assessLoading} changeFilter={setFilters} />
-            </Grid>
-          )} */}
         </Grid>
       </SoftBox>
       <Footer />

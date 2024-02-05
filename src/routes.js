@@ -68,7 +68,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Schedule",
+    name: "Training Schedule",
     key: "schedule",
     route: "/schedule",
     icon: <ScheduleIcon size="12px" />,
@@ -80,7 +80,7 @@ const routes = [
   ,
   {
     type: "collapse",
-    name: "Orders",
+    name: "Training Requests",
     key: "orders",
     route: "/orders",
     icon: <LocalMallIcon size="12px" />,
@@ -91,7 +91,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Assessments",
+    name: "Assessment Register",
     key: "assessments",
     route: "/assessments",
     icon: <BiotechIcon size="12px" />,

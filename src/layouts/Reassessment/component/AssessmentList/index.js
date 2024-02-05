@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateRows } from "utils/utils";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { assessmentTableHeads } from "layouts/Reassessment/constant";
-import { setActiveRow } from "layouts/Reassessment/function/assessmentSlice";
+import { setActiveRow } from "layouts/Reassessment/function/reassessmentSlice";
 
 // Data
 
@@ -30,7 +30,7 @@ function ReAssessmentList(props) {
   // const { columns, rows } = data();
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
-  const { activeRow } = useSelector(state => state.assessment)
+  const { activeRow } = useSelector(state => state.reassessment)
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);

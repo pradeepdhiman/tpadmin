@@ -16,6 +16,7 @@ import { useMasterListByTypeQuery } from "common/query";
 import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { toastHandler } from "utils/utils";
+import { useNavigate } from "react-router-dom";
 // {
 //     "courseScheduleID": 0,
 //     "scheduledID": 0,
@@ -38,6 +39,8 @@ const AssignSchedule = () => {
     const [assign, { data: assignData, isError: assignErr, isLoading: assignLoading }] = useAssignScheduleMutation()
     const [getSchedule, { data: schData, isError: schDataErr, isLoading: schDataLoading }] = useScheduleByIdMutation()
     const { data: courseScheduleStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.CourseScheduleStatus })
+    const navigate = useNavigate()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -105,7 +108,7 @@ const AssignSchedule = () => {
                             ))
                         ) : (
                             <SoftTypography variant="h6" fontWeight="bold">
-                                Schedule not available
+                                This course dont have active schedule <SoftButton onClick={()=>navigate("/schedule")} color="info" variant="text">Click here</SoftButton> to add one.
                             </SoftTypography>
                         )}
                     </SoftBox>

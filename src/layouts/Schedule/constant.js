@@ -37,15 +37,26 @@ export const editmodefields = {
 
 
 export const schema = yup.object().shape({
-    scheduledName: yup.string().required(),
-    startDate: yup.date().required(),
-    endDate: yup.date().required(),
-    scheduleCreatedDateTime: yup.date().required(),
-    validityDateTime: yup.date().required(),
-    location: yup.string().required(),
-    instructor: yup.string().required(),
-    remarks: yup.string()
-});
+    scheduledName: yup.string().required('Scheduled Name is required'),
+    startDate: yup
+      .date()
+      .required('Start Date is required')
+      .min(new Date(), 'Start Date cannot be less than today'),
+    endDate: yup
+      .date()
+      .required('End Date is required')
+      .min(yup.ref('startDate'), 'End Date cannot be less than Start Date'),
+    scheduleCreatedDateTime: yup
+      .date()
+      .required('Schedule Created Date Time is required'),
+    validityDateTime: yup
+      .date()
+      .required('Validity Date Time is required')
+      .min(yup.ref('startDate'), 'Validity Date Time cannot be less than Start Date'),
+    location: yup.string().required('Location is required'),
+    instructor: yup.string().required('Instructor is required'),
+    remarks: yup.string(),
+  });
 
 
 export const scheduletableheads = [

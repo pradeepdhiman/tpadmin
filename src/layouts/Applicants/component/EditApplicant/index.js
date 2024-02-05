@@ -461,44 +461,19 @@ function EditApplicant(props) {
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
-                  name="remarks"
-                  control={control}
-                  render={({ field }) => (
-                    <SoftBox mb={2}>
-                      <SoftBox mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Remarks
-                        </SoftTypography>
-                      </SoftBox>
-                      <SoftInput
-                        type="text"
-                        {...field}
-                        placeholder="Remarks"
-                      />
-                      {errors.remarks && (
-                        <SoftTypography component="label" variant="caption" color="error">
-                          {errors.remarks.message}
-                        </SoftTypography>
-                      )}
-                    </SoftBox>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Controller
                   name="dob"
                   control={control}
                   render={({ field }) => (
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Dob
+                          Date of Birth
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
                         type="date"
                         {...field}
-                        placeholder="Dob"
+                        placeholder=" Date of Birth"
                       />
                       {errors.dob && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -619,6 +594,38 @@ function EditApplicant(props) {
                       {errors.status && (
                         <SoftTypography component="label" variant="caption" color="error">
                           {errors.status.message}
+                        </SoftTypography>
+                      )}
+                    </SoftBox>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Controller
+                  name="remarks"
+                  control={control}
+                  render={({ field }) => (
+                    <SoftBox mb={2}>
+                      <SoftBox mb={1} ml={0.5}>
+                        <SoftTypography component="label" variant="caption" fontWeight="bold">
+                          Remarks
+                        </SoftTypography>
+                      </SoftBox>
+                      {/* <SoftInput
+                        type="text"
+                        {...field}
+                        placeholder="Remarks"
+                      /> */}
+                      <SoftBox>
+                        <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
+                          type="text"
+                          {...field}
+                          placeholder="Remarks"
+                        />
+                      </SoftBox>
+                      {errors.remarks && (
+                        <SoftTypography component="label" variant="caption" color="error">
+                          {errors.remarks.message}
                         </SoftTypography>
                       )}
                     </SoftBox>

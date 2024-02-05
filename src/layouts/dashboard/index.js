@@ -24,6 +24,27 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useDbschedulelistQuery } from "common/query";
+import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
+import { Icon } from "@mui/material";
+import SoftTypography from "components/SoftTypography";
+// import gradientLineChartData from "./data/chartData"
+
+
+const gradientLineChartData = {
+  labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
+    {
+      label: "Mobile apps",
+      color: "info",
+      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+    },
+    {
+      label: "Websites",
+      color: "dark",
+      data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+    },
+  ],
+};
 
 const initialFilter = {
   draw: 5,
@@ -139,7 +160,7 @@ function Dashboard() {
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Active Schedules" }}
-                count={schloading ? "Loading...": schedulelist?.data?.length}
+                count={schloading ? "Loading..." : schedulelist?.data?.length}
                 percentage={{ color: "success", text: "+5%" }}
                 icon={{
                   color: "info",
@@ -150,6 +171,28 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
+        {/* {gradientLineChartData && <Grid container>
+          <Grid item xs={12} lg={7}>
+            <GradientLineChart
+              title="Sales Overview"
+              description={
+                <SoftBox display="flex" alignItems="center">
+                  <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
+                    <Icon className="font-bold">arrow_upward</Icon>
+                  </SoftBox>
+                  <SoftTypography variant="button" color="text" fontWeight="medium">
+                    4% more{" "}
+                    <SoftTypography variant="button" color="text" fontWeight="regular">
+                      in 2021
+                    </SoftTypography>
+                  </SoftTypography>
+                </SoftBox>
+              }
+              height="20.25rem"
+              chart={gradientLineChartData}
+            />
+          </Grid>
+        </Grid>} */}
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
