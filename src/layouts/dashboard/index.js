@@ -20,31 +20,14 @@ import NewOrders from "./component/NewOrders";
 import LatestCourse from "./component/LatestCourses";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { useDbApplicantQuery, useDbCoursesQuery, useDbcourselistApplicantQuery } from "./functions/query";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useDbschedulelistQuery } from "common/query";
-import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
-import { Icon } from "@mui/material";
-import SoftTypography from "components/SoftTypography";
+import { TPChart } from "examples/Charts/TPChart/TPChart";
 // import gradientLineChartData from "./data/chartData"
 
 
-const gradientLineChartData = {
-  labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "Mobile apps",
-      color: "info",
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-    },
-    {
-      label: "Websites",
-      color: "dark",
-      data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-    },
-  ],
-};
 
 const initialFilter = {
   draw: 5,
@@ -95,6 +78,8 @@ const initialFilter = {
 
 function Dashboard() {
   const [filters, setFilters] = useState(initialFilter)
+  const [dataSets, setDataSets] = useState([])
+  const [labels, setLabels] = useState([])
   const navigate = useNavigate();
   const { size } = typography;
   const {
@@ -123,6 +108,17 @@ function Dashboard() {
   //   createCourse(filters)
   // }, [])
 
+
+  let chartData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'Sales',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+    }],
+  };
 
   return (
     <DashboardLayout>
@@ -171,32 +167,16 @@ function Dashboard() {
             </Grid>
           </Grid>
         </SoftBox>
-        {/* {gradientLineChartData && <Grid container>
-          <Grid item xs={12} lg={7}>
-            <GradientLineChart
-              title="Sales Overview"
-              description={
-                <SoftBox display="flex" alignItems="center">
-                  <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                    <Icon className="font-bold">arrow_upward</Icon>
-                  </SoftBox>
-                  <SoftTypography variant="button" color="text" fontWeight="medium">
-                    4% more{" "}
-                    <SoftTypography variant="button" color="text" fontWeight="regular">
-                      in 2021
-                    </SoftTypography>
-                  </SoftTypography>
-                </SoftBox>
-              }
-              height="20.25rem"
-              chart={gradientLineChartData}
-            />
+        {/* <Grid container>
+          <Grid item xs={12} lg={12}>
+            <TPChart/>
           </Grid>
-        </Grid>} */}
+        </Grid> */}
         <SoftBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={7}>
-              <ApplicantsContainer />
+              {/* <ApplicantsContainer /> */}
+              <TPChart/>
             </Grid>
             <Grid item xs={12} lg={5}>
               <CoursesContainer />

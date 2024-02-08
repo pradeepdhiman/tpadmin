@@ -282,7 +282,8 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="inharit" fontWeight="inharit">
             {columnType === "string" ? columnValue : null}
-            {columnType === "number" ? parseInt(columnValue) : null}
+            {columnType === "number" ? (isNaN(parseInt(columnValue)) ? "" : parseInt(columnValue)) : null}
+
             {columnType === "date" ? formatDateString(columnValue) : null}
           </SoftTypography>
         );

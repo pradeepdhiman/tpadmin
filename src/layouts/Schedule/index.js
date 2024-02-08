@@ -16,13 +16,15 @@ import ScheduleList from "./component/ScheduleList";
 import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow, setScheduleCourse } from "./functions/scheduleSlice";
-import { useCreateScheduleMutation, useListScheduleQuery, useListSchedulebyCourseIDMutation, useSchCoursListQuery } from "./functions/query";
+import { useCreateScheduleMutation, useFilterScheduleMutation, useListScheduleQuery, useListSchedulebyCourseIDMutation, useSchCoursListQuery } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { initialFilters } from "./constant";
 const loadingState = { courseName: "Loading..." }
 
 
 function Schedule() {
   const dispatch = useDispatch()
+  const [filters, setFilters] = useState(initialFilters)
   const { activeRow, course } = useSelector(state => state.schedule)
   const [editId, setEditId] = useState("")
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -31,6 +33,7 @@ function Schedule() {
   const [createSchedule, { data: createRes, isError: createErr, isLoading: createLoading }] = useCreateScheduleMutation()
   const [isEdit, setEdit] = useState(false)
   const [getSchByCourseId, { data: schDataList, isLoading: schListLoading }] = useListSchedulebyCourseIDMutation()
+  const [filterList, { data: schlist, isLoading: filterLoading }] = useFilterScheduleMutation()
 
   useEffect(() => {
     if (!selectedCourse) {
@@ -38,6 +41,19 @@ function Schedule() {
       setSelectedCourse(courselist?.data[0])
     }
   }, [courselist])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await filterList(filters);
+        console.log(res, "filter list")
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [filters]);
 
 
 
@@ -108,7 +124,7 @@ function Schedule() {
           {schListLoading && <SoftBarLoader />}
           {Object.keys(activeRow).length === 0 && schDataList?.success && (
             <Grid item xs={12}>
-              <ScheduleList list={schDataList} loading={schListLoading} />
+              <ScheduleList list={schDataList} loading={schListLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

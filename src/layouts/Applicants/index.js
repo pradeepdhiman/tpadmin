@@ -52,7 +52,7 @@ function Applicants() {
     };
 
     fetchData();
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     if (id && verify && applicantList && applicantList.data) {
@@ -101,7 +101,7 @@ function Applicants() {
           {listLoading && <SoftBarLoader />}
           {Object.keys(activeRow).length === 0 && applicantList?.success && (
             <Grid item xs={12}>
-              <ApplicantList list={applicantList} loading={listLoading} />
+              <ApplicantList list={applicantList} loading={listLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

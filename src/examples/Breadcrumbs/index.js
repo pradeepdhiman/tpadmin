@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -26,9 +12,16 @@ import Icon from "@mui/material/Icon";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import { useEffect, useState } from "react";
+import routes from "routes";
 
 function Breadcrumbs({ icon, title, route, light }) {
-  const routes = route.slice(0, -1);
+  const [pageTitle, setPageTitle] = useState()
+  const routesSlice = route.slice(0, -1);
+  useEffect(() => {
+    let foundItem = routes?.find(x => x.key === title)
+    setPageTitle(foundItem)
+  }, [title])
 
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
@@ -50,7 +43,7 @@ function Breadcrumbs({ icon, title, route, light }) {
             <Icon>{icon}</Icon>
           </SoftTypography>
         </Link>
-        {routes.map((el) => (
+        {routesSlice.map((el) => (
           <Link to={`/${el}`} key={el}>
             <SoftTypography
               component="span"
@@ -82,7 +75,8 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {/* {title.replace("-", " ")} */}
+        {pageTitle?.name}
       </SoftTypography>
     </SoftBox>
   );

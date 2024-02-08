@@ -1,30 +1,56 @@
 
 export const initialFilters = {
-  draw: 10,
-  start: 0,
-  length: 10,
-  columns: [
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
     {
-      data: "firstName",
-      name: "firstName",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "firstName",
-        regex: "test",
-      },
-    },
+      "data": "ApplicantName",
+      "name": "ApplicantName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
   ],
-  search: {
-    value: "firstName",
-    regex: "test",
+  "search": {
+    "value": "",
+    "regex": ""
   },
-  order: {
-    orderBy: "firstName",
-    orderDirection: "desc",
+  "order": {
+    "orderBy": "string",
+    "orderDirection": "asc"
   },
-  filter: null,
-};
+  "filter": {
+    "applicantCourseID": 0,
+    "applicantID": 0,
+    "applicantName": "",
+    "courseID": 0,
+    "courseName": "",
+    "scheduleID": 0,
+    "scheduleName": "",
+    "enrollmentDate": "",
+    "completionDate": "",
+    "trainingfee": "",
+    "receipt": "",
+    "receiptID": "",
+    "receiptDate": "",
+    "amountPaid": "",
+    "paymentStatus": 0,
+    "paymentStatusName": "",
+    "courseStatus": 0,
+    "courseStatusName": "",
+    "status": 0,
+    "statusName": "",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": "",
+    "isDeleted": false,
+    "remarks": ""
+  }
+}
 
 export const tableheads = [
   { name: "applicantName", label: "Applicant Name", align: "left", type: "string" },

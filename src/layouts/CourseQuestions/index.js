@@ -22,6 +22,7 @@ import { setQuestionCourse, setActiveRow } from "./functions/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCreateQuestionMutation, useQuestionByCourseIdMutation } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { initialFilters } from "./constant";
 
 const loadingState = { courseName: "Loading..." }
 
@@ -30,6 +31,7 @@ function CourseQuestions() {
   const [isEdit, setEdit] = useState(false)
   const [editId, setEditId] = useState("")
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [filters, setFilters] = useState(initialFilters)
   const dispatch = useDispatch()
   const { activeRow } = useSelector(state => state.question)
 
@@ -56,6 +58,18 @@ function CourseQuestions() {
     fetchQuestion();
   
   }, [selectedCourse]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await filteredList(filters);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [filters]);
 
   useEffect(() => {
     dispatch(setActiveRow({}))
@@ -105,7 +119,7 @@ function CourseQuestions() {
           {questionLoading && <SoftBarLoader />}
           {Object.keys(activeRow).length === 0 && questionList?.success && (
             <Grid item xs={12}>
-              <QuestionList list={questionList} loading={questionLoading} />
+              <QuestionList list={questionList} loading={questionLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

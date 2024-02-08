@@ -90,53 +90,89 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
           </SoftBox>
         );
       } else {
-        if (columnIndex === 0 && typeof rowFunc === 'function') {
-          template = (
-            <SoftBox
-              key={uuidv4()}
-              component="td"
-              p={1}
-              textAlign={align}
-              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-              onClick={() => rowFunc(key)}
-              style={{ cursor: 'pointer' }}
+        template = (
+          <SoftBox
+            key={uuidv4()}
+            component="td"
+            p={1}
+            textAlign={align}
+            borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+          >
+            <SoftTypography
+              variant="button"
+              fontWeight="regular"
+              color="secondary"
+              sx={{ display: "inline-block", width: "max-content" }}
             >
-              <SoftTypography
-                variant="button"
-                sx={{ display: "inline-block", width: "max-content" }}
-                color="info"
-              fontWeight="bold"
-              >
-                {row[name]}
-              </SoftTypography>
-            </SoftBox>
-          );
-        } else {
-          template = (
-            <SoftBox
-              key={uuidv4()}
-              component="td"
-              p={1}
-              textAlign={align}
-              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-            >
-              <SoftTypography
-                variant="button"
-                fontWeight="regular"
-                color="secondary"
-                sx={{ display: "inline-block", width: "max-content" }}
-              >
-                {row[name]}
-              </SoftTypography>
-            </SoftBox>
-          );
-        }
+              {row[name]}
+            </SoftTypography>
+          </SoftBox>
+        );
       }
+        // if (columnIndex === 0 && typeof rowFunc === 'function') {
+        //   template = (
+        //     <SoftBox
+        //       key={uuidv4()}
+        //       component="td"
+        //       p={1}
+        //       textAlign={align}
+        //       borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+        //       onClick={() => rowFunc(key)}
+        //       style={{ cursor: 'pointer' }}
+        //     >
+        //       <SoftTypography
+        //         variant="button"
+        //         sx={{ display: "inline-block", width: "max-content" }}
+        //         color="info"
+        //       fontWeight="bold"
+        //       >
+        //         {row[name]}
+        //       </SoftTypography>
+        //     </SoftBox>
+        //   );
+        // } else {
+        //   template = (
+        //     <SoftBox
+        //       key={uuidv4()}
+        //       component="td"
+        //       p={1}
+        //       textAlign={align}
+        //       borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+        //     >
+        //       <SoftTypography
+        //         variant="button"
+        //         fontWeight="regular"
+        //         color="secondary"
+        //         sx={{ display: "inline-block", width: "max-content" }}
+        //       >
+        //         {row[name]}
+        //       </SoftTypography>
+        //     </SoftBox>
+        //   );
+        // }
+      // }
 
       return template;
     });
 
-    return <TableRow key={rowKey} >{tableRow}</TableRow>;
+    if (typeof rowFunc === 'function') {
+      return (
+        <TableRow
+          key={rowKey}
+          onClick={() => rowFunc(key)}
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              background: "#ecede4d4"
+            }
+          }}
+        >
+          {tableRow}
+        </TableRow>
+      );
+    } else {
+      return <TableRow key={rowKey}>{tableRow}</TableRow>;
+    }
   });
 
   return useMemo(

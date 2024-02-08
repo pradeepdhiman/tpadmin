@@ -68,22 +68,73 @@ export const schema = yup.object().shape({
 
 
 export const questiontableheads = [
-    { name: "questionTitle", label: "Question", align: "left" , type: "string"},
-    { name: "courseName", label: "Course Name", align: "left" , type: "string"},
-    { name: "questionTypeName", label: "question Type", align: "left" , type: "string"},
-    { name: "statusName", label: "Status", align: "left" , type: "string"},
-    { name: "correctAnswer", label: "Correct Answer", align: "left" , type: "string"},
-    { name: "optionA", label: "option A", align: "left" , type: "string"},
-    { name: "optionB", label: "option B", align: "left" , type: "string"},
-    { name: "optionC", label: "option C", align: "left" , type: "string"},
-    { name: "optionD", label: "option D", align: "left" , type: "string"},
-    { name: "optionE", label: "option E", align: "left" , type: "string"},
-    { name: "marksOptionA", label: "Option A Marks", align: "left" , type: "number"},
-    { name: "marksOptionB", label: "Option B Marks", align: "left" , type: "number"},
-    { name: "marksOptionC", label: "Option C Marks", align: "left" , type: "number"},
-    { name: "marksOptionD", label: "Option D Marks", align: "left" , type: "number"},
-    { name: "marksOptionE", label: "Option E Marks", align: "left" , type: "number"},
+    { name: "questionTitle", label: "Question", align: "left", type: "string" },
+    { name: "courseName", label: "Course Name", align: "left", type: "string" },
+    { name: "questionTypeName", label: "question Type", align: "left", type: "string" },
+    { name: "statusName", label: "Status", align: "left", type: "string" },
+    { name: "correctAnswer", label: "Correct Answer", align: "left", type: "string" },
+    { name: "optionA", label: "option A", align: "left", type: "string" },
+    { name: "optionB", label: "option B", align: "left", type: "string" },
+    { name: "optionC", label: "option C", align: "left", type: "string" },
+    { name: "optionD", label: "option D", align: "left", type: "string" },
+    { name: "optionE", label: "option E", align: "left", type: "string" },
+    { name: "marksOptionA", label: "Option A Marks", align: "left", type: "number" },
+    { name: "marksOptionB", label: "Option B Marks", align: "left", type: "number" },
+    { name: "marksOptionC", label: "Option C Marks", align: "left", type: "number" },
+    { name: "marksOptionD", label: "Option D Marks", align: "left", type: "number" },
+    { name: "marksOptionE", label: "Option E Marks", align: "left", type: "number" },
     { name: "remarks", label: "Remarks", align: "left", type: "string" },
 ];
 
 
+export const initialFilters = {
+    "draw": 0,
+    "start": 0,
+    "length": 10,
+    "columns": [
+        {
+            "data": "QuestionTitle",
+            "name": "QuestionTitle",
+            "searchable": true,
+            "orderable": true,
+            "search": {
+                "value": "",
+                "regex": ""
+            }
+        }
+    ],
+    "search": {
+        "value": "",
+        "regex": ""
+    },
+    "order": {
+        "orderBy": "QuestionTitle",
+        "orderDirection": "asc"
+    },
+    "filter": {
+        "questionID": 0,
+        "courseID": 0,
+        "courseName": "",
+        "questionTitle": "",
+        "questionTypeID": 0,
+        "questionTypeName": "",
+        "correctAnswer": "",
+        "optionA": "",
+        "optionB": "",
+        "optionC": "",
+        "optionD": "",
+        "optionE": "",
+        "marksOptionA": "",
+        "marksOptionB": "",
+        "marksOptionC": "",
+        "marksOptionD": "",
+        "marksOptionE": "",
+        "status": 0,
+        "statusName": "",
+        "createdById": 0,
+        "updatedById": 0,
+        "updatedDate": "",
+        "isDeleted": false,
+        "remarks": ""
+    }
+}
