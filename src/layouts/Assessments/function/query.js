@@ -14,10 +14,14 @@ export const assessmentApis = emptySplitApi.injectEndpoints({
         testDetail: build.query({
             query: (data) => getRequest("/CandidateAssesment", data),
         }),
+        assessmentFilter: build.mutation({
+            query: (filter) => createRequest("/CandidateAssesment/GetCandidateAssesments", filter),
+        }),
     }),
 });
 
 export const { 
     useAssessListQuery,
-    useTestDetailQuery
+    useTestDetailQuery,
+    useAssessmentFilterMutation
  } = assessmentApis;

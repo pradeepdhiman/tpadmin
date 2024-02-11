@@ -20,7 +20,7 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "string",
+    "orderBy": "ApplicantName",
     "orderDirection": "asc"
   },
   "filter": {
@@ -31,26 +31,27 @@ export const initialFilters = {
     "courseName": "",
     "scheduleID": 0,
     "scheduleName": "",
-    "enrollmentDate": "",
-    "completionDate": "",
+    "enrollmentDate": null,
+    "completionDate": null,
     "trainingfee": "",
     "receipt": "",
     "receiptID": "",
-    "receiptDate": "",
+    "receiptDate": null,
     "amountPaid": "",
     "paymentStatus": 0,
-    "paymentStatusName": "",
+    "paymentStatusName": "Pending",
     "courseStatus": 0,
-    "courseStatusName": "",
+    "courseStatusName": "Applied",
     "status": 0,
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "",
+    "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
   }
 }
+
 
 export const tableheads = [
   { name: "applicantName", label: "Applicant Name", align: "left", type: "string" },

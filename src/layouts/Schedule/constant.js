@@ -77,8 +77,8 @@ export const initialFilters = {
   "length": 10,
   "columns": [
     {
-      "data": "scheduledName",
-      "name": "scheduledName",
+      "data": "ScheduledName",
+      "name": "ScheduledName",
       "searchable": true,
       "orderable": true,
       "search": {
@@ -88,11 +88,11 @@ export const initialFilters = {
     }
   ],
   "search": {
-    "value": "string",
-    "regex": "string"
+    "value": "",
+    "regex": ""
   },
   "order": {
-    "orderBy": "scheduledName",
+    "orderBy": "ScheduledName",
     "orderDirection": "asc"
   },
   "filter": {
@@ -100,10 +100,10 @@ export const initialFilters = {
     "scheduledName": "",
     "courseID": 0,
     "courseName": "",
-    "startDate": "",
-    "endDate": "",
-    "scheduleCreatedDateTime": "",
-    "validityDateTime": "",
+    "startDate": null,
+    "endDate": null,
+    "scheduleCreatedDateTime": null,
+    "validityDateTime": null,
     "location": 0,
     "locationName": "",
     "instructor": 0,
@@ -112,7 +112,7 @@ export const initialFilters = {
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "",
+    "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
   }

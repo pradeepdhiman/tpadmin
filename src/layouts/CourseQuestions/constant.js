@@ -92,49 +92,49 @@ export const initialFilters = {
     "start": 0,
     "length": 10,
     "columns": [
-        {
-            "data": "QuestionTitle",
-            "name": "QuestionTitle",
-            "searchable": true,
-            "orderable": true,
-            "search": {
-                "value": "",
-                "regex": ""
-            }
+      {
+        "data": "QuestionTitle",
+        "name": "QuestionTitle",
+        "searchable": true,
+        "orderable": true,
+        "search": {
+          "value": "",
+          "regex": ""
         }
+      }
     ],
     "search": {
-        "value": "",
-        "regex": ""
+      "value": "",
+      "regex": ""
     },
     "order": {
-        "orderBy": "QuestionTitle",
-        "orderDirection": "asc"
+      "orderBy": "QuestionTitle",
+      "orderDirection": "asc"
     },
     "filter": {
-        "questionID": 0,
-        "courseID": 0,
-        "courseName": "",
-        "questionTitle": "",
-        "questionTypeID": 0,
-        "questionTypeName": "",
-        "correctAnswer": "",
-        "optionA": "",
-        "optionB": "",
-        "optionC": "",
-        "optionD": "",
-        "optionE": "",
-        "marksOptionA": "",
-        "marksOptionB": "",
-        "marksOptionC": "",
-        "marksOptionD": "",
-        "marksOptionE": "",
-        "status": 0,
-        "statusName": "",
-        "createdById": 0,
-        "updatedById": 0,
-        "updatedDate": "",
-        "isDeleted": false,
-        "remarks": ""
+      "questionID": 0,
+      "courseID": 0,
+      "courseName": "",
+      "questionTitle": "",
+      "questionTypeID": 0,
+      "questionTypeName": "",
+      "correctAnswer": "",
+      "optionA": "",
+      "optionB": "",
+      "optionC": "",
+      "optionD": "",
+      "optionE": "",
+      "marksOptionA": "",
+      "marksOptionB": "",
+      "marksOptionC": "",
+      "marksOptionD": "",
+      "marksOptionE": "",
+      "status": 0,
+      "statusName": "",
+      "createdById": 0,
+      "updatedById": 0,
+      "updatedDate": null,
+      "isDeleted": false,
+      "remarks": ""
     }
-}
+  }

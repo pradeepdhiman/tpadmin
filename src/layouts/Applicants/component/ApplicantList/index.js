@@ -118,7 +118,7 @@ function ApplicantList(props) {
           <SoftTypography variant="h6" gutterBottom>
             Applicant List
           </SoftTypography>
-          <SoftBox display="flex" alignItems="center" lineHeight={0}>
+          {/* <SoftBox display="flex" alignItems="center" lineHeight={0}>
             <Icon
               sx={{
                 fontWeight: "bold",
@@ -131,7 +131,7 @@ function ApplicantList(props) {
             <SoftTypography variant="button" fontWeight="regular" color="text">
               &nbsp;<strong>{list?.data?.length} new</strong> this month
             </SoftTypography>
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
         <SoftBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>

@@ -14,12 +14,12 @@ import ApplicantList from "./component/ApplicantList";
 import SoftButton from "components/SoftButton";
 import EditApplicant from "./component/EditApplicant";
 import { useEffect, useState } from "react";
-import { useFilterApplicantMutation, useCreateApplicantMutation, useListApplicantQuery, useDeleteApplicantMutation } from "./functions/query";
-import { initialFilters } from "./constant";
+import { useFilterApplicantMutation, useCreateApplicantMutation, useDeleteApplicantMutation } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "./functions/applicantSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { initialFilters } from "./constant";
 
 
 function Applicants() {
@@ -37,7 +37,7 @@ function Applicants() {
   const dispatch = useDispatch()
   const { activeRow = {} } = useSelector(state => state.applicant)
 
-  const { data: applicantList, isLoading: listLoading, isError: listError, refetch: refreshList } = useListApplicantQuery();
+ 
   const [filteredList, { data: filterList, error: filtererror, isLoading: filterloading }] = useFilterApplicantMutation()
   const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateApplicantMutation()
   const [deleteApplicant, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteApplicantMutation()
@@ -55,13 +55,13 @@ function Applicants() {
   }, [filters]);
 
   useEffect(() => {
-    if (id && verify && applicantList && applicantList.data) {
-      const foundUser = applicantList.data.find((x) => x.applicantID === +id);
+    if (id && verify && filterList && filterList.data) {
+      const foundUser = filterList.data.find((x) => x.applicantID === +id);
       if (foundUser !== undefined) {
         dispatch(setActiveRow(foundUser));
       }
     }
-  }, [applicantList, dispatch]);
+  }, [filterList, dispatch]);
 
 
   useEffect(() => {
@@ -70,13 +70,13 @@ function Applicants() {
   }, [])
 
 
-  function editMode() {
+  async function editMode() {
     if(id){
       navigate(window.location.pathname, { replace: true });
     }
     setEdit(false)
     dispatch(setActiveRow({}))
-    refreshList()
+    await filteredList(filters)
   }
   function addApplicant() {
     setEdit(true)
@@ -88,20 +88,20 @@ function Applicants() {
       <DashboardNavbar />
       <SoftBox py={3}>
         <Grid container spacing={3}>
-          <Grid xs={12}>
+          {/* <Grid xs={12}>
             <SoftBox px={3}>
               <SoftButton variant="gradient" disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addApplicant}>Add Applicant</SoftButton>
             </SoftBox>
-          </Grid>
+          </Grid> */}
           {(Object.keys(activeRow).length !== 0 || isEdit) && (
             <Grid item xs={12}>
               <EditApplicant toggleEdit={editMode} editid={editId} addApplicant={createApplicant} loading={createLoading} />
             </Grid>
           )}
-          {listLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && applicantList?.success && (
+          {filterloading && <SoftBarLoader />}
+          {Object.keys(activeRow).length === 0 && filterList?.data && (
             <Grid item xs={12}>
-              <ApplicantList list={applicantList} loading={listLoading} changeFilter={setFilters} />
+              <ApplicantList list={filterList} loading={filterloading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

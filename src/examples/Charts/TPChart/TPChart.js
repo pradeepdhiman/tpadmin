@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {
@@ -13,9 +13,11 @@ import {
 import { Bar } from 'react-chartjs-2';
 
 import { faker } from '@faker-js/faker';
-import { Card, Icon, Menu, MenuItem } from '@mui/material';
+import { Autocomplete, Card, Grid, Icon, Menu, MenuItem, TextField } from '@mui/material';
 import SoftBox from 'components/SoftBox';
 import SoftTypography from 'components/SoftTypography';
+import { useReadChartMutation } from 'layouts/dashboard/functions/query';
+import SoftBarLoader from 'components/SoftLoaders/SoftBarLoader';
 
 ChartJS.register(
     CategoryScale,
@@ -26,118 +28,156 @@ ChartJS.register(
     Legend
 );
 
-const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'bottom',
-        },
-        title: {
-            display: false,
-            text: 'Applicant VS Sale',
-        },
-    },
-    scales: {
-        x: {
-            grid: {
-                display: false,
-            },
-        },
-        y: {
-            grid: {
-                display: false,
-            },
-        },
-    },
-};
-
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Sale',
-            data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            backgroundColor: 'rgba(153, 102, 255, 0.7)',
-            borderColor: 'rgba(153, 102, 255, 1)',
-            borderWidth: 1,
-            barPercentage: 0.5,
-            borderRadius: {
-                topLeft: 10,
-                topRight: 10,
-            },
-        },
-        {
-            label: 'Applicant',
-            data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-            barPercentage: 0.5,
-            borderRadius: {
-                topLeft: 10,
-                topRight: 10,
-            },
-        },
-    ],
-};
-
-
-
-
 export function TPChart() {
-    const [menu, setMenu] = useState(null);
-    const [year, setYear] = useState(2023);
+    const [readChart, { data: fetchedChartData, isLoading: chartLoading, isError: chartErr }] = useReadChartMutation()
 
-    const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-    const closeMenu = () => setMenu(null)
+    const currentYear = new Date().getFullYear();
+    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [selectedYear, setSelectedYear] = useState(currentYear.toString());
+    const years = Array.from({ length: 5 }, (_, index) => currentYear - index);
 
-    const yearChangeHandler = (data) => {
-        setYear(data)
-        setMenu(null)
+    const monthNames = [
+        { value: '1', label: 'January' },
+        { value: '2', label: 'February' },
+        { value: '3', label: 'March' },
+        { value: '4', label: 'April' },
+        { value: '5', label: 'May' },
+        { value: '6', label: 'June' },
+        { value: '7', label: 'July' },
+        { value: '8', label: 'August' },
+        { value: '9', label: 'September' },
+        { value: '10', label: 'October' },
+        { value: '11', label: 'November' },
+        { value: '12', label: 'December' }
+    ];
+
+    useEffect(() => {
+        const currentMonth = new Date().getMonth() + 1;
+        if (currentMonth) {
+            let thisMonth = monthNames.find(x => +x.value === currentMonth)
+            setSelectedMonth(thisMonth);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (selectedMonth && selectedYear) {
+            async function fetchChart() {
+                try {
+                    await readChart({ year: parseInt(selectedYear), month: parseInt(selectedMonth.value) })
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            fetchChart()
+        }
+    }, [selectedMonth, selectedYear]);
+
+    const handleMonthChange = (_, newValue) => {
+        setSelectedMonth(newValue);
     };
-    const renderMenu = (
-        <Menu
-            id="simple-menu"
-            anchorEl={menu}
-            anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-            }}
-            transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-            }}
-            open={Boolean(menu)}
-            onClose={closeMenu}
-        >
-            <MenuItem onClick={() => yearChangeHandler(2023)}>2023</MenuItem>
-            <MenuItem onClick={() => yearChangeHandler(2022)}>2022</MenuItem>
-        </Menu>
-    );
-    return <Card>
-        <SoftBox p={2}>
-            <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} mb={1}>
-                <SoftTypography variant="h5" color="dark" fontWeight="bold">
-                    Applicant vs Sales
-                </SoftTypography>
-                <SoftBox>
-                    <SoftBox color="text" px={2}>
-                        <SoftTypography variant="caption" color="dark" fontWeight="bold">
-                            {year}
+
+    const handleYearChange = (_, newValue) => {
+        setSelectedYear(newValue);
+    };
+
+    const chartLabels = fetchedChartData?.data?.applicants.map(entry => `Day ${entry.day}`) || [];
+    const learnersData = fetchedChartData?.data?.applicants.map(entry => entry.totalRecords) || [];
+    const coursesData = fetchedChartData?.data?.courseApplied.map(entry => entry.totalRecords) || [];
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+            },
+            title: {
+                display: false,
+                text: 'Learners vs Courses',
+            },
+        },
+        scales: {
+            x: {
+                type: 'category', 
+                grid: {
+                    display: false,
+                },
+            },
+            y: {
+                grid: {
+                    display: false,
+                },
+                ticks: {
+                    precision: 0,
+                },
+            },
+        },
+    };
+
+
+    const chartData = {
+        labels: chartLabels,
+        datasets: [
+            {
+                label: 'Learners',
+                data: learnersData,
+                backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1,
+                barPercentage: 0.5,
+                borderRadius: {
+                    topLeft: 10,
+                    topRight: 10,
+                },
+            },
+            {
+                label: 'Courses',
+                data: coursesData,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                barPercentage: 0.5,
+                borderRadius: {
+                    topLeft: 10,
+                    topRight: 10,
+                },
+            },
+        ],
+    };
+
+    return (
+        <Card>
+            <SoftBox p={2}>
+                <SoftBox sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} mb={1}>
+                    <SoftBox grow={1}>
+                        <SoftTypography variant="h5" color="dark" fontWeight="bold">
+                            Learners vs Courses
                         </SoftTypography>
-
-                        <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-                            <ArrowDownwardIcon />
-                        </Icon>
                     </SoftBox>
-                    {renderMenu}
+                    <SoftBox sx={{ display: "flex", justifyContent: "end", gap: "16px", alignItems: "center" }}>
+                        <Autocomplete
+                            sx={{ width: "120px" }}
+                            disableClearable={true}
+                            value={selectedMonth}
+                            onChange={handleMonthChange}
+                            options={monthNames}
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => <TextField {...params} placeholder="Month" />}
+                        />
+                        <Autocomplete
+                            sx={{ width: "80px" }}
+                            disableClearable={true}
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                            options={years.map(year => year.toString())}
+                            renderInput={(params) => <TextField {...params} placeholder="Year" />}
+                        />
+                    </SoftBox>
                 </SoftBox>
-            </SoftBox>
-            <Bar options={options} data={data} />
-        </SoftBox>
+                {chartLoading && <SoftBarLoader />}
+                {!chartLoading && <Bar options={chartOptions} data={chartData} />}
 
-    </Card>;
+            </SoftBox>
+        </Card>
+    );
 }
+

@@ -17,8 +17,8 @@ export const initialFilters = {
   "length": 10,
   "columns": [
     {
-      "data": "",
-      "name": "",
+      "data": "CourseName",
+      "name": "CourseName",
       "searchable": true,
       "orderable": true,
       "search": {
@@ -32,8 +32,8 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "",
-    "orderDirection": ""
+    "orderBy": "CourseName",
+    "orderDirection": "asc"
   },
   "filter": {
     "reassessmentID": 0,
@@ -44,7 +44,7 @@ export const initialFilters = {
     "fee": "",
     "receipt": "",
     "receiptID": "",
-    "receiptDate": "",
+    "receiptDate": null,
     "amountPaid": "",
     "paymentStatusID": 0,
     "paymentStatusName": "",
@@ -52,7 +52,7 @@ export const initialFilters = {
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "",
+    "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
   }

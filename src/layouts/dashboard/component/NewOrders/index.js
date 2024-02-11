@@ -17,12 +17,12 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import moment from "moment";
 
 function NewOrders(props) {
-  const { list = [], loading=false } = props
+  const { list = [], loading = false } = props
   return (
     <Card className="h-100">
       <SoftBox pt={3} px={3}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Orders overview
+          Transactions
         </SoftTypography>
         {/* <SoftBox mt={1} mb={2}>
           <SoftTypography variant="button" color="text" fontWeight="regular">

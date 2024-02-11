@@ -12,28 +12,39 @@ export const assessmentTableHeads = [
 
 
 export const initialFilters = {
-  draw: 10,
-  start: 0,
-  length: 10,
-  columns: [
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
     {
-      data: "firstName",
-      name: "firstName",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "firstName",
-        regex: "test",
-      },
-    },
+      "data": "ApplicantName",
+      "name": "ApplicantName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
   ],
-  search: {
-    value: "firstName",
-    regex: "test",
+  "search": {
+    "value": "",
+    "regex": ""
   },
-  order: {
-    orderBy: "firstName",
-    orderDirection: "desc",
+  "order": {
+    "orderBy": "ApplicantName",
+    "orderDirection": "asc"
   },
-  filter: null,
-};
+  "filter": {
+    "candidateAssesmentID": 0,
+    "applicantID": 0,
+    "applicantName": "",
+    "courseID": 0,
+    "courseName": "",
+    "coursesAssesmentID": 0,
+    "assesmentDate": null,
+    "totalQuestions": "",
+    "correctAnswers": 0,
+    "result": ""
+  }
+}

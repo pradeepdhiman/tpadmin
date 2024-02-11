@@ -25,7 +25,7 @@ const fileState = {
     remarks: ""
 }
 
-const UploadMaterial = () => {
+const UploadMaterial = ({setTab}) => {
     const { activeRow } = useSelector(state => state.courses)
     const [fileData, setFileData] = useState("");
     const [matType, setMyType] = useState({
@@ -96,6 +96,7 @@ const UploadMaterial = () => {
                 }
                 setFileData("")
                 refreshmatList()
+                setTab("schedule")
             }
         } catch (err) {
             console.log(err)

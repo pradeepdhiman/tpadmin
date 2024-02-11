@@ -10,27 +10,26 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import OrderList from "./component/OrderList";
-import { useCourselistApplicantQuery } from "./functions/query";
+import { useFilterOrderMutation } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useEffect, useState } from "react";
 import { initialFilters } from "./constant";
 
 function Orders() {
   const [filters, setFilters] = useState(initialFilters)
-  const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useCourselistApplicantQuery();
-  let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.paymentStatusName === "Pending")
-  
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await filteredList(filters);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  const [filterOrder, { data: applicantCourseList, isLoading: listLoading, isError: listError }] = useFilterOrderMutation()
 
-  //   fetchData();
-  // }, [filters]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await filterOrder(filters);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [filters]);
 
   return (
     <DashboardLayout>
@@ -38,9 +37,9 @@ function Orders() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           {listLoading && <SoftBarLoader />}
-          {pendingPaymentCourse?.length && (
+          {applicantCourseList?.data.length && (
             <Grid item xs={12}>
-              <OrderList list={pendingPaymentCourse} loading={listLoading} changeFilter={setFilters} />
+              <OrderList list={applicantCourseList} loading={listLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

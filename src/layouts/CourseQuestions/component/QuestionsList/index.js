@@ -34,9 +34,9 @@ import { setActiveRow } from "layouts/CourseQuestions/functions/questionSlice";
 function QuestionList(props) {
 
   const dispatch = useDispatch()
-  const { list = [], loading = false, changeFilter  } = props
+  const { list = [], loading = false, changeFilter, filterValue  } = props
   const [menu, setMenu] = useState(null);
-  const [rowPerPage, setRowPerPage] = useState(10);
+  const [rowPerPage, setRowPerPage] = useState(filterValue?.length);
   const [rows, setRows] = useState();
   const [orderby, setOrderby] = useState("");
 
@@ -67,8 +67,11 @@ function QuestionList(props) {
 
   function handlerRowperpagechange(event) {
     changeFilter(prev => ({ ...prev, start: 0, length: event.target.value }))
-    setRowPerPage(event.target.value);
+    // setRowPerPage(event.target.value);
   }
+
+  
+
   function paginghandler(e, value) {
     let startfrom = (rowPerPage * value) - rowPerPage
     changeFilter(prev => ({ ...prev, start: startfrom }))

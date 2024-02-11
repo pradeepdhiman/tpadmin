@@ -38,12 +38,14 @@ import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { toastHandler } from "utils/utils";
 import { useLocation } from "react-router-dom";
+import UserDocuments from "../UserDocument";
 
 const tabs = [
   { label: 'Info', value: 'info' },
   { label: 'Applied/Verify Course', value: 'verification' },
   { label: 'Complete Courses', value: 'completeCourse' },
   { label: 'Active Course', value: 'activeCourse' },
+  { label: 'Documents', value: 'doc' },
 ];
 
 function EditApplicant(props) {
@@ -274,6 +276,7 @@ function EditApplicant(props) {
                         type="text"
                         {...field}
                         placeholder="First Name"
+                        disabled
                       />
                       {errors.firstName && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -298,6 +301,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="text"
                         {...field}
+                        disabled
                         placeholder="Last Name"
                       />
                       {errors.lastName && (
@@ -323,6 +327,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="text"
                         {...field}
+                        disabled
                         placeholder="Email"
                       />
                       {errors.email && (
@@ -348,6 +353,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="number"
                         {...field}
+                        disabled
                         placeholder="Phone"
                       />
                       {errors.phone && (
@@ -373,6 +379,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="text"
                         {...field}
+                        disabled
                         placeholder="Address"
                       />
                       {errors.address && (
@@ -398,6 +405,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="text"
                         {...field}
+                        disabled
                         placeholder="Company Name"
                       />
                       {errors.companyName && (
@@ -423,6 +431,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="number"
                         {...field}
+                        disabled
                         placeholder="Company Contact Number"
                       />
                       {errors.companyContactNumber && (
@@ -448,6 +457,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="text"
                         {...field}
+                        disabled
                         placeholder="Company Address"
                       />
                       {errors.companyAddress && (
@@ -473,6 +483,7 @@ function EditApplicant(props) {
                       <SoftInput
                         type="date"
                         {...field}
+                        disabled
                         placeholder=" Date of Birth"
                       />
                       {errors.dob && (
@@ -500,7 +511,8 @@ function EditApplicant(props) {
                         selectedValue={qualiType}
                         selectHandler={qualificationHandler}
                         label={null}
-                        placeholder=" Status"
+                        disabled
+                        placeholder=" Qualification"
                         loading={loadingQly}
                         isEditable={false}
                       />
@@ -529,7 +541,8 @@ function EditApplicant(props) {
                         selectedValue={nationType}
                         selectHandler={nationalityHandler}
                         label={null}
-                        placeholder=" Status"
+                        disabled
+                        placeholder=" Nationality"
                         loading={loadingStatus}
                         isEditable={false}
                       />
@@ -558,7 +571,8 @@ function EditApplicant(props) {
                         selectedValue={desgType}
                         selectHandler={designationHandler}
                         label={null}
-                        placeholder=" Status"
+                        disabled
+                        placeholder=" Designation"
                         loading={loadingdesg}
                         isEditable={false}
                       />
@@ -587,6 +601,7 @@ function EditApplicant(props) {
                         selectedValue={statusType}
                         selectHandler={statusHandler}
                         label={null}
+                        disabled
                         placeholder=" Status"
                         loading={loadingstat}
                         isEditable={false}
@@ -614,12 +629,14 @@ function EditApplicant(props) {
                       {/* <SoftInput
                         type="text"
                         {...field}
+                        disabled  
                         placeholder="Remarks"
                       /> */}
                       <SoftBox>
                         <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
                           type="text"
                           {...field}
+                          disabled
                           placeholder="Remarks"
                         />
                       </SoftBox>
@@ -635,16 +652,17 @@ function EditApplicant(props) {
             </Grid>
 
 
-            <SoftBox mt={4} mb={1}>
+            {/* <SoftBox mt={4} mb={1}>
               <SoftButton variant="gradient" color="info" type="submit" fullWidth>
                 {(loading || updateLoading || createLoading) ? 'Loading..' : 'Submit'}
               </SoftButton>
-            </SoftBox>
+            </SoftBox> */}
           </form>
         </SoftBox>}
         {activeTab === "completeCourse" && <ApplicantCompleteCourse />}
         {activeTab === "activeCourse" && <ApplicantActiveCourse />}
         {activeTab === "verification" && <DocumentVerification />}
+        {activeTab === "doc" && <UserDocuments />}
       </SoftBox>
     </Card>
   );

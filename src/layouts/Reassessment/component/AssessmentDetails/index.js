@@ -151,7 +151,7 @@ function AssessmentDetails(props) {
               Payment Image
             </SoftTypography>
             <SoftTypography
-              onClick={() => window.open(`${_sourcePath}Content/Receipts/${activeRow?.receipt}`, "_blank")}
+              onClick={() => window.open(`${_sourcePath}Content/ReassessmentReceipts/${activeRow?.receipt}`, "_blank")}
               display="inline-block"
               variant="caption"
               fontWeight="bold"

@@ -20,63 +20,84 @@ export const fields = {
 
 
 
-
-
-
 export const schema = yup.object().shape({
-  firstName: yup.string().required('First Name is required'),
-  lastName: yup.string(),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string()
-    .required('Phone is required')
-    .min(10, 'Min number of digits (10) you can check')
-    .max(10, 'Max number of digits (10) you can check'),
-  address: yup.string().required('Address is required'),
-  qualification: yup.string().required('Qualification is required'),
-  designation: yup.string(),
-  dob: yup.date()
-    .required('Date of Birth is required')
-    .test('age', 'Must be at least 15 years old', function (value) {
-      const currentDate = new Date();
-      const birthDate = new Date(value);
-      const age = currentDate.getFullYear() - birthDate.getFullYear();
+  // firstName: yup.string().required('First Name is required'),
+  // lastName: yup.string(),
+  // email: yup.string().email('Invalid email').required('Email is required'),
+  // phone: yup.string()
+  //   .required('Phone is required')
+  //   .min(10, 'Min number of digits (10) you can check')
+  //   .max(10, 'Max number of digits (10) you can check'),
+  // companyContactNumber: yup.string()
+  //   .required('Contact Number is required')
+  //   .min(10, 'Min number of digits (10) you can check')
+  //   .max(10, 'Max number of digits (10) you can check'),
+  // address: yup.string().required('Address is required'),
+  // qualification: yup.string().required('Qualification is required'),
+  // designation: yup.string(),
+  // dob: yup.date()
+  //   .required('Date of Birth is required')
+  //   .test('age', 'Must be at least 15 years old', function (value) {
+  //     const currentDate = new Date();
+  //     const birthDate = new Date(value);
+  //     const age = currentDate.getFullYear() - birthDate.getFullYear();
 
-      return age >= 15;
-    }),
-  nationality: yup.string().required('Nationality is required'),
-  companyName: yup.string(),
-  companyContactNumber: yup
-    .number()
-    .min(1000000000, 'Phone must be at least 10 digits')
-    .max(9999999999, 'Phone should not be more then 10 digits'),
-  companyAddress: yup.string()
+  //     return age >= 15;
+  //   }),
+  // nationality: yup.string().required('Nationality is required'),
+  // companyName: yup.string(),
+  // companyAddress: yup.string()
 });
 
 export const initialFilters = {
-  draw: 10,
-  start: 0,
-  length: 10,
-  columns: [
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
     {
-      data: "firstName",
-      name: "firstName",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "firstName",
-        regex: "test",
-      },
-    },
+      "data": "FirstName",
+      "name": "FirstName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
   ],
-  search: {
-    value: "firstName",
-    regex: "test",
+  "search": {
+    "value": "",
+    "regex": ""
   },
-  order: {
-    orderBy: "firstName",
-    orderDirection: "desc",
+  "order": {
+    "orderBy": "FirstName",
+    "orderDirection": "asc"
   },
-  filter: null,
+  "filter": {
+    "applicantID": 0,
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "phone": "",
+    "address": "",
+    "qualification": 0,
+    "qualificationName": "",
+    "designation": 0,
+    "designationName": "",
+    "dob": null,
+    "nationality": 0,
+    "nationalityName": "",
+    "companyName": "",
+    "companyContactNumber": "",
+    "companyAddress": "",
+    "status": 0,
+    "statusName": "",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": null,
+    "isDeleted": false,
+    "remarks": ""
+  }
 };
 
 export const tableheads = [
@@ -95,3 +116,49 @@ export const tableheads = [
   { name: "companyAddress", label: "Company Address", align: 'left', type: "string" },
   { name: "remarks", label: "Remarks", align: 'left', type: "string" },
 ];
+
+
+export const verificationDocFilter = {
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
+    {
+      "data": "ApplicantName",
+      "name": "ApplicantName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
+  ],
+  "search": {
+    "value": "",
+    "regex": ""
+  },
+  "order": {
+    "orderBy": "ApplicantName",
+    "orderDirection": "asc"
+  },
+  "filter": {
+    "documentID": 0,
+    "applicantCourseID": 0,
+    "applicantID": 0,
+    "applicantName": "",
+    "courseID": 0,
+    "courseName": "",
+    "document": "",
+    "documentTypeID": 0,
+    "documentTypeName": "",
+    "status": 0,
+    "statusName": "",
+    "createdById": 0,
+    "createdDate": null,
+    "updatedById": 0,
+    "updatedDate": null,
+    "isDeleted": false,
+    "remarks": ""
+  }
+}

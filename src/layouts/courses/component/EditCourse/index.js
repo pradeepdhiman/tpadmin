@@ -137,6 +137,9 @@ function EditCourse(props) {
 
       if (res?.data?.success) {
         dispatch(setActiveRow(res?.data?.data))
+        if (!isEditing) {
+          setActiveTab("material")
+        }
         // closeEdit()
       }
 
@@ -629,8 +632,8 @@ function EditCourse(props) {
             </SoftBox>
           </SoftBox>
         </SoftBox>} */}
-        {activeTab === "material" && <UploadMaterial />}
-        {activeTab === "schedule" && <AssignSchedule />}
+        {activeTab === "material" && <UploadMaterial setTab={setActiveTab} />}
+        {activeTab === "schedule" && <AssignSchedule setTab={setActiveTab} />}
         {activeTab === "assessInfo" && <AssessmentInfo />}
       </SoftBox>
     </Card>

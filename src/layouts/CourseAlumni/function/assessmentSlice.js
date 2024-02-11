@@ -6,8 +6,8 @@ const initialState = {
     activeRow: {}
 };
 
-const assessmentSlice = createSlice({
-    name: 'assessment',
+const alumniSlice = createSlice({
+    name: 'alumni',
     initialState,
     reducers: {
         setApplicantlist: (state, action) => {
@@ -19,5 +19,5 @@ const assessmentSlice = createSlice({
     },
 });
 
-export const { setApplicantlist, setActiveRow } = assessmentSlice.actions;
-export default assessmentSlice;
+export const { setApplicantlist, setActiveRow } = alumniSlice.actions;
+export default alumniSlice;

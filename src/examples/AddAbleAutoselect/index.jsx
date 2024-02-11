@@ -9,7 +9,7 @@ const SoftAddAbleAutoSelect = (props) => {
     const componentRef = useRef(null);
     const [inputValue, setInputValue] = useState("")
     const [show, setShow] = useState(false)
-    const { dataList, selectedValue, selectHandler, label, placeholder, saveHandler, loading, isEditable } = props;
+    const { dataList, selectedValue, selectHandler, label, placeholder, saveHandler, loading, isEditable, disabled } = props;
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -43,6 +43,7 @@ const SoftAddAbleAutoSelect = (props) => {
                     options={dataList || []}
                     getOptionLabel={(option) => option.value || ""}
                     disableClearable={true}
+                    disabled={disabled}
                     renderInput={(params) => (
                         <TextField {...params} label={label} placeholder={placeholder} />
                     )}
@@ -53,7 +54,7 @@ const SoftAddAbleAutoSelect = (props) => {
                 </IconButton>}
             </SoftBox>
             {show && <SoftBox mt={2} sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <SoftInput disabled={loading} type="text" placeholder="Type here..." value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                <SoftInput disabled={loading || disabled} type="text" placeholder="Type here..." value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
                 <IconButton onClick={Save} disabled={!inputValue} color="dark" component="span" sx={{ padding: "0px" }}>
                     <SaveIcon fontSize="medium" />
                 </IconButton>

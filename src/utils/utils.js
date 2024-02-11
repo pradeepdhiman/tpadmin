@@ -42,13 +42,24 @@ export const createRequest = (endpoint, data) => ({
 //   };
 // };
 
-export const getRequest = (endpoint, queryParam) => {
-  const [paramKey, paramValue] = Object.entries(queryParam || [])[0] || [];
+// export const getRequest = (endpoint, queryParam) => {
+//   const [paramKey, paramValue] = Object.entries(queryParam || [])[0] || [];
 
-  const url =
-    paramKey && paramValue
-      ? `${endpoint}?${paramKey}=${paramValue}`
-      : endpoint;
+//   const url =
+//     paramKey && paramValue
+//       ? `${endpoint}?${paramKey}=${paramValue}`
+//       : endpoint;
+
+//   return {
+//     url,
+//     headers: createHeaders(),
+//   };
+// };
+
+export const getRequest = (endpoint, queryParam) => {
+  const queryParams = new URLSearchParams(queryParam).toString();
+
+  const url = queryParams ? `${endpoint}?${queryParams}` : endpoint;
 
   return {
     url,
@@ -56,9 +67,17 @@ export const getRequest = (endpoint, queryParam) => {
   };
 };
 
+
 export const postForm = (endpoint, data) => ({
   url: `${endpoint}`,
   method: "POST",
+  body: data,
+  headers: createHeaders(true),
+});
+
+export const putForm = (endpoint, data) => ({
+  url: `${endpoint}`,
+  method: "PUT",
   body: data,
   headers: createHeaders(true),
 });

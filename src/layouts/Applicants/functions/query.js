@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_SERVER } from 'config/constant';
 import emptySplitApi from "utils/emptySplitApi";
+import { putForm } from 'utils/utils';
 import { deleteRequest } from "utils/utils";
 import { getRequest } from "utils/utils";
 import { updateRequest } from "utils/utils";
@@ -19,16 +20,19 @@ export const applicantApis = emptySplitApi.injectEndpoints({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantAppliedCourse", data),
         }),
         filterApplicant: build.mutation({
-            query: (filters) => createRequest("/Applicant/GetApplicants", filters),
+            query: (filters) => createRequest("/Applicant/GetAplicants", filters),
+        }),
+        verificationdocFilter: build.mutation({
+            query: (filters) => createRequest("/ApplicantCourseDocs/GetAplicantDocs", filters),
         }),
         createApplicant: build.mutation({
-            query: (data) => createRequest("/Applicant", data),
+            query: (data) => createRequest("/General/ApplicantRegister", data),
         }),
         getApplicant: build.mutation({
             query: (data) => getRequest("/Applicant", data),
         }),
         updateApplicant: build.mutation({
-            query: (data) => updateRequest("/Applicant", data),
+            query: (data) => putForm("/Applicant", data),
         }),
         updateStatus: build.mutation({
             query: (data) => updateRequest("/ApplicantCourse", data),
@@ -53,6 +57,7 @@ export const { useGetApplicantMutation,
     useFilterApplicantMutation,
     useCreateApplicantMutation,
     useDeleteApplicantMutation,
+    useVerificationdocFilterMutation,
     useListApplicantQuery,
     useAppliedCourseQuery,
     useCourseProofMutation

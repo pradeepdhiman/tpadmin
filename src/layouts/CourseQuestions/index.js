@@ -20,7 +20,7 @@ import QuestionList from "./component/QuestionsList";
 import { useListCourseQuery } from "layouts/Courses/functions/query";
 import { setQuestionCourse, setActiveRow } from "./functions/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateQuestionMutation, useQuestionByCourseIdMutation } from "./functions/query";
+import { useCreateQuestionMutation, useFilterQuestionMutation } from "./functions/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { initialFilters } from "./constant";
 
@@ -37,7 +37,7 @@ function CourseQuestions() {
 
   const { data: courses, error: courseErr, isLoading: courseLoading, refetch: refreshCourse } = useListCourseQuery()
   const [createQuestion, { data: createResp, isError: createErr, isLoading: createLoading }] = useCreateQuestionMutation()
-  const [questListByID, { data: questionList, isError: questionErr, isLoading: questionLoading }] = useQuestionByCourseIdMutation()
+  const [filterQuestion, { data: questionList, isError: questionErr, isLoading: questionLoading }] = useFilterQuestionMutation()
 
   useEffect(() => {
     if (!selectedCourse) {
@@ -47,34 +47,33 @@ function CourseQuestions() {
   }, [courses])
 
   useEffect(() => {
-    const fetchQuestion = async () => {
+    if (selectedCourse) {
+      setFilters(prev => ({
+        ...prev,
+        filter: {
+            ...prev.filter,
+            courseID: parseInt(selectedCourse.courseID),
+        }
+    }));
+    }
+  }, [selectedCourse])
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const res = await questListByID({ CourseID: selectedCourse?.courseID });
-      } catch (err) {
-        console.error("Error fetching question:", err);
+        await filterQuestion(filters);
+      } catch (error) {
+        console.error(error);
       }
     };
-  
-    fetchQuestion();
-  
-  }, [selectedCourse]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await filteredList(filters);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [filters]);
+    fetchData();
+  }, [filters]);
 
   useEffect(() => {
     dispatch(setActiveRow({}))
   }, [])
-  
+
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);
@@ -117,9 +116,9 @@ function CourseQuestions() {
             </Grid>
           )}
           {questionLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && questionList?.success && (
+          {Object.keys(activeRow).length === 0 && questionList?.data && (
             <Grid item xs={12}>
-              <QuestionList list={questionList} loading={questionLoading} changeFilter={setFilters} />
+              <QuestionList list={questionList} loading={questionLoading} changeFilter={setFilters} filterValue={filters} />
             </Grid>
           )}
         </Grid>

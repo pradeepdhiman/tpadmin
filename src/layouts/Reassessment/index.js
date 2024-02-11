@@ -11,7 +11,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import { useEffect, useState } from "react";
 import AssessmentDetails from "./component/AssessmentDetails";
-import {  useFilterReassessmentMutation, useReAssessListQuery } from "./function/query";
+import {  useFilterReassessmentMutation } from "./function/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { initialFilters } from "./constant";
@@ -26,8 +26,7 @@ function Reassessment() {
   const dispatch = useDispatch()
   const { activeRow } = useSelector(state => state.reassessment)
 
-  const { data: assessList, isLoading: assessLoading, refatch: refreshlist } = useReAssessListQuery()
-  // const [filterData, { data: assessList, isLoading: assessLoading }] = useFilterReassessmentMutation()
+  const [filterData, { data: assessList, isLoading: assessLoading }] = useFilterReassessmentMutation()
 
   useEffect(() => {
     async function fetchData() {
@@ -51,7 +50,7 @@ function Reassessment() {
     dispatch(setActiveRow({}))
     async function fetchData() {
       try {
-        await refreshlist();
+        await filterData(filters);
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +74,7 @@ function Reassessment() {
           {/* {assessLoading && <SoftBarLoader />} */}
           {(Object.keys(activeRow).length === 0 ) && (
             <Grid item xs={12}>
-              <ReAssessmentList list={assessList?.data} loading={assessLoading} changeFilter={setFilters} />
+              <ReAssessmentList list={assessList} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

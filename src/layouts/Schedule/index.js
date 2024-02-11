@@ -43,10 +43,21 @@ function Schedule() {
   }, [courselist])
 
   useEffect(() => {
+    if (selectedCourse) {
+      setFilters(prev => ({
+        ...prev,
+        filter: {
+            ...prev.filter,
+            courseID: parseInt(selectedCourse.courseID),
+        }
+    }));
+    }
+  }, [selectedCourse])
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await filterList(filters);
-        console.log(res, "filter list")
       } catch (error) {
         console.error(error);
       }
@@ -57,19 +68,19 @@ function Schedule() {
 
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await getSchByCourseId({ courseID: course?.courseID });
-      } catch (error) {
-        console.error('Error fetching schedule data:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await getSchByCourseId({ courseID: course?.courseID });
+  //     } catch (error) {
+  //       console.error('Error fetching schedule data:', error);
+  //     }
+  //   };
 
-    if (course) {
-      fetchData();
-    }
-  }, [course]);
+  //   if (course) {
+  //     fetchData();
+  //   }
+  // }, [course]);
 
   useEffect(() => {
     dispatch(setActiveRow({}))
@@ -81,10 +92,10 @@ function Schedule() {
   };
 
 
-  function editMode() {
+  async function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
-    getSchByCourseId({ courseID: course?.courseID })
+    const res = await filterList(filters);
   }
   function addSchedule() {
     setEdit(true)
@@ -121,10 +132,10 @@ function Schedule() {
               <EditSchedule toggleEdit={editMode} editid={editId} addSchedule={createSchedule} loading={createLoading} />
             </Grid>
           )}
-          {schListLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && schDataList?.success && (
+          {filterLoading && <SoftBarLoader />}
+          {Object.keys(activeRow).length === 0 && schlist?.data && (
             <Grid item xs={12}>
-              <ScheduleList list={schDataList} loading={schListLoading} changeFilter={setFilters} />
+              <ScheduleList list={schlist} loading={filterLoading} changeFilter={setFilters} />
             </Grid>
           )}
         </Grid>

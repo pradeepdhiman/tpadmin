@@ -13,7 +13,7 @@ import typography from "assets/theme/base/typography";
 import { useEffect, useState } from "react";
 import AssessmentList from "./component/AssessmentList";
 import AssessmentDetails from "./component/AssessmentDetails";
-import { useAssessListQuery } from "./function/query";
+import { useAssessListQuery, useAssessmentFilterMutation } from "./function/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { initialFilters } from "./constant";
@@ -27,12 +27,12 @@ function Assessments() {
   const dispatch = useDispatch()
   const { activeRow = {} } = useSelector(state => state.assessment)
 
-  const { data: assessList, isLoading: assessLoading, refatch: refreshlist } = useAssessListQuery()
+  const [assessmentFilter, { data: assessList, isLoading: assessLoading }] = useAssessmentFilterMutation()
 
   useEffect(() => {
     async function fatchListData() {
       try {
-        await refreshlist(filters)
+        await assessmentFilter(filters)
       } catch (err) { console.log(err) }
     }
     fatchListData()
@@ -56,15 +56,16 @@ function Assessments() {
         <Grid container spacing={3}>
           {(Object.keys(activeRow).length !== 0 || isEdit) && (
             <Grid item xs={12}>
-              <AssessmentDetails toggleEdit={editMode} editid={editId}  />
+              <AssessmentDetails toggleEdit={editMode} editid={editId} />
             </Grid>
           )}
-          {/* {assessLoading && <SoftBarLoader />} */}
-          {Object.keys(activeRow).length === 0 && (
+          {assessLoading && <SoftBarLoader />}
+          {(Object.keys(activeRow).length === 0 && assessList?.data?.length) ? (
             <Grid item xs={12}>
-              <AssessmentList list={assessList?.data} loading={assessLoading} changeFilter={setFilters} />
+              <AssessmentList list={assessList} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
-          )}
+          ) : null}
+
         </Grid>
       </SoftBox>
       <Footer />
