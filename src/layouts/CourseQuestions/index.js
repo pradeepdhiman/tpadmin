@@ -51,10 +51,10 @@ function CourseQuestions() {
       setFilters(prev => ({
         ...prev,
         filter: {
-            ...prev.filter,
-            courseID: parseInt(selectedCourse.courseID),
+          ...prev.filter,
+          courseID: parseInt(selectedCourse.courseID),
         }
-    }));
+      }));
     }
   }, [selectedCourse])
 
@@ -80,10 +80,14 @@ function CourseQuestions() {
     dispatch(setQuestionCourse(newValue))
   };
 
-  function editMode() {
+  async function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
-    questListByID({ CourseID: selectedCourse?.courseID })
+    try {
+      await filterQuestion(filters);
+    } catch (error) {
+      console.error(error);
+    }
   }
   function addschedule() {
     setEdit(true)
