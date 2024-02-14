@@ -74,7 +74,7 @@ function ScheduleList(props) {
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -91,30 +91,10 @@ function ScheduleList(props) {
     </SoftBox>
   );
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>Action</MenuItem>
-      <MenuItem onClick={closeMenu}>Another action</MenuItem>
-      <MenuItem onClick={closeMenu}>Something else</MenuItem>
-    </Menu>
-  );
-
+ 
   return (
     <Card>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+      {/* <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
             Schedule List
@@ -126,8 +106,8 @@ function ScheduleList(props) {
           </Icon>
         </SoftBox>
         {renderMenu}
-      </SoftBox>
-      {rows?.length ? <SoftBox
+      </SoftBox> */}
+      {rows?.length ? <SoftBox pt={2}
         px={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
@@ -141,7 +121,7 @@ function ScheduleList(props) {
         <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
       </SoftBox> :
         <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
-          <SoftTypography >Data not available.</SoftTypography>
+          <SoftTypography >No schedules are available</SoftTypography>
         </SoftBox>
       }
       <SoftBox mt={2} mb={2} px={2}>

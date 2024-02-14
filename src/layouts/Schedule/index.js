@@ -111,7 +111,7 @@ function Schedule() {
       <SoftBox py={3}>
         <Grid container spacing={3}>
           <Grid xs={12}>
-            <SoftBox sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
+            <SoftBox px={3} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap: "16px" }}>
               <Autocomplete
                 disablePortal
                 disableClearable

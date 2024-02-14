@@ -74,7 +74,7 @@ function ReAssessmentList(props) {
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select

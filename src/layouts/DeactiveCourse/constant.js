@@ -17,7 +17,7 @@ export const initialValue = {
 
 export const fields = {
   courseName: { label: "Course Name", placeholder: "Course name" },
-  duration: { label: "Duration (Hrs)", placeholder: "Duration (Hrs)" },
+  duration: { label: "Duration (mnts)", placeholder: "Duration (mnts)" },
   categoryID: { label: "Category Id", placeholder: "Category Id", hidden: false },
   syllabus: { label: "Syllabus", placeholder: "Syllabus" },
   trainingfee: { label: "Training Fee", placeholder: "Training Fee" },
@@ -41,14 +41,14 @@ export const schema = yup.object().shape({
 
 
 export const coursestableheads = [
-  { name: "courseName", label: "Course Name", align: 'left', type: "string" },
-  { name: "statusName", label: "Status Name", align: 'left', type: "string" },
-  { name: "duration", label: "duration (Hr)", align: 'left', type: "number" },
-  { name: "categoryName", label: "Category Name", align: 'left', type: "string" },
-  { name: "syllabus", label: "Syllabus", align: 'left', type: "string" },
-  { name: "trainingfee", label: "Training Fee ($)", align: 'left', type: "number" },
-  { name: "vat", label: "Vat ($)", align: 'left', type: "number" },
-  { name: "totalAmount", label: "Total Amount ($)", align: 'left', type: "number" }
+  { name: "courseName", label: "Name", align: 'left', type: "string" },
+  { name: "statusName", label: "Status", align: 'left', type: "string" },
+  { name: "duration", label: "Duration (mnts)", align: 'left', type: "number" },
+  { name: "categoryName", label: "Category", align: 'left', type: "string" },
+  { name: "syllabus", label: "Content", align: 'left', type: "string" },
+  { name: "trainingfee", label: "Fee ", align: 'left', type: "number" },
+  { name: "vat", label: "Vat ", align: 'left', type: "number" },
+  { name: "totalAmount", label: "Total Amount ", align: 'left', type: "number" }
 ];
 
 

@@ -41,14 +41,14 @@ const tabs = [
   // { label: 'Status', value: 'status' },
   { label: 'Study Material', value: 'material' },
   { label: 'Schedule', value: 'schedule' },
-  { label: 'Assessment Info', value: 'assessInfo' },
+  { label: 'Assessment Settings', value: 'assessInfo' },
 ];
 
 
 function EditCourse(props) {
   const dispatch = useDispatch()
   const { toggleEdit = false, loading = false } = props
-  const [activeTab, setActiveTab] = useState("info");
+  const [activeTab, setActiveTab] = useState({ label: 'Info', value: 'info' });
   const [newCategory, setNewCategory] = useState(false);
   const [selectedCat, setSelectedCat] = useState({});
   const [crsStatus, setCrsStatus] = useState({});
@@ -289,21 +289,21 @@ function EditCourse(props) {
   return (
     <Card className="h-100">
       {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
-        {tabs.map(({ label, value }) => (
+        {tabs.map((item) => (
           <SoftButton
-            key={value}
-            onClick={() => tabhandler(value)}
+            key={item.value}
+            onClick={() => tabhandler(item)}
             variant="outlined"
             size="small"
-            color={activeTab === value ? 'dark' : 'info'}
+            color={activeTab.value === item.value ? 'dark' : 'info'}
           >
-            {label}
+            {item.label}
           </SoftButton>
         ))}
       </SoftBox>}
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
-        <SoftTypography variant="h6" fontWeight="medium">
-          {activeRow?.courseName || "New Course"}
+        <SoftTypography variant="h6" fontWeight="medium" sx={{ textTransform: "capitalize" }}>
+          {activeTab.label || activeRow?.courseName || "New Course"}
         </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
@@ -340,7 +340,7 @@ function EditCourse(props) {
 
       </SoftBox>
       <SoftBox p={2}>
-        {activeTab === "info" && <SoftBox p={2}>
+        {activeTab.value === "info" && <SoftBox p={2}>
           <form onSubmit={handleSubmit(submitFormData)}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={3}>
@@ -376,13 +376,13 @@ function EditCourse(props) {
                     <SoftBox mb={2}>
                       <SoftBox mb={1} ml={0.5}>
                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Duration (Hrs)
+                          Duration(mnts)
                         </SoftTypography>
                       </SoftBox>
                       <SoftInput
                         type="text"
                         {...field}
-                        placeholder="Duration (hrs)"
+                        placeholder="Duration(mnts)"
                       />
                       {errors.duration && (
                         <SoftTypography component="label" variant="caption" color="error">
@@ -632,9 +632,9 @@ function EditCourse(props) {
             </SoftBox>
           </SoftBox>
         </SoftBox>} */}
-        {activeTab === "material" && <UploadMaterial setTab={setActiveTab} />}
-        {activeTab === "schedule" && <AssignSchedule setTab={setActiveTab} />}
-        {activeTab === "assessInfo" && <AssessmentInfo />}
+        {activeTab.value === "material" && <UploadMaterial setTab={setActiveTab} />}
+        {activeTab.value === "schedule" && <AssignSchedule setTab={setActiveTab} />}
+        {activeTab.value === "assessInfo" && <AssessmentInfo />}
       </SoftBox>
     </Card>
   );

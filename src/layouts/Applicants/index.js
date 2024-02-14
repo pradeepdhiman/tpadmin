@@ -37,7 +37,7 @@ function Applicants() {
   const dispatch = useDispatch()
   const { activeRow = {} } = useSelector(state => state.applicant)
 
- 
+
   const [filteredList, { data: filterList, error: filtererror, isLoading: filterloading }] = useFilterApplicantMutation()
   const [createApplicant, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateApplicantMutation()
   const [deleteApplicant, { data: delData, error: delErr, isLoading: delLoading }] = useDeleteApplicantMutation()
@@ -71,7 +71,7 @@ function Applicants() {
 
 
   async function editMode() {
-    if(id){
+    if (id) {
       navigate(window.location.pathname, { replace: true });
     }
     setEdit(false)
@@ -86,6 +86,7 @@ function Applicants() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+
       <SoftBox py={3}>
         <Grid container spacing={3}>
           {/* <Grid xs={12}>
@@ -98,8 +99,7 @@ function Applicants() {
               <EditApplicant toggleEdit={editMode} editid={editId} addApplicant={createApplicant} loading={createLoading} />
             </Grid>
           )}
-          {filterloading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && filterList?.data && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <ApplicantList list={filterList} loading={filterloading} changeFilter={setFilters} />
             </Grid>

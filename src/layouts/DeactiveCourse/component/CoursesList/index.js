@@ -67,29 +67,10 @@ function CoursesList(props) {
 
 
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>latest</MenuItem>
-    </Menu>
-  );
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -135,7 +116,7 @@ function CoursesList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox> */}
-      <SoftBox px={2}
+      <SoftBox px={2} pt={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {

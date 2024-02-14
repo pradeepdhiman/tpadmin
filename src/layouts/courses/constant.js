@@ -17,9 +17,9 @@ export const initialValue = {
 
 export const fields = {
   courseName: { label: "Course Name", placeholder: "Course name" },
-  duration: { label: "Duration (Hrs)", placeholder: "Duration (Hrs)" },
+  duration: { label: "Duration(mnts)", placeholder: "Duration(mnts)" },
   categoryID: { label: "Category Id", placeholder: "Category Id", hidden: false },
-  syllabus: { label: "Syllabus", placeholder: "Syllabus" },
+  syllabus: { label: "Contents", placeholder: "Contents" },
   trainingfee: { label: "Training Fee", placeholder: "Training Fee" },
   vat: { label: "Tax", placeholder: "Tax" },
   totalAmount: { label: "Total Amount", placeholder: "Total Amount" },
@@ -44,7 +44,7 @@ export const schema = yup.object().shape({
 export const assessmentInfofields = {
   assessmentType: { label: "Assessment Type", placeholder: "Assessment Type" },
   passingScore: { label: "Passing Score", placeholder: "Passing Score" },
-  duration: { label: "Duration", placeholder: "Duration" },
+  duration: { label: "Duration(mnts)", placeholder: "Duration(mnts)" },
   numberofQuestions: { label: "Number of Questions", placeholder: "Number of Questions" },
   remarks: { label: "Remarks", placeholder: "Remarks" }
 };
@@ -81,9 +81,9 @@ export const assessmentInfoSchema = yup.object().shape({
 export const coursestableheads = [
   { name: "courseName", label: "Course Name", align: 'left', type: "string" },
   { name: "statusName", label: "Status Name", align: 'left', type: "string" },
-  { name: "duration", label: "duration", align: 'left', type: "number" },
+  { name: "duration", label: "Duration(mnts)", align: 'left', type: "number" },
   { name: "categoryName", label: "Category Name", align: 'left', type: "string" },
-  { name: "syllabus", label: "Syllabus", align: 'left', type: "string" },
+  { name: "syllabus", label: "Contents", align: 'left', type: "string" },
   { name: "trainingfee", label: "Training Fee", align: 'left', type: "number" },
   { name: "vat", label: "Vat", align: 'left', type: "number" },
   { name: "totalAmount", label: "Total Amount", align: 'left', type: "number" }

@@ -59,16 +59,16 @@ const AssessmentInfo = () => {
 
     useEffect(() => {
         if (getassessmentResp?.data) {
-          const originalWeightage = getassessmentResp.data.weightage || '0%';
-          const numericWeightage = parseFloat(originalWeightage.replace('%', ''));
-      
-          reset({
-            ...getassessmentResp.data,
-            weightage: numericWeightage,
-          });
+            const originalWeightage = getassessmentResp.data.weightage || '0%';
+            const numericWeightage = parseFloat(originalWeightage.replace('%', ''));
+
+            reset({
+                ...getassessmentResp.data,
+                weightage: numericWeightage,
+            });
         }
-      }, [getassessmentResp, reset]);
-      
+    }, [getassessmentResp, reset]);
+
 
     const submitFormData = async (data) => {
 
@@ -78,13 +78,13 @@ const AssessmentInfo = () => {
             newData = {
                 courseID: parseInt(activeRow?.courseID),
                 assessmentType: parseInt(data?.assessmentType),
-                passingScore:  data?.passingScore,
+                passingScore: data?.passingScore,
                 duration: data?.duration,
                 numberofQuestions: parseInt(data?.numberofQuestions),
                 updatedById: parseInt(user?.id),
                 assessmentID: parseInt(getassessmentResp.data?.assessmentID),
                 status: parseInt(getassessmentResp.data?.status),
-                weightage: data?.weightage+"%",
+                weightage: data?.weightage + "%",
                 remarks: data?.remarks
             }
         } else {
@@ -95,7 +95,7 @@ const AssessmentInfo = () => {
                 passingScore: data?.passingScore,
                 duration: data?.duration,
                 numberofQuestions: parseInt(data?.numberofQuestions),
-                weightage: data?.weightage+"%",
+                weightage: data?.weightage + "%",
                 createdById: parseInt(user?.id),
                 remarks: data?.remarks
             }
@@ -146,9 +146,9 @@ const AssessmentInfo = () => {
                             </SoftBox>
                         </Grid>
                         <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={3}>
+                            <Grid item xs={12} sm={6} md={3}>
                                 <Controller
-                                    name="passingScore"
+                                    name="numberofQuestions"
                                     control={control}
                                     render={({ field }) => (
                                         <SoftBox mb={2}>
@@ -158,13 +158,13 @@ const AssessmentInfo = () => {
                                                     variant="caption"
                                                     fontWeight="bold"
                                                 >
-                                                    Passing Score
+                                                    Number of Questions
                                                 </SoftTypography>
                                             </SoftBox>
                                             <SoftInput
                                                 type="number"
                                                 {...field}
-                                                placeholder="Passing Score"
+                                                placeholder="Number of Questions"
                                             />
                                             {errors.courseName && (
                                                 <SoftTypography
@@ -172,7 +172,7 @@ const AssessmentInfo = () => {
                                                     variant="caption"
                                                     color="error"
                                                 >
-                                                    {errors.passingScore.message}
+                                                    {errors.numberofQuestions.message}
                                                 </SoftTypography>
                                             )}
                                         </SoftBox>
@@ -224,13 +224,13 @@ const AssessmentInfo = () => {
                                                     variant="caption"
                                                     fontWeight="bold"
                                                 >
-                                                    Duration
+                                                    Duration (mnts)
                                                 </SoftTypography>
                                             </SoftBox>
                                             <SoftInput
                                                 type="number"
                                                 {...field}
-                                                placeholder="Duration"
+                                                placeholder="Duration (mnts)"
                                             />
                                             {errors.courseName && (
                                                 <SoftTypography
@@ -247,7 +247,7 @@ const AssessmentInfo = () => {
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
                                 <Controller
-                                    name="numberofQuestions"
+                                    name="passingScore"
                                     control={control}
                                     render={({ field }) => (
                                         <SoftBox mb={2}>
@@ -257,13 +257,13 @@ const AssessmentInfo = () => {
                                                     variant="caption"
                                                     fontWeight="bold"
                                                 >
-                                                    Number of Questions
+                                                    Passing Score
                                                 </SoftTypography>
                                             </SoftBox>
                                             <SoftInput
                                                 type="number"
                                                 {...field}
-                                                placeholder="Number of Questions"
+                                                placeholder="Passing Score"
                                             />
                                             {errors.courseName && (
                                                 <SoftTypography
@@ -271,7 +271,7 @@ const AssessmentInfo = () => {
                                                     variant="caption"
                                                     color="error"
                                                 >
-                                                    {errors.numberofQuestions.message}
+                                                    {errors.passingScore.message}
                                                 </SoftTypography>
                                             )}
                                         </SoftBox>

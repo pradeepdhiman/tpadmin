@@ -88,7 +88,7 @@ function EditQuestion(props) {
           createdById: (parseInt(activeRow.createdById) || 0),
           updatedDate: moment().format("DD-MM-YYYY"),
           updatedById: parseInt(user.id),
-          questionTypeID:parseInt(questiontype?.masterCodeID)
+          questionTypeID: parseInt(questiontype?.masterCodeID)
         }
       } else {
         newData = {
@@ -96,7 +96,7 @@ function EditQuestion(props) {
           questionID: 0,
           courseID: course.courseID,
           createdById: parseInt(user.id),
-          questionTypeID:parseInt(questiontype?.masterCodeID)
+          questionTypeID: parseInt(questiontype?.masterCodeID)
         }
       }
 
@@ -159,9 +159,6 @@ function EditQuestion(props) {
       </SoftBox>} */}
 
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
-        <SoftTypography variant="h6" fontWeight="medium">
-          Course Question
-        </SoftTypography>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
             <>
@@ -201,7 +198,7 @@ function EditQuestion(props) {
         {/* <MasterForm onSubmit={submitFormData} formState={activeRow} formFields={fields} loading={createLoading || updateLoading} handleSubmit={handleSubmit} control={control} reset={reset} errors={errors} /> */}
         <form onSubmit={handleSubmit(submitFormData)}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <Controller
                 name="questionTitle"
                 control={control}
@@ -226,7 +223,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <SoftBox mb={2}>
                 <SoftBox mb={1} ml={0.5}>
                   <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -248,7 +245,7 @@ function EditQuestion(props) {
                 )}
               </SoftBox>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <Controller
                 name="correctAnswer"
                 control={control}
@@ -273,7 +270,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="optionA"
                 control={control}
@@ -298,7 +295,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="marksOptionA"
                 control={control}
@@ -323,7 +320,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="optionB"
                 control={control}
@@ -348,7 +345,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="marksOptionB"
                 control={control}
@@ -373,7 +370,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="optionC"
                 control={control}
@@ -398,7 +395,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="marksOptionC"
                 control={control}
@@ -423,7 +420,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="optionD"
                 control={control}
@@ -448,7 +445,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="marksOptionD"
                 control={control}
@@ -473,7 +470,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="optionE"
                 control={control}
@@ -498,7 +495,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={6}>
               <Controller
                 name="marksOptionE"
                 control={control}
@@ -523,7 +520,7 @@ function EditQuestion(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={12} md={12}>
               <Controller
                 name="remarks"
                 control={control}
@@ -534,11 +531,18 @@ function EditQuestion(props) {
                         Remarks
                       </SoftTypography>
                     </SoftBox>
-                    <SoftInput
+                    {/* <SoftInput
                       type="text"
                       {...field}
                       placeholder="Remarks"
-                    />
+                    /> */}
+                    <SoftBox>
+                      <textarea rows={3} cols={3} style={{ border: "none", resize: "none", width: "100%", border: "0.0625rem solid #d2d6da", borderRadius: "10px", overflow: "hidden", padding: "10px", fontFamily: "Roboto,Helvetica,Arial,sans-serif" }}
+                        type="text"
+                        {...field}
+                        placeholder="Remarks"
+                      />
+                    </SoftBox>
                     {errors.remarks && (
                       <SoftTypography component="label" variant="caption" color="error">
                         {errors.remarks.message}

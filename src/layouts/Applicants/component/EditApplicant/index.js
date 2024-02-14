@@ -140,6 +140,7 @@ function EditApplicant(props) {
       }
       return res;
     } catch (err) {
+      toastHandler(err)
       console.error(err);
     }
   };

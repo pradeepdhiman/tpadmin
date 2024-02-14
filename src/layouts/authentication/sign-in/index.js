@@ -78,8 +78,8 @@ function SignIn() {
 
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Login through provided email and password to sign in"
+      title="Welcome to the Compliance360 Admin Portal"
+      description="Use the provided email and password to log in"
       image={curved9}
     >
       {isLoading ? (

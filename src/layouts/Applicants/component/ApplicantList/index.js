@@ -24,22 +24,30 @@ import { generateRows } from "utils/utils";
 import { generateColum } from "utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "layouts/Applicants/functions/applicantSlice";
+import SoftFilter from "../../../../examples/SoftFilter";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 // Data
 
-
+const filterdata = {
+  firstName: { type: "text", label: "First name", value: "", search: true },
+  lastName: { type: "text", label: "Last name", value: "" },
+  email: { type: "text", label: "Email", value: "" },
+  qualificationName: { type: "text", label: "Qualification", value: "" },
+  designationName: { type: "text", label: "Designation", value: "" },
+  nationalityName: { type: "text", label: "Nationality", value: "" },
+  companyName: { type: "text", label: "Company name", value: "", value: "" },
+  statusName: { type: "text", label: "Status", value: "" },
+  remarks: { type: "text", label: "Remarks", value: "" }
+};
 
 function ApplicantList(props) {
   const dispatch = useDispatch()
-  const { list = [], loading = false, changeFilter  } = props
+  const { list = [], loading = false, changeFilter } = props
   // const { columns, rows } = data(list);
-  const [menu, setMenu] = useState(null);
   const [rowPerPage, setRowPerPage] = useState(10);
   const [rows, setRows] = useState();
   const [orderby, setOrderby] = useState("");
-
-  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => setMenu(null);
 
   // const rows = generateRows(list, tableheads);
   useEffect(() => {
@@ -55,7 +63,7 @@ function ApplicantList(props) {
     }
   }
 
- 
+
 
   function rowClickhandler(item) {
     const activeRow = list.data[item]
@@ -71,11 +79,21 @@ function ApplicantList(props) {
     changeFilter(prev => ({ ...prev, start: startfrom }))
   }
 
+  function filterFunction(data) {
+    changeFilter(prev => ({
+      ...prev,
+      filter: {
+        ...prev.filter,
+        ...data
+      }
+    }));
+  }
+
 
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -91,73 +109,43 @@ function ApplicantList(props) {
       </FormControl>
     </SoftBox>
   );
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>latest</MenuItem>
-    </Menu>
-  );
+
 
   return (
     <Card>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+      <SoftBox p={2}>
+        <SoftFilter filterObj={filterdata} listFilter={filterFunction} />
+      </SoftBox>
+
+      {/* <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={2}>
+
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
             Applicant List
           </SoftTypography>
-          {/* <SoftBox display="flex" alignItems="center" lineHeight={0}>
-            <Icon
-              sx={{
-                fontWeight: "bold",
-                color: ({ palette: { info } }) => info.main,
-                mt: -0.5,
-              }}
-            >
-              <DoneIcon />
-            </Icon>
-            <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>{list?.data?.length} new</strong> this month
-            </SoftTypography>
-          </SoftBox> */}
         </SoftBox>
-        <SoftBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <MoreVertIcon />
-          </Icon>
-        </SoftBox>
-        {renderMenu}
-      </SoftBox>
-      <SoftBox px={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      </SoftBox> */}
+      {loading && <SoftBarLoader />}
+      {!loading && rows?.length ? <>
+        <SoftBox px={2}
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2} px={2}>
-        <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          {renderRowperpage}
-          <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={tableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2} px={2}>
+          <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            {renderRowperpage}
+            <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
     </Card>
   );
 }

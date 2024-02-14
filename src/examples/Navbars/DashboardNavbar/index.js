@@ -55,6 +55,7 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { logout } from "layouts/authentication/functions/query";
+import { authUser } from "layouts/authentication/functions/query";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -66,6 +67,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const { user } = useAuth();
   const { setUser } = useAuth();
+
+  const { currentUser } = authUser()
+
 
 
   useEffect(() => {
@@ -157,12 +161,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SoftBox pr={1}>
+            {/* <SoftBox pr={1}>
               <SoftInput
                 placeholder="Type here..."
                 icon={{ component: <SearchIcon />, direction: "left" }}
               />
-            </SoftBox>
+            </SoftBox> */}
             <SoftBox color={light ? "white" : "inherit"}>
               {/* {(user && user.token) && <IconButton
                 size="small"
@@ -196,6 +200,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
                   >
+                    {user?.userName} is Signed in
+                  </SoftTypography>
+                  <SoftTypography
+                    variant="button"
+                    fontWeight="medium"
+                    color={light ? "white" : "dark"}
+                  >
                     Logout
                   </SoftTypography>
                 </IconButton>
@@ -207,7 +218,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       fontWeight="medium"
                       color={light ? "white" : "dark"}
                     >
-                      Sign in
+                      is Sign in
                     </SoftTypography>
                   </IconButton>
                 </Link>)}

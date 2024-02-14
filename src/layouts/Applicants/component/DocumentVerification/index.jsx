@@ -87,8 +87,13 @@ const DocumentVerification = () => {
     async function statushandler(_, newVal) {
         setPayStatus(newVal);
     }
-
+    // const MySwal = withReactContent(Swal)
     async function statusUploadhandler() {
+
+        if (docList?.data?.length === 0) {
+            alert("payment proof not avaialbe")
+            return
+        }
 
         let correspondingCourseStatus;
         if (payStatus.value === 'Verified') {
@@ -127,6 +132,13 @@ const DocumentVerification = () => {
             //     const appliedCourseID = appliedCourse?.data[0]?.applicantCourseID;
             //     await getProof({ id: appliedCourseID })
             // }
+            // if (res?.data?.success) {
+            //     Swal.fire({
+            //         title: "Successfully register!",
+            //         text: "Please check your email we will send you payment link.",
+            //         confirmButtonText: "Ok",
+            //     })
+            // }
         } catch (Err) {
             console.log(Err)
         }
@@ -148,7 +160,7 @@ const DocumentVerification = () => {
                                     isEditable={false}
                                 />
                             </SoftBox>
-                            <SoftButton onClick={statusUploadhandler} disabled={statusLoading} variant="gradient" color="info">Change Status</SoftButton>
+                            <SoftButton onClick={statusUploadhandler} disabled={statusLoading} variant="gradient" color="info">Activate Course</SoftButton>
                         </SoftBox>
                     </SoftBox>
                 </Grid>

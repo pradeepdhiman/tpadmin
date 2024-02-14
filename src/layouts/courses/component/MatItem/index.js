@@ -10,7 +10,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-function MatItem({ date, id, price, noGutter }) {
+function MatItem({ itemData }) {
   return (
     <SoftBox
       component="li"
@@ -23,10 +23,10 @@ function MatItem({ date, id, price, noGutter }) {
     >
       <SoftBox lineHeight={1}>
         <SoftTypography display="block" variant="button" fontWeight="medium">
-          {date}
+          {itemData?.filePath}
         </SoftTypography>
         <SoftTypography variant="caption" fontWeight="regular" color="text">
-          {id}
+          {itemData?.materialTypeName}
         </SoftTypography>
       </SoftBox>
       <SoftBox display="flex" alignItems="center">

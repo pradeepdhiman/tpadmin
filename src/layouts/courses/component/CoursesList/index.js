@@ -89,7 +89,7 @@ function CoursesList(props) {
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -108,7 +108,7 @@ function CoursesList(props) {
 
   return (
     <Card>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+      {/* <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
             Course List
@@ -134,8 +134,8 @@ function CoursesList(props) {
           </Icon>
         </SoftBox>
         {renderMenu}
-      </SoftBox>
-      <SoftBox px={2}
+      </SoftBox> */}
+      <SoftBox px={2} pt={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {

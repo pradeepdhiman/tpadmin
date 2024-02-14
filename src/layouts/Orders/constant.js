@@ -54,10 +54,10 @@ export const initialFilters = {
 
 
 export const tableheads = [
-  { name: "applicantName", label: "Applicant Name", align: "left", type: "string" },
-  { name: "courseName", label: "Course Name", align: "left", type: "string" },
-  { name: "scheduleName", label: "Schedule Name", align: "left", type: "string" },
-  { name: "trainingfee", label: "Course Fee($)", align: "left", type: "number" },
+  { name: "applicantName", label: "Learner Name", align: "left", type: "string" },
+  { name: "courseName", label: "Course ", align: "left", type: "string" },
+  { name: "scheduleName", label: "Schedule", align: "left", type: "string" },
+  { name: "trainingfee", label: "Fee", align: "left", type: "number" },
   { name: "enrollmentDate", label: "Enrollment Date", align: "left", type: "date" },
   { name: "paymentStatusName", label: "Payment Status", align: "left", type: "string" },
   { name: "courseStatusName", label: "Course Status", align: "left", type: "string" },

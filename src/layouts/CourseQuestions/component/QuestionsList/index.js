@@ -81,7 +81,7 @@ function QuestionList(props) {
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -100,42 +100,11 @@ function QuestionList(props) {
 
 
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>Latest</MenuItem>
-    </Menu>
-  );
+
 
   return (
     <Card>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-        <SoftBox>
-          <SoftTypography variant="h6" gutterBottom>
-            Assessment Questions List
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <MoreVertIcon />
-          </Icon>
-        </SoftBox>
-        {renderMenu}
-      </SoftBox>
-      <SoftBox px={2}
+      <SoftBox px={2} pt={2}
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {

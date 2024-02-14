@@ -73,7 +73,7 @@ function OrderList(props) {
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
-        Row per page :  &nbsp;
+        Rows per page :  &nbsp;
       </SoftTypography>
       <FormControl sx={{ m: 1, minWidth: 70 }} size="small">
         <Select
@@ -92,56 +92,17 @@ function OrderList(props) {
 
 
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>latest</MenuItem>
-    </Menu>
-  );
 
   return (
     <Card>
       <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <SoftBox>
           <SoftTypography variant="h6" gutterBottom>
-            New Course Request
+            New Training Requests
           </SoftTypography>
-          <SoftBox display="flex" alignItems="center" lineHeight={0}>
-            <Icon
-              sx={{
-                fontWeight: "bold",
-                color: ({ palette: { info } }) => info.main,
-                mt: -0.5,
-              }}
-            >
-              <DoneIcon />
-            </Icon>
-            <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;<strong>{list?.length} new</strong> this month
-            </SoftTypography>
-          </SoftBox>
         </SoftBox>
-        <SoftBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <MoreVertIcon />
-          </Icon>
-        </SoftBox>
-        {renderMenu}
       </SoftBox>
-      {rows?.length ? <SoftBox px={2}
+      {rows?.length ? <SoftBox px={2} 
         sx={{
           "& .MuiTableRow-root:not(:last-child)": {
             "& td": {

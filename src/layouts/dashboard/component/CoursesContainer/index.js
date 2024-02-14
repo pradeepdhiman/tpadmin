@@ -9,7 +9,8 @@ import SoftTypography from "components/SoftTypography";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // Images
-import ivancik from "assets/images/ivancik.jpg";
+// import ivancik from "assets/images/ivancik.jpg";
+import ivancik from "assets/images/curved-images/close-up-colorful-books-pile.jpg";
 
 function CoursesContainer() {
   return (
@@ -38,7 +39,7 @@ function CoursesContainer() {
           </SoftBox>
           <SoftBox mb={2}>
             <SoftTypography variant="body2" color="white">
-              To get information about available courses. Go directly to course list from here.
+              Gather more information about the courses by simply clicking here
             </SoftTypography>
           </SoftBox>
           <SoftTypography
@@ -58,20 +59,20 @@ function CoursesContainer() {
                 fontSize: "1.125rem",
                 transform: `translate(2px, -0.5px)`,
                 transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
-               
+
               },
 
               "&:hover": {
                 "& .material-icons-round": {
                   transform: `translate(6px, -0.5px)`,
-                  color: "blue", 
+                  color: "blue",
                 },
-                color: "blue", 
+                color: "blue",
               },
             }}
           >
             See All
-            <Icon sx={{ fontWeight: "bold" }}><ArrowForwardIcon/></Icon>
+            <Icon sx={{ fontWeight: "bold" }}><ArrowForwardIcon /></Icon>
           </SoftTypography>
         </SoftBox>
       </SoftBox>
