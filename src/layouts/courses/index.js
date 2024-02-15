@@ -71,8 +71,7 @@ function Courses() {
               <EditCourse toggleEdit={editMode} editid={editId} addCourse={createCourse} loading={createLoading} />
             </Grid>
           )}
-          {courseLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && courseList?.data?.length && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <CoursesList list={courseList} loading={courseLoading} changeFilter={setFilters} />
             </Grid>

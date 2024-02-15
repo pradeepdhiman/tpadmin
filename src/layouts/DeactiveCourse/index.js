@@ -35,7 +35,7 @@ function DeactiveCourses() {
 
 
   useEffect(() => {
-    if (courseStatusList?.success ) {
+    if (courseStatusList?.success) {
       const foundStatus = courseStatusList.data.find(x => x.value === "Disabled").masterCodeID;
       setFilters(prev => ({
         ...prev,
@@ -47,7 +47,7 @@ function DeactiveCourses() {
     }
   }, [courseStatusList]);
 
- 
+
 
   useEffect(() => {
     async function fatchListData() {
@@ -81,8 +81,7 @@ function DeactiveCourses() {
               <SoftButton variant="gradient" disabled={Object.keys(activeRow).length !== 0} size="small" color="dark" onClick={addCourse}>Add Course</SoftButton>
             </SoftBox>
           </Grid> */}
-          {courseLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && courseList?.data?.length && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <CoursesList list={courseList} loading={courseLoading} changeFilter={setFilters} />
             </Grid>

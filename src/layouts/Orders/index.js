@@ -36,12 +36,9 @@ function Orders() {
       <DashboardNavbar />
       <SoftBox py={3}>
         <Grid container spacing={3}>
-          {listLoading && <SoftBarLoader />}
-          {applicantCourseList?.data.length && (
-            <Grid item xs={12}>
-              <OrderList list={applicantCourseList} loading={listLoading} changeFilter={setFilters} />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <OrderList list={applicantCourseList} loading={listLoading} changeFilter={setFilters} />
+          </Grid>
         </Grid>
       </SoftBox>
       <Footer />

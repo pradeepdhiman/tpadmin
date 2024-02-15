@@ -167,6 +167,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 icon={{ component: <SearchIcon />, direction: "left" }}
               />
             </SoftBox> */}
+            {user && user.token ? <SoftBox pr={1}>
+              <SoftTypography
+                variant="button"
+                fontWeight="medium"
+                color={light ? "white" : "dark"}
+                style={{ textTransform: 'capitalize' }}
+              >
+                {user?.userName}
+              </SoftTypography>
+            </SoftBox> : null}
             <SoftBox color={light ? "white" : "inherit"}>
               {/* {(user && user.token) && <IconButton
                 size="small"
@@ -200,13 +210,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
                   >
-                    {user?.userName} is Signed in
-                  </SoftTypography>
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
                     Logout
                   </SoftTypography>
                 </IconButton>
@@ -218,7 +221,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       fontWeight="medium"
                       color={light ? "white" : "dark"}
                     >
-                      is Sign in
+                      Sign in
                     </SoftTypography>
                   </IconButton>
                 </Link>)}

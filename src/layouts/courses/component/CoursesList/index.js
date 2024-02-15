@@ -21,9 +21,18 @@ import { generateRows } from "utils/utils";
 import { useDispatch } from "react-redux";
 import { setActiveRow } from "layouts/Courses/functions/coursesSlice";
 import { coursestableheads } from "layouts/Courses/constant";
+import SoftFilter from "examples/SoftFilter";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 // Data
 
+const filterdata = {
+  courseName: { type: "text", label: "Course", value: "", search: true },
+  applicantName: { type: "text", label: "Learner", value: "" },
+  scheduleName: { type: "text", label: "Schedule", value: "" },
+  paymentStatusName: { type: "text", label: "Payment Status", value: "" },
+  remarks: { type: "text", label: "Remarks", value: "" }
+};
 
 
 function CoursesList(props) {
@@ -50,7 +59,7 @@ function CoursesList(props) {
     }
   }
 
-  
+
 
   function rowClickhandler(item) {
     const activeRow = list.data[item]
@@ -66,26 +75,16 @@ function CoursesList(props) {
   }
 
 
+  function filterFunction(data) {
+    changeFilter(prev => ({
+      ...prev,
+      filter: {
+        ...prev.filter,
+        ...data
+      }
+    }));
+  }
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>latest</MenuItem>
-    </Menu>
-  );
   const renderRowperpage = (
     <SoftBox sx={{ display: "flex", alignItems: "center" }}>
       <SoftTypography variant="button" fontWeight="regular" color="text">
@@ -135,24 +134,30 @@ function CoursesList(props) {
         </SoftBox>
         {renderMenu}
       </SoftBox> */}
-      <SoftBox px={2} pt={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      <SoftBox p={2}>
+        <SoftFilter filterObj={filterdata} listFilter={filterFunction} />
+      </SoftBox>
+      {loading && <SoftBarLoader />}
+      {!loading && rows?.length ? <>
+        <SoftBox px={2} pt={2}
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={coursestableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>
-      <SoftBox mt={2} mb={2} px={2}>
-        <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          {renderRowperpage}
-          <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={coursestableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2} px={2}>
+          <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            {renderRowperpage}
+            <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
     </Card>
   );
 }

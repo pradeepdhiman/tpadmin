@@ -41,10 +41,10 @@ import { useLocation } from "react-router-dom";
 import UserDocuments from "../UserDocument";
 
 const tabs = [
-  { label: 'Info', value: 'info' },
-  { label: 'Applied/Verify Course', value: 'verification' },
-  { label: 'Complete Courses', value: 'completeCourse' },
-  { label: 'Active Course', value: 'activeCourse' },
+  { label: 'Profile', value: 'info' },
+  { label: 'Course Status', value: 'verification' },
+  { label: 'Completed Courses', value: 'completeCourse' },
+  { label: 'Active Courses', value: 'activeCourse' },
   { label: 'Documents', value: 'doc' },
 ];
 
