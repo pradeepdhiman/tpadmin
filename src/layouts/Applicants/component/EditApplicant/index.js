@@ -39,6 +39,8 @@ import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { toastHandler } from "utils/utils";
 import { useLocation } from "react-router-dom";
 import UserDocuments from "../UserDocument";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const tabs = [
   { label: 'Profile', value: 'info' },
@@ -154,16 +156,30 @@ function EditApplicant(props) {
   function tabhandler(tab) {
     setActiveTab(tab)
   }
-
+  const MySwal = withReactContent(Swal)
   async function onDelete() {
-    try {
-      const res = await deleteApplicant({ id: activeRow.applicantID })
-      toastHandler(res)
-      if (res.data.success) {
-        closeEdit()
+    const result = await MySwal.fire({
+      icon: 'alert',
+      title: 'Delete Learner',
+      text: "Are you sure!",
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        try {
+          const res = await deleteApplicant({ id: activeRow.applicantID })
+          toastHandler(res)
+          if (res.data.success) {
+            closeEdit()
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -199,10 +215,10 @@ function EditApplicant(props) {
           </SoftButton>
         ))}
       </SoftBox>}
-      <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
-        <SoftTypography variant="h6" fontWeight="medium">
+      <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "end", alignItem: 'center' }}>
+        {/* <SoftTypography variant="h6" fontWeight="medium">
           Applicant
-        </SoftTypography>
+        </SoftTypography> */}
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
             <>

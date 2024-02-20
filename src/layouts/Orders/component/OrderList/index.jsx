@@ -51,7 +51,7 @@ function OrderList(props) {
 
 
   function rowClickhandler(item) {
-    const activeRow = list[item]
+    const activeRow = list?.data[item]
     // dispatch(setActiveRow(activeRow))
     navigate(`/applicants?id=${activeRow?.applicantID}&verify=true`)
   }

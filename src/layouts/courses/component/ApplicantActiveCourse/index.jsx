@@ -62,20 +62,6 @@ const ApplicantActiveCourse = () => {
     }, [activeRow, getCompletedcourse]);
 
     return (
-        // <Card id="Complete-course" sx={{ height: "100%" }}>
-        //     <SoftBox p={2}>
-        //         <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-        //             {getLoading && <SoftBarLoader />}
-        //             {getResp && getResp.data && getResp.data.length !== 0 ? (
-        //                 getResp.data.map((item, index) => (
-        //                     <ListItem key={index} item={item} />
-        //                 ))
-        //             ) : (
-        //                 <SoftTypography>Data not Available</SoftTypography>
-        //             )}
-        //         </SoftBox>
-        //     </SoftBox>
-        // </Card>
         <Card id="Complete-course" sx={{ height: "100%" }}>
             <SoftBox p={2}>
                 <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>

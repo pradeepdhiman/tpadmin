@@ -17,16 +17,8 @@ import { masterCode } from "common/constant";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
 import { toastHandler } from "utils/utils";
 import { useNavigate } from "react-router-dom";
-// {
-//     "courseScheduleID": 0,
-//     "scheduledID": 0,
-//     "courseID": 0,
-//     "applicantID": 0,
-//     "meetingLink": "string",
-//     "courseScheduleStatus": "string",
-//     "createdById": 0,
-//     "remarks": "string"
-//   }
+import { useUpdateScheduleMutation } from "layouts/Courses/functions/query";
+
 const AssignSchedule = () => {
     let user = authUser()
     const dispatch = useDispatch()
@@ -38,6 +30,7 @@ const AssignSchedule = () => {
     const { data: schedules, isError: schErr, isLoading: schLoading } = useListSchedulesQuery()
     const [assign, { data: assignData, isError: assignErr, isLoading: assignLoading }] = useAssignScheduleMutation()
     const [getSchedule, { data: schData, isError: schDataErr, isLoading: schDataLoading }] = useScheduleByIdMutation()
+    const [updateSchedule, { isError: schdErr, isLoading: schLoad }] = useUpdateScheduleMutation()
     const { data: courseScheduleStatusList, isLoading: loadingStatus } = useMasterListByTypeQuery({ TypeID: masterCode.CourseScheduleStatus })
     const navigate = useNavigate()
 
@@ -74,7 +67,23 @@ const AssignSchedule = () => {
             const res = await assign(newData)
             toastHandler(res)
             if (res?.data?.success) {
-                dispatch(setActiveRow({}))
+                const scheduleData = {
+                    scheduledID: parseInt(selected?.scheduledID),
+                    courseID: parseInt(selected?.courseID),
+                    scheduledName: selected?.scheduledName,
+                    startDate: selected?.startDate,
+                    endDate: selected?.endDate,
+                    scheduleCreatedDateTime: selected?.scheduleCreatedDateTime,
+                    validityDateTime: selected?.validityDateTime,
+                    location: parseInt(selected?.location),
+                    instructor: parseInt(selected?.instructor),
+                    status: 26,
+                    updatedById: parseInt(selected?.updatedById),
+                    remarks: selected?.remarks
+                }
+                await updateSchedule(scheduleData)
+                await getSchedule({ courseID: activeRow?.courseID });
+                // dispatch(setActiveRow({}))
             }
         } catch (err) {
             console.log(err)
@@ -108,7 +117,7 @@ const AssignSchedule = () => {
                             ))
                         ) : (
                             <SoftTypography variant="h6" fontWeight="bold">
-                                This course dont have active schedule <SoftButton onClick={()=>navigate("/schedule")} color="info" variant="text">Click here</SoftButton> to add one.
+                                This course dont have active schedule <SoftButton onClick={() => navigate("/schedule")} color="info" variant="text">Click here</SoftButton> to add one.
                             </SoftTypography>
                         )}
                     </SoftBox>

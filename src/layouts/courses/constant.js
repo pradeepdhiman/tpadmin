@@ -37,7 +37,7 @@ export const schema = yup.object().shape({
     .positive('VAT should be a positive value')
     .max(99, 'It can not be more then 100%'),
   totalAmount: yup.number(),
-  remarks: yup.string()
+  file: yup.mixed().required("Course image required.")
 });
 
 
@@ -74,14 +74,13 @@ export const assessmentInfoSchema = yup.object().shape({
       return !!value || !!passingScore;
     }),
   numberofQuestions: yup.string().required('Number of questions is required'),
-  remarks: yup.string(),
 });
 
 
 export const coursestableheads = [
   { name: "courseName", label: "Course Name", align: 'left', type: "string" },
   { name: "statusName", label: "Status Name", align: 'left', type: "string" },
-  { name: "duration", label: "Duration(mnts)", align: 'left', type: "number" },
+  { name: "duration", label: "Duration(mnts)", align: 'left', type: "string" },
   { name: "categoryName", label: "Category Name", align: 'left', type: "string" },
   { name: "syllabus", label: "Contents", align: 'left', type: "string" },
   { name: "trainingfee", label: "Training Fee", align: 'left', type: "number" },
@@ -121,8 +120,8 @@ export const initialFilters = {
     "regex": "false"
   },
   "order": {
-    "orderBy": "Duration",
-    "orderDirection": "asc"
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
   },
   "filter": {
     "courseID": 0,
@@ -134,12 +133,13 @@ export const initialFilters = {
     "syllabus": "",
     "trainingfee": "",
     "vat": "",
+    "courseImage": "",
     "totalAmount": "",
     "status": 26,
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "2024-01-01",
+    "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
   }

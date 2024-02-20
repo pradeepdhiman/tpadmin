@@ -35,6 +35,9 @@ import { useMasterListByTypeQuery } from "common/query";
 import AssessmentInfo from "../AssessmentInfo";
 import { toastHandler } from "utils/utils";
 import { toast } from "react-toastify";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -52,6 +55,7 @@ function EditCourse(props) {
   const [newCategory, setNewCategory] = useState(false);
   const [selectedCat, setSelectedCat] = useState({});
   const [crsStatus, setCrsStatus] = useState({});
+  const fileInputRef = useRef(null);
   const [newCategoryValue, setNewCategoryValue] = useState({
     categoryID: 0,
     categoryName: '',
@@ -60,6 +64,7 @@ function EditCourse(props) {
   });
   const [openOption, setOpenOption] = useState(false);
   const optionListRef = useRef(null);
+  const [fileData, setFileData] = useState("");
 
   const [updateCourse, { data: updateData, error: updateErr, isLoading: updateLoading }] = useUpdateCourseMutation()
   const [createCourse, { data: newApplicant, error: createError, isLoading: createLoading }] = useCreateCourseMutation()
@@ -89,7 +94,7 @@ function EditCourse(props) {
   }, [courseStatusList, activeRow]);
 
 
-  const { handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm({
+  const { handleSubmit, control, register, reset, setValue, watch, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: activeRow,
   });
@@ -97,48 +102,57 @@ function EditCourse(props) {
   const trainingFee = watch('trainingfee');
   const vat = watch('vat');
 
-
   const submitFormData = async (data) => {
 
-    const isEditing = Object.keys(activeRow).length !== 0
+    const isEditing = Object.keys(activeRow).length !== 0;
+    let file = data.file;
     try {
-
-      let newData = {}
+      let formData = new FormData();
+      let newData = {};
 
       if (isEditing) {
-        newData = {
-          courseID: parseInt(activeRow.courseID),
-          courseName: data?.courseName,
-          description: "",
-          duration: parseInt(data?.duration),
-          categoryID: parseInt(selectedCat?.categoryID),
-          syllabus: data?.syllabus,
-          trainingfee: data?.trainingfee,
-          vat: parseInt(data?.vat),
-          totalAmount: parseInt(data?.totalAmount),
-          status: parseInt(crsStatus?.masterCodeID),
-          updatedById: parseInt(user.id),
-          remarks: data?.remarks
-        }
+
+
+        formData.append('CourseID', parseInt(activeRow.courseID));
+        formData.append('CourseName', data?.courseName);
+        formData.append('CourseImageFIle', file, file.name);
+        formData.append('Duration', parseFloat(data?.duration));
+        formData.append('Description', data?.description || "");
+        formData.append('Remarks', data?.remarks || "");
+        formData.append('CategoryID', parseInt(selectedCat?.categoryID));
+        formData.append('Syllabus', data?.syllabus);
+        formData.append('Trainingfee', parseInt(data?.trainingfee));
+        formData.append('VAT', parseInt(data?.vat));
+        formData.append('Status', parseInt(crsStatus?.masterCodeID));
+        formData.append('TotalAmount', parseInt(data?.totalAmount));
+        formData.append('CreatedById', parseInt(user?.id));
+        formData.append('UpdatedById', parseInt(user.id));
+
       } else {
-        newData = {
-          ...data,
-          categoryID: selectedCat?.categoryID,
-          createdById: parseInt(user.id),
-          status: parseInt(crsStatus?.masterCodeID),
-          courseID: 0
-        }
+
+        formData.append('CourseID', 0);
+        formData.append('CourseName', data?.courseName);
+        formData.append('CourseImageFIle', file, file.name);
+        formData.append('Duration', parseFloat(data?.duration));
+        formData.append('Description', data?.description || "");
+        formData.append('Remarks', data?.remarks || "");
+        formData.append('CategoryID', parseInt(selectedCat?.categoryID));
+        formData.append('Syllabus', data?.syllabus);
+        formData.append('Trainingfee', parseInt(data?.trainingfee));
+        formData.append('VAT', parseInt(data?.vat));
+        formData.append('TotalAmount', parseInt(data?.totalAmount));
+        formData.append('CreatedById', parseInt(user?.id));
       }
 
       const apiFunction = isEditing ? updateCourse : createCourse;
 
-      const res = await apiFunction(newData);
-      toastHandler(res)
+      const res = await apiFunction(formData);
+      toastHandler(res);
 
       if (res?.data?.success) {
-        dispatch(setActiveRow(res?.data?.data))
+        dispatch(setActiveRow(res?.data?.data));
         if (!isEditing) {
-          setActiveTab("material")
+          setActiveTab({ label: 'Study Material', value: 'material' });
         }
         // closeEdit()
       }
@@ -148,6 +162,8 @@ function EditCourse(props) {
       console.error(err);
     }
   };
+
+
 
   function closeEdit() {
     dispatch(setActiveRow({}))
@@ -159,15 +175,32 @@ function EditCourse(props) {
     setActiveTab(tab)
   }
 
+
+
+  const MySwal = withReactContent(Swal)
   async function onDelete() {
-    try {
-      const res = await deleteCourse({ id: activeRow?.courseID })
-      toastHandler(res)
-      if (res?.data?.success) {
-        closeEdit()
+    const result = await MySwal.fire({
+      icon: 'alert',
+      title: 'Delete Course',
+      text: "Are you sure!",
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        try {
+          const res = await deleteCourse({ id: activeRow?.courseID })
+          toastHandler(res)
+          if (res.data.success) {
+            closeEdit()
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -267,13 +300,30 @@ function EditCourse(props) {
     setCrsStatus(newVal)
   }
 
+  function uploadchangeHandler(event) {
+    const fileInput = event.target;
+    if (fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+      setFileData(selectedFile); // Set the selected file in state
+      setValue("file", selectedFile); // Update the form value for "file"
+    }
+  }
+
+
+
   const optionList = () => {
     return (<SoftBox mt={.5} sx={{ position: "absolute", zIndex: 2, width: "100%" }} >
       <Card>
         <SoftBox p={2}>
           {!newCategory && <SoftButton onClick={addCat} fullWidth size="small" variant="outlined" color="info">New Category</SoftButton>}
           {newCategory && <SoftBox className={styles.flexBox}>
-            <SoftInput value={newCategoryValue.categoryName} onChange={categoryChangehandler} placeholder="Category name" sx={{ grow: 1 }} />
+            <SoftInput
+              value={newCategoryValue.categoryName}
+              onChange={categoryChangehandler}
+              placeholder="Category name"
+              sx={{ grow: 1 }}
+            />
+
             <SoftButton variant="gradient" onClick={saveCategory} disabled={!newCategoryValue || addCatLoading} color="dark">Add</SoftButton>
           </SoftBox>}
           <SoftBox mt={1} sx={{ maxHeight: "200px", overflowY: "auto" }}>
@@ -404,8 +454,8 @@ function EditCourse(props) {
                     type="text"
                     readOnly
                     placeholder="Course Category"
-                    onClick={toogleoptionlist}
                     value={selectedCat.categoryName}
+                    icon={{ component: <ArrowDropDownIcon sx={{ cursor: "pointer" }} onClick={toogleoptionlist} />, direction: "right" }}
                   />
                   {errors.categoryID && (
                     <SoftTypography component="label" variant="caption" color="error">
@@ -414,6 +464,26 @@ function EditCourse(props) {
                   )}
 
                   {openOption && optionList()}
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <SoftBox mb={2}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">
+                      Course Image
+                    </SoftTypography>
+                  </SoftBox>
+                  <SoftInput
+                    name="file"
+                    type="file"
+                    onChange={uploadchangeHandler}
+                    ref={fileInputRef}
+                  />
+                  {errors.file && (
+                    <SoftTypography component="label" variant="caption" color="error">
+                      {errors.file.message}
+                    </SoftTypography>
+                  )}
                 </SoftBox>
               </Grid>
               <Grid item xs={12} sm={12} md={12}>

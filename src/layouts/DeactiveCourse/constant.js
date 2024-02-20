@@ -83,8 +83,8 @@ export const initialFilters = {
     "regex": "false"
   },
   "order": {
-    "orderBy": "Duration",
-    "orderDirection": "asc"
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
   },
   "filter": {
     "courseID": 0,
@@ -99,9 +99,10 @@ export const initialFilters = {
     "totalAmount": "",
     "status": 27,
     "statusName": "",
+    "courseImage": "",
     "createdById": 0,
     "updatedById": 0,
-    "updatedDate": "2024-01-01",
+    "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
   }

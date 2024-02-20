@@ -11,7 +11,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import { useEffect, useState } from "react";
 import AssessmentDetails from "./component/AssessmentDetails";
-import {  useFilterReassessmentMutation } from "./function/query";
+import { useFilterReassessmentMutation } from "./function/query";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { initialFilters } from "./constant";
@@ -36,10 +36,10 @@ function Reassessment() {
         console.log(err);
       }
     }
-  
+
     fetchData();
   }, [filters]);
-  
+
 
   useEffect(() => {
     dispatch(setActiveRow({}))
@@ -55,7 +55,7 @@ function Reassessment() {
         console.log(err);
       }
     }
-  
+
     fetchData();
   }
 
@@ -71,8 +71,7 @@ function Reassessment() {
               <AssessmentDetails toggleEdit={editMode} editid={editId} />
             </Grid>
           )}
-          {/* {assessLoading && <SoftBarLoader />} */}
-          {(Object.keys(activeRow).length === 0 ) && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <ReAssessmentList list={assessList} loading={assessLoading} changeFilter={setFilters} />
             </Grid>

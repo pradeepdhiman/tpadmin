@@ -33,6 +33,8 @@ import { toastHandler } from "utils/utils";
 import { masterCode } from "common/constant";
 import { useMasterListByTypeQuery } from "common/query";
 import SoftAddAbleAutoSelect from "examples/AddAbleAutoselect";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -125,15 +127,33 @@ function EditQuestion(props) {
     setActiveTab(tab)
   }
 
+
+
+
+  const MySwal = withReactContent(Swal)
   async function onDelete() {
-    try {
-      const res = await deleteSch({ id: activeRow?.questionID })
-      toastHandler(res)
-      if (res.data.success) {
-        closeEdit()
+    const result = await MySwal.fire({
+      icon: 'alert',
+      title: 'Delete Question',
+      text: "Are you sure!",
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        try {
+          const res = await deleteSch({ id: activeRow?.questionID })
+          toastHandler(res)
+          if (res.data.success) {
+            closeEdit()
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -158,7 +178,7 @@ function EditQuestion(props) {
         ))}
       </SoftBox>} */}
 
-      <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
+      <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-end", alignItem: 'center' }}>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
           {Object.keys(activeRow).length !== 0 && (
             <>

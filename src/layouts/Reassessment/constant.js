@@ -32,8 +32,8 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "CourseName",
-    "orderDirection": "asc"
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
   },
   "filter": {
     "reassessmentID": 0,
@@ -47,6 +47,7 @@ export const initialFilters = {
     "receiptDate": null,
     "amountPaid": "",
     "paymentStatusID": 0,
+    "courseImage": "",
     "paymentStatusName": "",
     "status": 0,
     "statusName": "",

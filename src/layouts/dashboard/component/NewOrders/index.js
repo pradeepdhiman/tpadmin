@@ -44,7 +44,7 @@ function NewOrders(props) {
         {list?.length && list?.map(item => <TimelineItem
           color="error"
           icon={<ImportContactsIcon />}
-          title={`$${item?.trainingfee}, ${item?.courseName}`}
+          title={`${item?.trainingfee}, ${item?.courseName}`}
           dateTime={moment(item?.enrollmentDate).format("DD-MM-YYYY")}
           key={item?.applicantCourseID}
         />

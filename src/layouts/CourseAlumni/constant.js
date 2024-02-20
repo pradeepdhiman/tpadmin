@@ -32,7 +32,7 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "ApplicantName",
+    "orderBy": "AssesmentDate",
     "orderDirection": "asc"
   },
   "filter": {

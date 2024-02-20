@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -14,19 +14,27 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import { Pagination, Stack } from "@mui/material";
+import { FormControl, Pagination, Select, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDispatch, useSelector } from "react-redux";
 import { generateRows } from "utils/utils";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { assessmentTableHeads } from "layouts/CourseAlumni/constant";
 import { setActiveRow } from "layouts/CourseAlumni/function/assessmentSlice";
+import SoftFilter from "examples/SoftFilter";
 
 // Data
 
+
+
+const filterdata = {
+  applicantName: { type: "text", label: "Learner", value: "", search: true },
+  courseName: { type: "text", label: "Course", value: "" },
+};
+
 function AssessmentList(props) {
-  
-  const { list = [], loading = false, changeFilter  } = props
+
+  const { list = [], loading = false, changeFilter } = props
   // const { columns, rows } = data();
   const dispatch = useDispatch()
   const [menu, setMenu] = useState(null);
@@ -39,8 +47,8 @@ function AssessmentList(props) {
   const closeMenu = () => setMenu(null);
   // const rows = generateRows(list, assessmentTableHeads)
 
- 
- 
+
+
 
   useEffect(() => {
     const rowList = generateRows(list, assessmentTableHeads, orderby, "asc");
@@ -55,7 +63,7 @@ function AssessmentList(props) {
     }
   }
 
-   function rowClickhandler(item) {
+  function rowClickhandler(item) {
     const activeRow = list.data[item]
     dispatch(setActiveRow(activeRow))
   }
@@ -90,62 +98,42 @@ function AssessmentList(props) {
     </SoftBox>
   );
 
-  const renderMenu = (
-    <Menu
-      id="simple-menu"
-      anchorEl={menu}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={Boolean(menu)}
-      onClose={closeMenu}
-    >
-      <MenuItem onClick={closeMenu}>All</MenuItem>
-      <MenuItem onClick={closeMenu}>New Orders</MenuItem>
-      <MenuItem onClick={closeMenu}>Compleated</MenuItem>
-    </Menu>
-  );
+  function filterFunction(data) {
+    changeFilter(prev => ({
+      ...prev,
+      filter: {
+        ...prev.filter,
+        ...data
+      }
+    }));
+  }
 
   return (
     <Card>
-      <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-        <SoftBox>
-          <SoftTypography variant="h6" gutterBottom>
-            Course Alumni list
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <MoreVertIcon />
-          </Icon>
-        </SoftBox>
-        {renderMenu}
+      <SoftBox p={2}>
+        <SoftFilter filterObj={filterdata} listFilter={filterFunction} />
       </SoftBox>
-      {loading && <SoftBarLoader/>}
-      {!loading && <SoftBox
-        px={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
+      {loading && <SoftBarLoader />}
+      {!loading && rows?.length ? <>
+        <SoftBox px={2}
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
             },
-          },
-        }}
-      >
-        <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox>}
-      <SoftBox mt={2} mb={2} px={2}>
-        <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          {renderRowperpage}
-          <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
-        </Stack>
-      </SoftBox>
+          }}
+        >
+          <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2} px={2}>
+          <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            {renderRowperpage}
+            <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
     </Card>
   );
 }

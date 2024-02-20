@@ -20,8 +20,8 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "ApplicantName",
-    "orderDirection": "asc"
+    "orderBy": "EnrollmentDate",
+    "orderDirection": "desc"
   },
   "filter": {
     "applicantCourseID": 0,
@@ -43,6 +43,7 @@ export const initialFilters = {
     "courseStatus": 0,
     "courseStatusName": "Applied",
     "status": 0,
+    "courseImage": "",
     "statusName": "",
     "createdById": 0,
     "updatedById": 0,

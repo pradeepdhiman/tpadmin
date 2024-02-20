@@ -119,8 +119,7 @@ function CourseQuestions() {
               <EditQuestion toggleEdit={editMode} editid={editId} addCourse={createQuestion} loading={createLoading} />
             </Grid>
           )}
-          {questionLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && questionList?.data && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <QuestionList list={questionList} loading={questionLoading} changeFilter={setFilters} filterValue={filters} />
             </Grid>

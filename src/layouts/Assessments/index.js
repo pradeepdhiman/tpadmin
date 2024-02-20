@@ -59,12 +59,12 @@ function Assessments() {
               <AssessmentDetails toggleEdit={editMode} editid={editId} />
             </Grid>
           )}
-          {assessLoading && <SoftBarLoader />}
-          {(Object.keys(activeRow).length === 0 && assessList?.data?.length) ? (
+
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <AssessmentList list={assessList} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
-          ) : null}
+          )}
 
         </Grid>
       </SoftBox>

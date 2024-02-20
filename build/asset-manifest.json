@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.2ada9d8b.css",
-    "main.js": "/static/js/main.29d495be.js",
+    "main.css": "/static/css/main.07c2c1e5.css",
+    "main.js": "/static/js/main.55b95de4.js",
     "static/media/5251.jpg": "/static/media/5251.ebf9a7af9f28dd96de0e.jpg",
+    "static/media/close-up-colorful-books-pile.jpg": "/static/media/close-up-colorful-books-pile.41ecb3d2fbab514c200d.jpg",
+    "static/media/loginimage.jpg": "/static/media/loginimage.690d5fc247d038dfcde7.jpg",
     "static/media/curved0.jpg": "/static/media/curved0.d146ec6e9401aa9d52c5.jpg",
     "static/media/waves-white.svg": "/static/media/waves-white.eac3c8078f7e1e28ef33f010c9782f40.svg",
     "static/media/rocket-white.png": "/static/media/rocket-white.de5786399f850a27a362.png",
-    "static/media/curved-6.jpg": "/static/media/curved-6.71ee1d1cc8196ed2126b.jpg",
-    "static/media/ivancik.jpg": "/static/media/ivancik.442b474727c414bb3b85.jpg",
     "static/media/white-curved.jpeg": "/static/media/white-curved.a5b7db662b0b14ab5534.jpeg",
     "static/media/team-1.jpg": "/static/media/team-1.c821a2730a9c8e3f68eb.jpg",
     "static/media/team-3.jpg": "/static/media/team-3.b75146da5bfdf9d8ae61.jpg",
@@ -21,11 +21,11 @@
     "static/media/logo-jira.svg": "/static/media/logo-jira.f9c1ddbe3e751a29bd16580977ade064.svg",
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html",
-    "main.2ada9d8b.css.map": "/static/css/main.2ada9d8b.css.map",
-    "main.29d495be.js.map": "/static/js/main.29d495be.js.map"
+    "main.07c2c1e5.css.map": "/static/css/main.07c2c1e5.css.map",
+    "main.55b95de4.js.map": "/static/js/main.55b95de4.js.map"
   },
   "entrypoints": [
-    "static/css/main.2ada9d8b.css",
-    "static/js/main.29d495be.js"
+    "static/css/main.07c2c1e5.css",
+    "static/js/main.55b95de4.js"
   ]
 }

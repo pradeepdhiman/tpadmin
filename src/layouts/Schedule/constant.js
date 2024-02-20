@@ -41,7 +41,11 @@ export const schema = yup.object().shape({
   startDate: yup
     .date()
     .required('Start Date is required')
-    .min(new Date(), 'Start Date cannot be less than today'),
+    .test('is-after-previous-date', 'Start Date cannot be less than today', function(value) {
+      const previousDate = new Date();
+      previousDate.setDate(previousDate.getDate() - 1); 
+      return yup.date().min(previousDate).isValidSync(value);
+    }),
   endDate: yup
     .date()
     .required('End Date is required')
@@ -92,8 +96,8 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "ScheduledName",
-    "orderDirection": "asc"
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
   },
   "filter": {
     "scheduledID": 0,

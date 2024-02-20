@@ -18,7 +18,8 @@ import SoftButton from "components/SoftButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import curved6 from "assets/images/curved-images/curved14.jpg";
+import curved6 from "assets/images/curved-images/loginimage.jpg";
+// import curved6 from "assets/images/curved-images/curved14.jpg";
 
 import AuthApi from "../../../api/auth";
 

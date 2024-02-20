@@ -132,8 +132,7 @@ function Schedule() {
               <EditSchedule toggleEdit={editMode} editid={editId} addSchedule={createSchedule} loading={createLoading} />
             </Grid>
           )}
-          {filterLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && schlist?.data && (
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <ScheduleList list={schlist} loading={filterLoading} changeFilter={setFilters} />
             </Grid>

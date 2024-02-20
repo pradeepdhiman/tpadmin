@@ -20,6 +20,8 @@ import { toastHandler } from "utils/utils";
 import SoftButton from "components/SoftButton";
 import { verificationDocFilter } from "layouts/Applicants/constant";
 import { useVerificationdocFilterMutation } from "layouts/Applicants/functions/query";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 
 const DocumentVerification = () => {
@@ -27,7 +29,7 @@ const DocumentVerification = () => {
     const [selectedOption, setSelectedOption] = useState({})
     const [docFilters, setDocFilters] = useState(verificationDocFilter)
     const { activeRow } = useSelector(state => state.applicant);
-    const { data: appliedCourse, isError: appliedErr, isLoading: appliedLoading, refatch: refreshAppliedCourse } = useAppliedCourseQuery({ ApplicantID: activeRow?.applicantID });
+    const { data: appliedCourse, isError: appliedErr, isLoading: appliedLoading, refetch: refreshAppliedCourse } = useAppliedCourseQuery({ ApplicantID: activeRow?.applicantID });
     // const [getProof, { data: proofdoc, isError: proofErr, isLoading: proofLoading }] = useCourseProofMutation({ id: appliedCourse?.data?.applicantCourseID });
     const [fetchPaymentStatus, { data: paymentStatusList }] = useMasterListMutation()
     const [getDocFilter, { data: docList, isLoading: docLoading, isError: docErr }] = useVerificationdocFilterMutation()
@@ -69,29 +71,27 @@ const DocumentVerification = () => {
         }
     }, [docFilters])
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const appliedCourseID = appliedCourse?.data[0]?.applicantCourseID;
-    //             const res = await getProof({ id: appliedCourseID });
-    //         } catch (error) {
-    //             console.error("Error fetching data:", error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [appliedCourse, masterCode]);
-
-
 
     async function statushandler(_, newVal) {
         setPayStatus(newVal);
     }
-    // const MySwal = withReactContent(Swal)
+
+
+
+
+
+
+    const MySwal = withReactContent(Swal)
     async function statusUploadhandler() {
 
         if (docList?.data?.length === 0) {
-            alert("payment proof not avaialbe")
+            const result = await MySwal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: "Payment proof not available.",
+                confirmButtonText: 'Ok',
+                showCancelButton: false,
+            });
             return
         }
 
@@ -107,7 +107,8 @@ const DocumentVerification = () => {
             applicantCourseID: parseInt(selectedOption.applicantCourseID),
             applicantID: parseInt(selectedOption.applicantID),
             courseID: parseInt(selectedOption.courseID),
-            scheduleID: parseInt(selectedOption.scheduleID),
+            // scheduleID: parseInt(selectedOption.scheduleID),
+            scheduleID: null,
             enrollmentDate: selectedOption.enrollmentDate,
             completionDate: selectedOption.completionDate,
             // enrollmentDate: moment(selectedOption.enrollmentDate).format("DD-MM-YYYY"),
@@ -127,18 +128,26 @@ const DocumentVerification = () => {
         try {
             const res = await changeStatus(newData)
             toastHandler(res)
-            await refreshAppliedCourse()
-            // if (res?.data?.success) {
-            //     const appliedCourseID = appliedCourse?.data[0]?.applicantCourseID;
-            //     await getProof({ id: appliedCourseID })
-            // }
-            // if (res?.data?.success) {
-            //     Swal.fire({
-            //         title: "Successfully register!",
-            //         text: "Please check your email we will send you payment link.",
-            //         confirmButtonText: "Ok",
-            //     })
-            // }
+            if (res?.data?.success) {
+                const result = await MySwal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "Course Activated.",
+                    confirmButtonText: 'Countinue',
+                    showCancelButton: true,
+                });
+
+                if (result.isConfirmed) {
+                    try {
+                        setSelectedOption({})
+                        await refreshAppliedCourse()
+                    } catch (err) {
+                        console.log(err)
+                    }
+                } else {
+
+                }
+            }
         } catch (Err) {
             console.log(Err)
         }
@@ -171,7 +180,7 @@ const DocumentVerification = () => {
                 </Grid>}
                 {appliedCourse && <Grid item xs>
                     <Card>
-                        <SoftBox p={2}>
+                        <SoftBox p={2} sx={{backgroundColor:"#f0f0f0"}}>
                             {appliedCourse && appliedCourse?.data?.map(item => (
                                 <SoftBox
                                     onClick={() => setSelectedOption(item)}

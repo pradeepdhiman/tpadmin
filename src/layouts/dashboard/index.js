@@ -29,55 +29,9 @@ import { TPChart } from "examples/Charts/TPChart/TPChart";
 
 
 
-const initialFilter = {
-  draw: 5,
-  start: 0,
-  length: 10,
-  columns: [
-    {
-      data: "",
-      name: "",
-      searchable: true,
-      orderable: true,
-      search: {
-        value: "",
-        regex: ""
-      }
-    }
-  ],
-  search: {
-    value: "",
-    regex: ""
-  },
-  order: {
-    orderBy: "",
-    orderDirection: ""
-  },
-  filter: {
-    courseID: 0,
-    courseName: "",
-    description: "",
-    duration: 0,
-    categoryID: 0,
-    categoryName: "",
-    syllabus: "",
-    trainingfee: 0,
-    vat: 0,
-    totalAmount: 0,
-    receiptID: 0,
-    receiptDate: "",
-    amountReceived: 0,
-    status: 0,
-    createdById: 0,
-    updatedById: 0,
-    updatedDate: "",
-    isDeleted: true,
-    remarks: ""
-  }
-}
 
 function Dashboard() {
-  const [filters, setFilters] = useState(initialFilter)
+  
   const [dataSets, setDataSets] = useState([])
   const [labels, setLabels] = useState([])
   const navigate = useNavigate();
@@ -97,16 +51,7 @@ function Dashboard() {
   const { data: applicantCourseList, isLoading: listLoading, isError: listError, refetch: refreshList } = useDbcourselistApplicantQuery();
   const { data: schedulelist, isLoading: schloading, isError: scherr, refetch: refreshschedule } = useDbschedulelistQuery();
   let pendingPaymentCourse = applicantCourseList?.data?.filter(item => item.paymentStatusName === "Pending")
-  // const [createCourse, {
-  //   data: latestCoursesList,
-  //   isLoading: isLatestCoursesLoading,
-  //   error: lstestCoursesError,
-  // }] = usePostCoursesMutation();
-
-  // useEffect(() => {
-  //   const today = moment().format('DD/MM/YYYY');
-  //   createCourse(filters)
-  // }, [])
+  
 
 
   let chartData = {

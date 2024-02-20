@@ -108,8 +108,8 @@ export const initialFilters = {
       "regex": ""
     },
     "order": {
-      "orderBy": "QuestionTitle",
-      "orderDirection": "asc"
+      "orderBy": "UpdatedDate",
+      "orderDirection": "desc"
     },
     "filter": {
       "questionID": 0,

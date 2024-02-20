@@ -1,8 +1,9 @@
-import { Card, Grid, TextField } from "@mui/material";
+import { Card, Grid, Icon, TextField } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
+import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect, useRef } from "react";
 import styles from "./styles.module.css";
 
@@ -72,6 +73,28 @@ const FilterPopup = ({ filterObject, applyFilter, popupHandler }) => {
 
     return (
         <Grid container className={styles.overlay} alignItems="center" justifyContent="center">
+            <Grid item xs={12}>
+                <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "end", alignItem: 'center' }}>
+                    <SoftTypography variant="h6" fontWeight="medium">
+                        Filters
+                    </SoftTypography>
+                    <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
+
+                        <Icon
+                            sx={{
+                                fontWeight: "bold",
+                                color: ({ palette: { error } }) => error.main,
+                                cursor: "pointer",
+                                mt: -0.5,
+                            }}
+                            onClick={closeEdit}
+                        >
+                            <CloseIcon />
+                        </Icon>
+                    </SoftBox>
+
+                </SoftBox>
+            </Grid>
             <Grid item xs={11} sm={7}>
                 <Card ref={cardRef}>
                     <SoftBox p={2}>

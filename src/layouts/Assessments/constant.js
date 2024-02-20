@@ -32,19 +32,22 @@ export const initialFilters = {
     "regex": ""
   },
   "order": {
-    "orderBy": "ApplicantName",
-    "orderDirection": "asc"
+    "orderBy": "AssesmentDate",
+    "orderDirection": "desc"
   },
-  "filter": {
-    "candidateAssesmentID": 0,
-    "applicantID": 0,
-    "applicantName": "",
-    "courseID": 0,
-    "courseName": "",
-    "coursesAssesmentID": 0,
-    "assesmentDate": null,
-    "totalQuestions": "",
-    "correctAnswers": 0,
-    "result": ""
-  }
+  "filter": null
 }
+
+
+// "filter": {
+//   "candidateAssesmentID": 0,
+//   "applicantID": 0,
+//   "applicantName": "",
+//   "courseID": 0,
+//   "courseName": "",
+//   "coursesAssesmentID": 0,
+//   "assesmentDate": null,
+//   "totalQuestions": "",
+//   "correctAnswers": 0,
+//   "result": ""
+// }

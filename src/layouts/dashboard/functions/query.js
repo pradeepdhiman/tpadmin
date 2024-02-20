@@ -1,4 +1,5 @@
 import emptySplitApi from "utils/emptySplitApi";
+import { createRequest } from "utils/utils";
 import { getRequest } from "utils/utils"; 
 
 const dashboardApis = emptySplitApi.injectEndpoints({
@@ -15,6 +16,9 @@ const dashboardApis = emptySplitApi.injectEndpoints({
         readChart: build.mutation({
             query: (data) => getRequest("/Home/GetApplicantRegisteredCourse", data),
         }),
+        dbCourseFilter: build.mutation({
+            query: (data) => createRequest("/Course/GetCourses", data),
+        }),
     }),
 });
 
@@ -23,4 +27,5 @@ export const {
     useDbCoursesQuery,
     useDbcourselistApplicantQuery,
     useReadChartMutation,
+    useDbCourseFilterMutation,
 } = dashboardApis;

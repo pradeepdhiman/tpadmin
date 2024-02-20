@@ -139,7 +139,7 @@ export const verificationDocFilter = {
     "regex": ""
   },
   "order": {
-    "orderBy": "ApplicantName",
+    "orderBy": "UpdatedDate",
     "orderDirection": "asc"
   },
   "filter": {

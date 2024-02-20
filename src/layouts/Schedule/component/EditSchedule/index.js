@@ -35,6 +35,8 @@ import { masterCode } from "common/constant";
 import { usePostMasterMutation } from "common/query";
 import { toastHandler } from "utils/utils";
 import { toast } from "react-toastify";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 const tabs = [
   { label: 'Info', value: 'info' },
   // { label: 'Status', value: 'status' },
@@ -144,15 +146,33 @@ function EditSchedule(props) {
     }
   };
 
+
+
+  
+  const MySwal = withReactContent(Swal)
   async function onDelete() {
-    try {
-      const res = await delSchedule({ id: activeRow.scheduledID })
-      toastHandler(res)
-      if (res.data.success) {
-        closeEdit()
+    const result = await MySwal.fire({
+      icon: 'alert',
+      title: 'Delete Schedule',
+      text: "Are you sure!",
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        try {
+          const res =  await delSchedule({ id: activeRow.scheduledID })
+          toastHandler(res)
+          if (res.data.success) {
+            closeEdit()
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err)
     }
   }
 

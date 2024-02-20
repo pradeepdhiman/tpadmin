@@ -1,9 +1,10 @@
-import { Card, Grid, TextField } from "@mui/material";
+import { Card, Grid, Icon, TextField } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect, useRef } from "react";
 import styles from "./styles.module.css";
 
@@ -26,6 +27,9 @@ const SoftFilter = ({ filterObj, listFilter }) => {
         if (cardRef.current && !cardRef.current.contains(event.target)) {
             setShowpopup(false);
         }
+    };
+    const handleClose = (event) => {
+        setShowpopup(false);
     };
 
     const handleChange = (key, value) => {
@@ -50,7 +54,7 @@ const SoftFilter = ({ filterObj, listFilter }) => {
             for (const key in updatedFilterData) {
                 if (updatedFilterData[key].search) {
                     updatedObject[key] = searchValue;
-                }else{
+                } else {
                     updatedObject[key] = "";
                 }
             }
@@ -105,15 +109,21 @@ const SoftFilter = ({ filterObj, listFilter }) => {
         }
     }
 
+    function SearchDyanmicPlaceholder() {
+        const objectsWithSearchTrue = Object.keys(filterValues).filter(key => filterValues[key].search);
+
+        return (<SoftInput
+            icon={{ component: <SearchIcon />, direction: "left" }}
+            placeholder={`Search in ${filterValues[objectsWithSearchTrue].label}`}
+            onChange={changeSearch}
+        />)
+    }
+
     return (
         <>
             <SoftBox className={styles.container}>
                 <div className={styles.input}>
-                    <SoftInput
-                        icon={{ component: <SearchIcon />, direction: "left" }}
-                        placeholder="Search"
-                        onChange={changeSearch}
-                    />
+                    <SearchDyanmicPlaceholder />
                 </div>
                 <SoftButton variant="gradient" color={apply ? "error" : "dark"} size="small" onClick={filterViewer}>{apply ? "Clear" : "Filter"}</SoftButton>
             </SoftBox>
@@ -121,6 +131,25 @@ const SoftFilter = ({ filterObj, listFilter }) => {
                 <Grid container className={styles.overlay} alignItems="center" justifyContent="center">
                     <Grid item xs={11} sm={7}>
                         <Card ref={cardRef}>
+                            <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: 'center' }}>
+                                <SoftTypography variant="h6" fontWeight="medium">
+                                    Filters
+                                </SoftTypography>
+                                <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
+
+                                    <Icon
+                                        sx={{
+                                            fontWeight: "bold",
+                                            color: ({ palette: { error } }) => error.main,
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={handleClose}
+                                    >
+                                        <CloseIcon />
+                                    </Icon>
+                                </SoftBox>
+
+                            </SoftBox>
                             <SoftBox p={2}>
                                 {Object.keys(filterValues).map((key) => (
                                     <Grid container key={key} mb={1}>
@@ -138,10 +167,10 @@ const SoftFilter = ({ filterObj, listFilter }) => {
                                     </Grid>
                                 ))}
                                 <Grid container >
-                                    <Grid item xs={6}>
+                                    <Grid item xs={2}>
                                         <SoftButton color="dark" variant="gradient" size="small" onClick={filterhandler}>Apply</SoftButton>
                                     </Grid>
-                                    <Grid item xs={6} >
+                                    <Grid item xs={2} >
                                         <SoftButton color="error" variant="gradient" size="small" onClick={clearFilter}>Clear</SoftButton>
                                     </Grid>
                                 </Grid>

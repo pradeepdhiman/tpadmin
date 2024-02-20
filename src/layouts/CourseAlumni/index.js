@@ -62,20 +62,12 @@ function CourseAlumni() {
               <AssessmentDetails toggleEdit={editMode} editid={editId} />
             </Grid>
           )}
-          {assessLoading && <SoftBarLoader />}
-          {Object.keys(activeRow).length === 0 && assessList?.data?.length > 0 ? (
+
+          {Object.keys(activeRow).length === 0 && (
             <Grid item xs={12}>
               <AssessmentList list={assessList} loading={assessLoading} changeFilter={setFilters} />
             </Grid>
-          ) :
-            <Grid item xs={12}>
-              {!assessLoading && <Card>
-                <SoftBox p={2}>
-                  <SoftTypography>Data not available.</SoftTypography>
-                </SoftBox>
-              </Card>}
-            </Grid>
-          }
+          )}
 
         </Grid>
       </SoftBox>

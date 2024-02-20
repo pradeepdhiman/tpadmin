@@ -20,8 +20,21 @@ import { generateRows } from "utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveRow } from "layouts/Schedule/functions/scheduleSlice";
 import { FormControl, Pagination, Select, Stack } from "@mui/material";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import SoftFilter from "examples/SoftFilter";
 
 // Data
+
+
+const filterdata = {
+  scheduledName: { type: "text", label: "Schedule", value: "", search: true },
+  courseName: { type: "text", label: "Course", value: "" },
+  locationName: { type: "text", label: "Location", value: "" },
+  instructorName: { type: "text", label: "Instructor", value: "" },
+  designationName: { type: "text", label: "Designation", value: "" },
+  statusName: { type: "text", label: "Status", value: "" },
+  remarks: { type: "text", label: "Remarks", value: "" }
+};
 
 function ScheduleList(props) {
   const dispatch = useDispatch()
@@ -91,45 +104,45 @@ function ScheduleList(props) {
     </SoftBox>
   );
 
+
+  function filterFunction(data) {
+    changeFilter(prev => ({
+      ...prev,
+      filter: {
+        ...prev.filter,
+        ...data
+      }
+    }));
+  }
  
   return (
     <Card>
-      {/* <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-        <SoftBox>
-          <SoftTypography variant="h6" gutterBottom>
-            Schedule List
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            <MoreVertIcon />
-          </Icon>
-        </SoftBox>
-        {renderMenu}
-      </SoftBox> */}
-      {rows?.length ? <SoftBox pt={2}
-        px={2}
-        sx={{
-          "& .MuiTableRow-root:not(:last-child)": {
-            "& td": {
-              borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                `${borderWidth[1]} solid ${borderColor}`,
-            },
-          },
-        }}
-      >
-        <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
-      </SoftBox> :
-        <SoftBox p={2} sx={{ display: "block", width: "100%" }}>
-          <SoftTypography >No schedules are available</SoftTypography>
-        </SoftBox>
-      }
-      <SoftBox mt={2} mb={2} px={2}>
-        <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          {renderRowperpage}
-          <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
-        </Stack>
+      <SoftBox p={2}>
+        <SoftFilter filterObj={filterdata} listFilter={filterFunction} />
       </SoftBox>
+      {loading && <SoftBarLoader />}
+      {!loading && rows?.length ? <>
+        <SoftBox px={2}
+          sx={{
+            "& .MuiTableRow-root:not(:last-child)": {
+              "& td": {
+                borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                  `${borderWidth[1]} solid ${borderColor}`,
+              },
+            },
+          }}
+        >
+           <Table columns={scheduletableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+        </SoftBox>
+        <SoftBox mt={2} mb={2} px={2}>
+          <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            {renderRowperpage}
+            <Pagination onChange={paginghandler} count={Math.ceil(list?.recordsTotal / rowPerPage)} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </> : null}
+
+
     </Card>
   );
 }

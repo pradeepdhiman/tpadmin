@@ -16,6 +16,10 @@ import { useUploadMatFormMutation } from "layouts/Courses/functions/query";
 import { useForm } from "react-hook-form";
 import { useMatListbycourseQuery } from "layouts/Courses/functions/query";
 import { toastHandler } from "utils/utils";
+import { usePostMasterMutation } from "common/query";
+import { toast } from "react-toastify";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 const fileState = {
     materialID: 0,
     courseID: 0,
@@ -25,7 +29,7 @@ const fileState = {
     remarks: ""
 }
 
-const UploadMaterial = ({setTab}) => {
+const UploadMaterial = ({ setTab }) => {
     const { activeRow } = useSelector(state => state.courses)
     const [fileData, setFileData] = useState("");
     const [matType, setMyType] = useState({
@@ -47,7 +51,8 @@ const UploadMaterial = ({setTab}) => {
     const { data: matList, error: matListErr, isLoading: matListLoading, refetch: refreshmatList } = useMatListbycourseQuery({ CourseID: activeRow?.courseID })
     const [uploadMat, { data: addMatRes, error: addMatErr, isLoading: addMatLoading }] = useUploadMatFormMutation()
     // const [uploadMat, { data: addMatRes, error: addMatErr, isLoading: addMatLoading }] = useUploadMatMutation()
-    const { data: matTypeList, isLoading: loadingmatType } = useMasterListByTypeQuery({ TypeID: masterCode.TrainingMaterialType })
+    const { data: matTypeList, isLoading: loadingmatType, refetch: refreshmatlist } = useMasterListByTypeQuery({ TypeID: masterCode.TrainingMaterialType })
+    const [addMaster, { isLoading: masterLoading }] = usePostMasterMutation()
 
     useEffect(() => {
         async function fetchData() {
@@ -57,15 +62,15 @@ const UploadMaterial = ({setTab}) => {
                 console.error(err);
             }
         }
-    
+
         fetchData();
-    
-      
+
+
         return () => {
-           
+
         };
     }, [activeRow, refreshmatList]);
-    
+
 
     function uploadchangeHandler(event) {
         const fileInput = event.target;
@@ -75,7 +80,7 @@ const UploadMaterial = ({setTab}) => {
         }
     }
 
-
+    const MySwal = withReactContent(Swal)
     async function uploadHandler(data) {
         const file = data.file[0];
         const { courseID } = activeRow;
@@ -96,7 +101,16 @@ const UploadMaterial = ({setTab}) => {
                 }
                 setFileData("")
                 refreshmatList()
-                setTab("schedule")
+                const result = await MySwal.fire({
+                    icon: 'alert',
+                    title: 'Countinue',
+                    text: "Do you have more files to upload?",
+                    confirmButtonText: 'No',
+                    showCancelButton: true,
+                });
+                if (result.isConfirmed) {
+                    setTab({ label: 'Schedule', value: 'schedule' })
+                }
             }
         } catch (err) {
             console.log(err)
@@ -105,8 +119,44 @@ const UploadMaterial = ({setTab}) => {
     }
 
 
+
     function matTypeHandler(_, newVal) {
         setMyType(newVal)
+    }
+
+    async function materialSavehandler(data) {
+        if (matTypeList?.data?.find(x => x.value === data)) {
+            toast.error('Duplicate material type not allowed', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+            });
+            return
+        }
+        const newData = {
+            masterCodeID: 0,
+            code: 0,
+            value: data,
+            fixedColumnName: null,
+            description: null,
+            masterCodeTypeID: masterCode.TrainingMaterialType
+        };
+
+        try {
+            const res = await addMaster(newData);
+            toastHandler(res)
+            if (res?.data?.success) {
+                // setValue('instructor', parseInt(res?.data?.data?.masterCodeID));
+                setMyType(res?.data?.data)
+                refreshmatlist()
+                return res
+            }
+        } catch (error) {
+            console.error("Error adding master:", error);
+        }
     }
 
     return (<SoftBox>
@@ -125,7 +175,17 @@ const UploadMaterial = ({setTab}) => {
 
                 </SoftBox>
                 <SoftBox>
-                    <Autocomplete
+                    <SoftAddAbleAutoSelect
+                        dataList={matTypeList?.data || []}
+                        selectedValue={matType}
+                        selectHandler={matTypeHandler}
+                        label={null}
+                        placeholder="Material Type"
+                        saveHandler={materialSavehandler}
+                        loading={masterLoading}
+                        isEditable={true}
+                    />
+                    {/* <Autocomplete
                         disablePortal
                         disableClearable
                         id="combo-box-demo"
@@ -137,7 +197,7 @@ const UploadMaterial = ({setTab}) => {
                         renderInput={(params) => <TextField {...register('MaterialType')}
                             error={Boolean(errors.MaterialType)}
                             helperText={errors.MaterialType?.message} placeholder="Material type required" {...params} />}
-                    />
+                    /> */}
                 </SoftBox>
                 <SoftButton variant="outlined" type="submit" disabled={addMatLoading}
                     size="small" color="dark">{addMatLoading ? "Uploading" : "Upload"}</SoftButton>
