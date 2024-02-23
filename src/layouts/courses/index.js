@@ -47,10 +47,10 @@ function Courses() {
     dispatch(setActiveRow({}))
   }, [])
 
-  function editMode() {
+  async function editMode() {
     setEdit(false)
     dispatch(setActiveRow({}))
-    refreshCourse()
+    await refreshCourse(filters)
   }
   function addCourse() {
     setEdit(true)

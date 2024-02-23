@@ -64,8 +64,8 @@ function AssessmentList(props) {
   }
 
   function rowClickhandler(item) {
-    const activeRow = list.data[item]
-    dispatch(setActiveRow(activeRow))
+    // const activeRow = list.data[item]
+    // dispatch(setActiveRow(activeRow))
   }
 
   function handlerRowperpagechange(event) {

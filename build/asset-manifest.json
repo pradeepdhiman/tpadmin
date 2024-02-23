@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.07c2c1e5.css",
-    "main.js": "/static/js/main.55b95de4.js",
+    "main.js": "/static/js/main.a1a7647a.js",
     "static/media/5251.jpg": "/static/media/5251.ebf9a7af9f28dd96de0e.jpg",
     "static/media/close-up-colorful-books-pile.jpg": "/static/media/close-up-colorful-books-pile.41ecb3d2fbab514c200d.jpg",
     "static/media/loginimage.jpg": "/static/media/loginimage.690d5fc247d038dfcde7.jpg",
@@ -22,10 +22,10 @@
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html",
     "main.07c2c1e5.css.map": "/static/css/main.07c2c1e5.css.map",
-    "main.55b95de4.js.map": "/static/js/main.55b95de4.js.map"
+    "main.a1a7647a.js.map": "/static/js/main.a1a7647a.js.map"
   },
   "entrypoints": [
     "static/css/main.07c2c1e5.css",
-    "static/js/main.55b95de4.js"
+    "static/js/main.a1a7647a.js"
   ]
 }
