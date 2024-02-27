@@ -345,7 +345,7 @@ function EditCourse(props) {
             onClick={() => tabhandler(item)}
             variant="outlined"
             size="small"
-            color={activeTab.value === item.value ? 'dark' : 'info'}
+            color={activeTab.value === item.value ? 'primary' : 'secondary'}
           >
             {item.label}
           </SoftButton>

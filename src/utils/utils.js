@@ -299,7 +299,7 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
         );
       } else {
         rowCells[columnName] = (
-          <SoftTypography variant="caption" color="inharit" fontWeight="inharit" style={{ textTransform: 'capitalize' }}>
+          <SoftTypography variant="caption" color="text" fontWeight="inharit" style={{ textTransform: 'capitalize' }}>
             {columnType === "string" ? columnValue : null}
             {columnType === "number" ? (isNaN(parseInt(columnValue)) ? "" : parseInt(columnValue)) : null}
             {columnType === "date" ? formatDateString(columnValue) : null}

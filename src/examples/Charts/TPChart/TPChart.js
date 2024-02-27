@@ -120,8 +120,8 @@ export function TPChart() {
             {
                 label: 'Learners',
                 data: learnersData,
-                backgroundColor: 'rgba(153, 102, 255, 0.7)',
-                borderColor: 'rgba(153, 102, 255, 1)',
+                backgroundColor: '#AF1125',
+                borderColor: '#AF1125',
                 borderWidth: 1,
                 barPercentage: 0.5,
                 borderRadius: {
@@ -132,8 +132,8 @@ export function TPChart() {
             {
                 label: 'Courses',
                 data: coursesData,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: '#312783',
+                borderColor: '#312783',
                 borderWidth: 1,
                 barPercentage: 0.5,
                 borderRadius: {

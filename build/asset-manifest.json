@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.07c2c1e5.css",
-    "main.js": "/static/js/main.a1a7647a.js",
+    "main.js": "/static/js/main.51006410.js",
     "static/media/5251.jpg": "/static/media/5251.ebf9a7af9f28dd96de0e.jpg",
     "static/media/close-up-colorful-books-pile.jpg": "/static/media/close-up-colorful-books-pile.41ecb3d2fbab514c200d.jpg",
     "static/media/loginimage.jpg": "/static/media/loginimage.690d5fc247d038dfcde7.jpg",
@@ -14,6 +14,7 @@
     "static/media/team-4.jpg": "/static/media/team-4.a1e1c29f1b839ddae393.jpg",
     "static/media/bruce-mars.jpg": "/static/media/bruce-mars.45f6477957606abd2f24.jpg",
     "static/media/team-2.jpg": "/static/media/team-2.e725aef8c892cb21f262.jpg",
+    "static/media/logo-ct.png": "/static/media/logo-ct.32ffa461bfd51296e4f1.png",
     "static/media/logo-slack.svg": "/static/media/logo-slack.d8feb9c5b2a92c377e8c5b7a10faabc9.svg",
     "static/media/logo-xd.svg": "/static/media/logo-xd.77e7dd1528183ab292936e4f91241cf0.svg",
     "static/media/logo-invision.svg": "/static/media/logo-invision.f3413d25dc0761bcc615835e48482191.svg",
@@ -22,10 +23,10 @@
     "static/media/logo-atlassian.svg": "/static/media/logo-atlassian.d92c4f81bb3efbf288b3ef71ce2fbfb0.svg",
     "index.html": "/index.html",
     "main.07c2c1e5.css.map": "/static/css/main.07c2c1e5.css.map",
-    "main.a1a7647a.js.map": "/static/js/main.a1a7647a.js.map"
+    "main.51006410.js.map": "/static/js/main.51006410.js.map"
   },
   "entrypoints": [
     "static/css/main.07c2c1e5.css",
-    "static/js/main.a1a7647a.js"
+    "static/js/main.51006410.js"
   ]
 }

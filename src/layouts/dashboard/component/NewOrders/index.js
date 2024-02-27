@@ -42,7 +42,7 @@ function NewOrders(props) {
       <SoftBox p={2}>
         {loading && <SoftBarLoader />}
         {list?.length && list?.map(item => <TimelineItem
-          color="error"
+          color="info"
           icon={<ImportContactsIcon />}
           title={`${item?.trainingfee}, ${item?.courseName}`}
           dateTime={moment(item?.enrollmentDate).format("DD-MM-YYYY")}

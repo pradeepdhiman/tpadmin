@@ -209,7 +209,7 @@ function EditApplicant(props) {
             onClick={() => tabhandler(value)}
             variant="outlined"
             size="small"
-            color={activeTab === value ? 'dark' : 'info'}
+            color={activeTab === value ? 'primary' : 'secondary'}
           >
             {label}
           </SoftButton>

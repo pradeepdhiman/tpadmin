@@ -109,48 +109,6 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
           </SoftBox>
         );
       }
-        // if (columnIndex === 0 && typeof rowFunc === 'function') {
-        //   template = (
-        //     <SoftBox
-        //       key={uuidv4()}
-        //       component="td"
-        //       p={1}
-        //       textAlign={align}
-        //       borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-        //       onClick={() => rowFunc(key)}
-        //       style={{ cursor: 'pointer' }}
-        //     >
-        //       <SoftTypography
-        //         variant="button"
-        //         sx={{ display: "inline-block", width: "max-content" }}
-        //         color="info"
-        //       fontWeight="bold"
-        //       >
-        //         {row[name]}
-        //       </SoftTypography>
-        //     </SoftBox>
-        //   );
-        // } else {
-        //   template = (
-        //     <SoftBox
-        //       key={uuidv4()}
-        //       component="td"
-        //       p={1}
-        //       textAlign={align}
-        //       borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-        //     >
-        //       <SoftTypography
-        //         variant="button"
-        //         fontWeight="regular"
-        //         color="secondary"
-        //         sx={{ display: "inline-block", width: "max-content" }}
-        //       >
-        //         {row[name]}
-        //       </SoftTypography>
-        //     </SoftBox>
-        //   );
-        // }
-      // }
 
       return template;
     });

@@ -148,7 +148,7 @@ function EditSchedule(props) {
 
 
 
-  
+
   const MySwal = withReactContent(Swal)
   async function onDelete() {
     const result = await MySwal.fire({
@@ -162,7 +162,7 @@ function EditSchedule(props) {
     if (result.isConfirmed) {
       try {
         try {
-          const res =  await delSchedule({ id: activeRow.scheduledID })
+          const res = await delSchedule({ id: activeRow.scheduledID })
           toastHandler(res)
           if (res.data.success) {
             closeEdit()
@@ -287,7 +287,7 @@ function EditSchedule(props) {
             onClick={() => tabhandler(value)}
             variant="outlined"
             size="small"
-            color={activeTab === value ? 'dark' : 'info'}
+            color={activeTab === value ? 'primary' : 'secondary'}
           >
             {label}
           </SoftButton>

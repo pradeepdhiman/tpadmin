@@ -79,9 +79,9 @@ function App() {
       <ToastContainer />
       {layout === "dashboard" && (
         <Sidenav
-          color={sidenavColor}
+          color="secondary"
           brand={brand}
-          brandName="Training Portal"
+          brandName="Compliance 360"
           routes={routes}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
