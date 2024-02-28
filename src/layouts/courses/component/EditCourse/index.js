@@ -38,6 +38,9 @@ import { toast } from "react-toastify";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { _sourcePath } from "config/constant";
+import { newschema } from "layouts/Courses/constant";
+import { editschema } from "layouts/Courses/constant";
 
 const tabs = [
   { label: 'Info', value: 'info' },
@@ -95,7 +98,7 @@ function EditCourse(props) {
 
 
   const { handleSubmit, control, register, reset, setValue, watch, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(Object.keys(activeRow).length !== 0 ? editschema : newschema),
     defaultValues: activeRow,
   });
 
@@ -105,17 +108,16 @@ function EditCourse(props) {
   const submitFormData = async (data) => {
 
     const isEditing = Object.keys(activeRow).length !== 0;
-    let file = data.file;
+    let file = data.file ? data.file : null;
     try {
       let formData = new FormData();
-      let newData = {};
 
       if (isEditing) {
-
-
         formData.append('CourseID', parseInt(activeRow.courseID));
         formData.append('CourseName', data?.courseName);
-        formData.append('CourseImageFIle', file, file.name);
+        if (file) {
+          formData.append('CourseImageFIle', file, file?.name);
+        }
         formData.append('Duration', parseFloat(data?.duration));
         formData.append('Description', data?.description || "");
         formData.append('Remarks', data?.remarks || "");
@@ -393,7 +395,7 @@ function EditCourse(props) {
         {activeTab.value === "info" && <SoftBox p={2}>
           <form onSubmit={handleSubmit(submitFormData)}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={4}>
                 <Controller
                   name="courseName"
                   control={control}
@@ -418,7 +420,7 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={4}>
                 <Controller
                   name="duration"
                   control={control}
@@ -443,7 +445,7 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={4}>
                 <SoftBox mb={2} ref={optionListRef} sx={{ position: "relative" }}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -466,27 +468,7 @@ function EditCourse(props) {
                   {openOption && optionList()}
                 </SoftBox>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <SoftBox mb={2}>
-                  <SoftBox mb={1} ml={0.5}>
-                    <SoftTypography component="label" variant="caption" fontWeight="bold">
-                      Course Image
-                    </SoftTypography>
-                  </SoftBox>
-                  <SoftInput
-                    name="file"
-                    type="file"
-                    onChange={uploadchangeHandler}
-                    ref={fileInputRef}
-                  />
-                  {errors.file && (
-                    <SoftTypography component="label" variant="caption" color="error">
-                      {errors.file.message}
-                    </SoftTypography>
-                  )}
-                </SoftBox>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12}>
+              <Grid item xs={6} >
                 <Controller
                   name="syllabus"
                   control={control}
@@ -517,6 +499,37 @@ function EditCourse(props) {
                     </SoftBox>
                   )}
                 />
+              </Grid>
+              <Grid item xs={3}>
+                <SoftBox mb={2}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">
+                      Course Image
+                    </SoftTypography>
+                  </SoftBox>
+                  <SoftInput
+                    name="file"
+                    type="file"
+                    onChange={uploadchangeHandler}
+                    ref={fileInputRef}
+                  />
+                  {errors.file && (
+                    <SoftTypography component="label" variant="caption" color="error">
+                      {errors.file.message}
+                    </SoftTypography>
+                  )}
+                </SoftBox>
+              </Grid>
+              <Grid item xs={3} style={{ position: "relative", marginLeft: "auto" }} >
+                <SoftBox
+                  height="100%"
+                  display="grid"
+                  justifyContent="center"
+                  alignItems="center"
+                  p={2}
+                >
+                  <SoftBox component="img" src={_sourcePath + "Content/CourseImage/" + activeRow?.courseImage} alt={activeRow?.courseImage} width="100%" />
+                </SoftBox>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <Controller
@@ -594,31 +607,6 @@ function EditCourse(props) {
                   )}
                 />
               </Grid>
-              {/* <Grid item xs={12} sm={6} md={3}>
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field }) => (
-                    <SoftBox mb={2}>
-                      <SoftBox mb={1} ml={0.5}>
-                        <SoftTypography component="label" variant="caption" fontWeight="bold">
-                          Description
-                        </SoftTypography>
-                      </SoftBox>
-                      <SoftInput
-                        type="text"
-                        {...field}
-                        placeholder=" Description"
-                      />
-                      {errors.description && (
-                        <SoftTypography component="label" variant="caption" color="error">
-                          {errors.description.message}
-                        </SoftTypography>
-                      )}
-                    </SoftBox>
-                  )}
-                />
-              </Grid> */}
               {Object.keys(activeRow).length !== 0 ? <Grid item xs={12} sm={6} md={3}>
                 <Controller
                   name="status"
@@ -648,7 +636,7 @@ function EditCourse(props) {
                   )}
                 />
               </Grid> : null}
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} >
                 <Controller
                   name="remarks"
                   control={control}

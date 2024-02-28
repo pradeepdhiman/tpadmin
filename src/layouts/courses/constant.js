@@ -27,7 +27,7 @@ export const fields = {
   remarks: { label: "Remarks", placeholder: "Remarks" }
 };
 
-export const schema = yup.object().shape({
+export const newschema = yup.object().shape({
   courseName: yup.string().required('Course Name is required'),
   // description: yup.string().required('Description is required'),
   duration: yup.number().required('Duration is required'),
@@ -38,6 +38,17 @@ export const schema = yup.object().shape({
     .max(99, 'It can not be more then 100%'),
   totalAmount: yup.number(),
   file: yup.mixed().required("Course image required.")
+});
+export const editschema = yup.object().shape({
+  courseName: yup.string().required('Course Name is required'),
+  // description: yup.string().required('Description is required'),
+  duration: yup.number().required('Duration is required'),
+  syllabus: yup.string().required('Syllabus is required'),
+  trainingfee: yup.number().required('Training fee is required'),
+  vat: yup.number()
+    .positive('VAT should be a positive value')
+    .max(99, 'It can not be more then 100%'),
+  totalAmount: yup.number(),
 });
 
 
@@ -142,5 +153,51 @@ export const initialFilters = {
     "updatedDate": null,
     "isDeleted": false,
     "remarks": ""
+  }
+}
+
+export const documentFilter = {
+  "draw": 0,
+  "start": 0,
+  "length": 100,
+  "columns": [
+      {
+          "data": "applicantName",
+          "name": "applicantName",
+          "searchable": true,
+          "orderable": true,
+          "search": {
+              "value": "",
+              "regex": ""
+          }
+      }
+  ],
+  "search": {
+      "value": "",
+      "regex": ""
+  },
+  "order": {
+      "orderBy": "CreatedDate",
+      "orderDirection": "desc"
+  },
+  "filter": {
+      "documentID": 0,
+      "applicantCourseID": 0,
+      "reassessmentID": 0,
+      "applicantID": 0,
+      "applicantName": "",
+      "courseID": 0,
+      "courseName": "",
+      "document": "",
+      "documentTypeID": 0,
+      "documentTypeName": "",
+      "status": 0,
+      "statusName": "",
+      "createdById": 0,
+      "createdDate": null,
+      "updatedById": 0,
+      "updatedDate": null,
+      "isDeleted": false,
+      "remarks": ""
   }
 }

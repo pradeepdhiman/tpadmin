@@ -138,7 +138,7 @@ function Table({ columns, rows, columnFunc, rowFunc }) {
       <TableContainer>
         <MuiTable>
           <SoftBox component="thead" >
-            <TableRow sx={{ backgroundColor: "#5a5a5a" }}>{renderColumns}</TableRow>
+            <TableRow sx={{ backgroundColor: "#212121" }}>{renderColumns}</TableRow>
           </SoftBox>
           <TableBody>{renderRows}</TableBody>
         </MuiTable>

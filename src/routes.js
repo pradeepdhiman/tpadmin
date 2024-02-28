@@ -20,7 +20,7 @@ import Reassessment from "layouts/Reassessment";
 import ReplayIcon from '@mui/icons-material/Replay';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
 import QuizIcon from '@mui/icons-material/Quiz';
-import FolderOffIcon from '@mui/icons-material/FolderOff';
+import SignalCellularNoSimIcon from '@mui/icons-material/SignalCellularNoSim';
 
 const routes = [
   {
@@ -61,8 +61,8 @@ const routes = [
     name: "Discontinued Courses",
     key: "discontinued-courses",
     route: "/discontinued-courses",
-    icon: <MenuBookIcon size="12px" />,
-    component: <FolderOffIcon />,
+    icon: <SignalCellularNoSimIcon size="12px" />,
+    component: <DeactiveCourses />,
     noCollapse: true,
     protected: true,
     sidebar:true
