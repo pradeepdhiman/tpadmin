@@ -60,8 +60,7 @@ export const schema = yup.object().shape({
     marksOptionC: yup.string(),
     marksOptionD: yup.string(),
     marksOptionE: yup.string(),
-    correctAnswer: yup.string(),
-    remarks: yup.string()
+    correctAnswer: yup.string()
 });
 
 

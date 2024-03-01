@@ -313,7 +313,7 @@ const AssessmentInfo = () => {
                             </Grid>
                         </Grid>
 
-                        <SoftButton type="submit" variant="contained" color="info">
+                        <SoftButton type="submit" variant="gradient" color="info">
                             {assessmentLoading || updateassessmentLoading ? "Loading..." : "Submit"}
                         </SoftButton>
                     </form>

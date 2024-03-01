@@ -128,7 +128,7 @@ function ReAssessmentList(props) {
             },
           }}
         >
-          <Table columns={questiontableheads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
+          <Table columns={assessmentTableHeads} rows={rows} columnFunc={columnClickhandler} rowFunc={rowClickhandler} />
         </SoftBox>
         <SoftBox mt={2} mb={2} px={2}>
           <Stack spacing={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>

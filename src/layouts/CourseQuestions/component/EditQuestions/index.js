@@ -164,19 +164,6 @@ function EditQuestion(props) {
 
   return (
     <Card className="h-100">
-      {/* {Object.keys(activeRow).length !== 0 && <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-start", gap: "16px", alignItem: 'center' }}>
-        {tabs.map(({ label, value }) => (
-          <SoftButton
-            key={value}
-            onClick={() => tabhandler(value)}
-            variant="outlined"
-            size="small"
-           color={activeTab === value ? 'primary' : 'secondary'}
-          >
-            {label}
-          </SoftButton>
-        ))}
-      </SoftBox>} */}
 
       <SoftBox pt={3} px={3} sx={{ display: "flex", justifyContent: "flex-end", alignItem: 'center' }}>
         <SoftBox sx={{ display: "flex", justifyContent: "flex-end", alignItems: 'end', gap: "16px" }}>
