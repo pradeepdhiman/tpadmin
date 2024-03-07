@@ -12,7 +12,7 @@ export const USER = 2;
 
 const { protocol, host } = window.location;
 
-let _apiBaseUrl, _apiUrl, _sourcePath;
+let _apiBaseUrl, _apiUrl, _sourcePath, _ws ;
 
 if (window.location.href.indexOf('localhost') === -1) {
   const cleanedHost = host.replace('admin.', '');
@@ -20,16 +20,19 @@ if (window.location.href.indexOf('localhost') === -1) {
   _apiBaseUrl = `${protocol}//service.${cleanedHost}/`;
   _apiUrl = `${protocol}//service.${cleanedHost}/api/`;
   _sourcePath = `${protocol}//service.${cleanedHost}/`;
+  _ws = `wss//service.${cleanedHost}/notificationHub`;
 } else {
   _apiBaseUrl = "https://localhost:7208/api/";
   _apiUrl = "https://localhost:7208/api/";
   _sourcePath = "https://localhost:7208/";
+  _ws = "wss://localhost:7208/notificationHub"
 }
 
 
 console.log(_apiUrl, "_apiUrl")
+console.log(_ws, "_ws)")
 
-export { _apiBaseUrl, _apiUrl, _sourcePath };
+export { _apiBaseUrl, _apiUrl, _sourcePath, _ws };
 
 // let _apiBaseUrl, _apiUrl, _sourcePath;
 

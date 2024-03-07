@@ -56,6 +56,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { logout } from "layouts/authentication/functions/query";
 import { authUser } from "layouts/authentication/functions/query";
+import { w3cwebsocket } from "websocket";
+import socketIO from "socket.io-client";
+import socketIOClient from 'socket.io-client';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -69,6 +72,32 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { setUser } = useAuth();
 
   const { currentUser } = authUser()
+
+  // const ws = new w3cwebsocket('ws://localhost:7208/notificationHub', null, null, {
+  //   Authorization: `Bearer ${user?.token}`
+  // });
+
+  // const socket = socketIO.connect("http://localhost:7208/notificationHub", {
+  //   extraHeaders: {
+  //     Authorization: `Bearer ${user?.token}`
+  //   }
+  // });
+
+
+  // useEffect(() => {
+  //   const socket = socketIOClient("http://localhost:7208/notificationHub", {
+  //     extraHeaders: {
+  //       Authorization: `Bearer ${user?.token}`
+  //     }
+  //   })
+  //   socket.on('alert', (alert) => {
+  //     setAlerts((prevAlerts) => [...prevAlerts, alert]);
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
 
 
 
@@ -246,7 +275,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   <SettingsIcon />
                 </Icon>
               </IconButton>
-
+*/}
               <IconButton
                 size="small"
                 color="inherit"
@@ -258,7 +287,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon className={light ? "text-white" : "text-dark"}><NotificationsIcon /></Icon>
               </IconButton>
-              {renderMenu()} */}
+              {renderMenu()}
             </SoftBox>
           </SoftBox>
         )}
